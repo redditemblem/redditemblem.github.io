@@ -1,0 +1,36 @@
+.contentWrapper{
+	position:absolute;
+	height:100%;
+	width:100%;
+	top:0px;
+	left:0px;
+	background-color: lightgray;
+}
+
+.centeredContent{
+	position:absolute;
+	height: 100px;
+	width: 800px;
+	top: calc(50% - 50px);
+	left: calc(50% - 400px);
+	text-align: center;
+}
+
+.teamIcon{
+	height: 100px;
+	width: 100px;
+	border: none;
+	text-align: center;
+	font-family: "Verdana";
+	font-size: 50px;
+	color: black;
+}
+
+.teamIcon:hover{
+	filter: brightness(150%);
+}
+
+.teamIconLabel{
+	position: relative;
+	top: calc(50% - 30px);
+}
