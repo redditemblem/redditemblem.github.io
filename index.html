@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!--Set pages attributes-->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Map Portal</title>
+        <head>
+                <!--Set pages attributes-->
+                <link rel="icon" type="image/x-icon" href="favicon.ico">
+                <title>Map Portal</title>
 
-    <!--Included CSS stylesheet files-->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="animate.css">
-  </head>
-  <body>
-  	<div class="contentWrapper">
-	<div class="centeredContent">
-		<button onclick="window.location.href='https://redditemblem.github.io/TeamE'" class="teamIcon" style="left: calc(50% - 250px); background-color: blue;">
-			<div class="teamIconLabel fadeIn animated">E</div>
-		</button>
-		<button onclick="window.location.href='https://redditemblem.github.io/TeamF'" class="teamIcon" style="left: calc(50% - 125px); background-color: orange;">
-			<div class="teamIconLabel fadeIn animated">F</div>
-		</button>
-		<button onclick="window.location.href='https://redditemblem.github.io/TeamG'" class="teamIcon" style="left: calc(50% + 125px); background-color: pink;">
-			<div class="teamIconLabel fadeIn animated">G</div>
-		</button>
-		<button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon" style="left: calc(50% + 250px); background-color: paleblue;">
-			<div class="teamIconLabel fadeIn animated">K</div>
-		</button>
-	</div>
-</div>
-  </body>
+                <!--Included CSS stylesheet files-->
+                <link rel="stylesheet" href="style.css">
+                <link rel="stylesheet" href="animate.css">
+        </head>
+
+        <body>
+
+                <!-- Want to try making sure the background edges fade to black.
+                First, we need to test and make sure it's able to do this WITHOUT relying on a small window size: Box-Shadow seems to simply seep the end of the monitor's screen and then fade inward the image. If the window INCREASES and our image is still set to the same resolution, the fade won't touch the image. -->
+
+                <div class="image-blurred-edge fadeIn animated"></div>
+                <div class="centeredContent">
+
+                        <!-- I want to try delaying the animation for this box.
+
+                        Also want to try making all the boxes stacked on top of each other in a column.
+
+                        If we get more than 4 games, we should consider making another column, or have code automatically make that other column.
+
+                        We also should make the text more elegantly laid out, and include number of members or etc on the right of the box. -->
+
+
+                        <button onclick="window.location.href='https://redditemblem.github.io/TeamE'" class="teamIcon fadeIn animated">
+                                <div class="teamIconLabel">E</div>
+                        </button>
+
+        		<!-- <button onclick="window.location.href='https://redditemblem.github.io/TeamF'" class="teamIcon fadeIn animated" style="left: calc(50% - 125px);">
+                                <div class="teamIconLabel">F</div>
+        		</button>
+
+        		<button onclick="window.location.href='https://redditemblem.github.io/TeamG'" class="teamIcon fadeIn animated" style="left: calc(50% + 125px);">
+        			<div class="teamIconLabel">G</div>
+        		</button>
+
+                        <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeIn animated" style="left: calc(50% + 250px);">
+        			<div class="teamIconLabel">K</div>
+        		</button> -->
+
+                </div>
+        </body>
 </html>

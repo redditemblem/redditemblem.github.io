@@ -1,9 +1,9 @@
 body{
-	margin: 0 auto;
-        background-color: rgb(0, 0, 0);
+	background-color: rgb(0, 0, 0);
 }
 
-.contentWrapper{
+.image-blurred-edge {
+	margin: 0 auto;
 	position:absolute;
 	height:100%;
 	width:100%;
@@ -11,9 +11,9 @@ body{
 	left:0px;
 	background-image: url('images/Fates Light.png');
 	background-repeat: no-repeat;
-	background-size: 720px;
+	background-size: 960px;
 	background-position: center center;
-	filter: blur(200px);
+    	box-shadow: 0 0 100px 100px black inset;
 }
 
 .centeredContent{
@@ -26,21 +26,21 @@ body{
 }
 
 .teamIcon{
-	height: 100px;
-	width: 100px;
+	background:url('images/Save Box.png') no-repeat;
+	height: 100%;
+	width: 100%;
 	border: none;
 	text-align: center;
-	font-family: "Verdana";
+	font-family: "Georgia";
 	font-size: 50px;
-	color: black;
 }
 
 .teamIcon:hover{
-	background-color: yellow;
-	filter: brightness(150%);
+	cursor:pointer;
+	filter: brightness(120%);
 }
 
 .teamIconLabel{
-	position: relative;
-	top: calc(50% - 30px);
+	/*position: relative;
+	top: calc(50% - 30px);*/
 }
