@@ -14,9 +14,21 @@
                         <script>
                         new WOW().init();
                 </script>
+
         </head>
 
         <body>
+                <audio autoplay loop id="opening">
+                        <source src="Pascal.mp3">
+                        <!-- I want to test how the following would appear if the browser doesn't support audio. -->
+                        <p>If you are reading this, it is because your browser does not support the audio element.</p>
+                </audio>
+
+                <!-- Oddly, this script must appear AFTER the above audio statement. It's probably because of the id. -->
+                <script>
+                        var audio = document.getElementById("opening");
+                        audio.volume = 0.1;
+                </script>
 
                 <div class="centeredContent">
                         <div class="image-blurred-edge wow fadeIn animated"
