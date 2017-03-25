@@ -8,65 +8,69 @@
                 <!--Included CSS stylesheet files-->
                 <link rel="stylesheet" href="style.css">
                 <link rel="stylesheet" href="animate.css">
+
+                <!-- WOW.js implementation -->
+                <script src="wow.min.js"></script>
+                        <script>
+                        new WOW().init();
+                </script>
         </head>
 
         <body>
 
-                <!-- Want to try making sure the background edges fade to black.
-                First, we need to test and make sure it's able to do this WITHOUT relying on a small window size: Box-Shadow seems to simply seep the end of the monitor's screen and then fade inward the image. If the window INCREASES and our image is still set to the same resolution, the fade won't touch the image. -->
-  
                 <div class="centeredContent">
-                        <div class="image-blurred-edge fadeIn animated"></div>
-                        <div class="scrollBox">
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamE'" class="teamIcon fadeIn animated">
+                        <div class="image-blurred-edge wow fadeIn animated"
+                                data-wow-duration="1s"></div>
+                        <div class="introduction wow fadeIn animated"
+                                data-wow-delay="1s">
+                                <!-- NOTE: Want to add a banner image here and the words would appear over it. I'm sure there's a way to do this without going through your method in .label{...} -->
+                                <h1>Select a save slot.</h1>
+                        </div>
+
+                        <div class="scrollBox wow fadeIn animated"
+                                data-wow-delay="1s">
+
+                                <!-- NOTE: Not sure whether every individual divs below this now have ["wow fadeIn animated" data-wow-delay="1s"] -->
+
+                                <!-- NOTE: We now need to it so that the boxes disappear when they scroll past it, and it appears when they scroll towards it. How would I do that? -->
+
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamE'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team E</div>
+                                        <div class="label">Team E: Start</div>
+                                        <div class="gm">Shiraho & Shade</div>
                                 </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamF'" class="teamIcon fadeIn animated">
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamF'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team F</div>
+                                        <div class="label">Team F: Start</div>
+                                        <div class="gm">IYamAHobo</div>
                                 </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamG'" class="teamIcon fadeIn animated">
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamG'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team G</div>
+                                        <div class="label">Team G: Chapter 3</div>
+                                        <div class="gm">Salveon</div>
                                 </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeIn animated">
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team K</div>
+                                        <div class="label">Team K: Chapter 2</div>
+                                        <div class="gm">Deallocate & LadyDeme</div>
                                 </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeIn animated">
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team L</div>
+                                        <div class="label">Team L: Team Leo ftw bitches</div>
+                                        <!-- NOTE: I'm using this string as a test case. Help me out. I want to make sure all strings are encapsulated so that only a certain amount of words appear as they scroll inside the brown box. -->
+                                        <!-- <div class="gm">Leo, Mythical Beast of the Universe, Reigner of Dimensions</div> -->
                                 </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeIn animated">
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team M</div>
+                                        <div class="label">Team M: [Missing Data]</div>
+                                        <div class="gm">[Missing GM]</div>
                                 </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeIn animated">
+                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
                                         <img src='images/Save Box.png'></img>
-                                        <div class="label">Team N</div>
+                                        <div class="label">Team N: [Missing Data]</div>
+                                        <div class="gm">[Missing GM]</div>
                                 </button>
                         </div>
-                        <!-- I want to try delaying the animation for this box.
-
-                        Also want to try making all the boxes stacked on top of each other in a column.
-
-                        If we get more than 4 games, we should consider making another column, or have code automatically make that other column.
-
-                        We also should make the text more elegantly laid out, and include number of members or etc on the right of the box. -->
-
-        		<!--button onclick="window.location.href='https://redditemblem.github.io/TeamF'" class="teamIcon fadeIn animated" style="left: calc(50% - 125px);">
-                                <div class="teamIconLabel">F</div>
-        		</button>
-
-        		<button onclick="window.location.href='https://redditemblem.github.io/TeamG'" class="teamIcon fadeIn animated" style="left: calc(50% + 125px);">
-        			<div class="teamIconLabel">G</div>
-        		</button>
-
-                        <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeIn animated" style="left: calc(50% + 250px);">
-        			<div class="teamIconLabel">K</div>
-        		</button> -->
-
-                <!--</div>-->
+                </div>
         </body>
 </html>
