@@ -1,88 +1,22 @@
 <!DOCTYPE html>
-<html>
-        <head>
-                <!--Set pages attributes-->
-                <link rel="icon" type="image/x-icon" href="favicon.ico">
-                <title>Map Portal</title>
+<html ng-app="RedditEmblemViewer">
+  <head>
+  	<link rel="icon" type="image/x-icon" href="IMG/favicon.ico">
+  	<title>Reddit Emblem</title>
+  	
+  	<!--Load Javascript Libraries-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-route.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-                <!--Included CSS stylesheet files-->
-                <link rel="stylesheet" href="style.css">
-                <link rel="stylesheet" href="animate.css">
-
-                <!-- WOW.js implementation -->
-                <script src="wow.min.js"></script>
-                        <script>
-                        new WOW().init();
-                </script>
-
-        </head>
-
-        <body>
-                <audio autoplay loop id="opening">
-                        <source src="Pascal.mp3">
-                        <!-- I want to test how the following would appear if the browser doesn't support audio. -->
-                        <p>If you are reading this, it is because your browser does not support the audio element.</p>
-                </audio>
-
-                <!-- Oddly, this script must appear AFTER the above audio statement. It's probably because of the id. -->
-                <script>
-                        var audio = document.getElementById("opening");
-                        audio.volume = 0.1;
-                </script>
-
-                <div class="centeredContent">
-                        <div class="image-blurred-edge wow fadeIn animated"
-                                data-wow-duration="1s"></div>
-                        <div class="introduction wow fadeIn animated"
-                                data-wow-delay="1s">
-                                <!-- NOTE: Want to add a banner image here and the words would appear over it. I'm sure there's a way to do this without going through your method in .label{...} -->
-                                <h1>Select a save slot.</h1>
-                        </div>
-
-                        <div class="scrollBox wow fadeIn animated"
-                                data-wow-delay="1s">
-
-                                <!-- NOTE: Not sure whether every individual divs below this now have ["wow fadeIn animated" data-wow-delay="1s"] -->
-
-                                <!-- NOTE: We now need to it so that the boxes disappear when they scroll past it, and it appears when they scroll towards it. How would I do that? -->
-
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamE'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team E: Start</div>
-                                        <div class="gm">Shiraho & Shade</div>
-                                </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamF'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team F: Start</div>
-                                        <div class="gm">IYamAHobo</div>
-                                </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamG'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team G: Chapter 3</div>
-                                        <div class="gm">Salveon</div>
-                                </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team K: Chapter 2</div>
-                                        <div class="gm">Deallocate & LadyDeme</div>
-                                </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team L: Team Leo ftw bitches</div>
-                                        <!-- NOTE: I'm using this string as a test case. Help me out. I want to make sure all strings are encapsulated so that only a certain amount of words appear as they scroll inside the brown box. -->
-                                        <!-- <div class="gm">Leo, Mythical Beast of the Universe, Reigner of Dimensions</div> -->
-                                </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team M: [Missing Data]</div>
-                                        <div class="gm">[Missing GM]</div>
-                                </button>
-                                <button onclick="window.location.href='https://redditemblem.github.io/TeamK'" class="teamIcon fadeInDown animated">
-                                        <img src='images/Save Box.png'></img>
-                                        <div class="label">Team N: [Missing Data]</div>
-                                        <div class="gm">[Missing GM]</div>
-                                </button>
-                        </div>
-                </div>
-        </body>
+    <!--Included CSS stylesheet files-->
+    <!--<link rel="stylesheet" href="CSS/loginStyles.css">-->
+    
+    <!--Included JavaScript files-->
+    <script src="app.js"></script>
+    <script src="controller.homepage.js"></script>
+  </head>
+  <body>
+    <div ng-view></div>
+  </body>
 </html>
