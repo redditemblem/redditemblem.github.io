@@ -1,8 +1,17 @@
-var app = angular.module('RedditEmblemViewer', ['ngRoute']);
-app.config(['$routeProvider', function ($routeProvider) {
+var app = angular.module('RedditEmblemViewer', ['ngRoute', 'ngCookies', 'ngMaterial']);
+app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $mdThemingProvider) {
 	$routeProvider
-		.when("/", {templateUrl: "homepage.html", controller: "HomepageCtrl"});
-		//.when("/map", {templateUrl: "home.html", controller: "HomeCtrl"});
+		.when("/", {templateUrl: "HTML/homepage.html", controller: "HomepageCtrl"})
+		.when("/about", {templateUrl: "HTML/about.html", controller: "AboutCtrl"})
+		.when("/map/:teamName", {templateUrl: "HTML/map.html", controller: "MapCtrl"});
+
+	//Define color themes
+	$mdThemingProvider.theme('dark').dark();
+
+	//Load theme cookie, if it exists
+	//var savedTheme = $cookies.get('RedditEmblem-SavedTheme');
+	//if(savedTheme != undefined)
+	//	$mdThemingProvider.setDefaultTheme(savedTheme);
 }]);
 
 //Custom directives

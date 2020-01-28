@@ -1,0 +1,9 @@
+.absolute{
+    position: absolute;
+}
+
+.sidebar-launch-button{
+    right: 0px;
+    border-radius: 50% 0% 0% 50% !important;
+    margin-right: 0px;
+}
