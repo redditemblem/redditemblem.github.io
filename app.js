@@ -2,7 +2,7 @@ var app = angular.module('RedditEmblemViewer', ['ngRoute', 'ngCookies', 'ngMater
 app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $mdThemingProvider) {
 	$routeProvider
 		.when("/", {templateUrl: "HTML/homepage.html", controller: "HomepageCtrl"})
-		.when("/about", {templateUrl: "HTML/about.html", controller: "AboutCtrl"})
+		.when("/info", {templateUrl: "HTML/info.html", controller: "InfoCtrl"})
 		.when("/map/:teamName", {templateUrl: "HTML/map.html", controller: "MapCtrl"});
 
 	//Define color themes
@@ -11,7 +11,7 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 	//Load theme cookie, if it exists
 	//var savedTheme = $cookies.get('RedditEmblem-SavedTheme');
 	//if(savedTheme != undefined)
-	//	$mdThemingProvider.setDefaultTheme(savedTheme);
+	$mdThemingProvider.setDefaultTheme('dark');
 }]);
 
 //Custom directives

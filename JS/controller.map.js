@@ -1,4 +1,4 @@
-app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdSidenav', function ($scope, $http, $location, $routeParams, $mdSidenav) {
     $scope.data = {};
     
     //Call API to fetch JSON
@@ -8,4 +8,12 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', funct
     }).then(function successCallback(response) {
         $scope.data = response.data;
     });
+
+    $scope.openSideNav = function(){
+        $mdSidenav("sidenav").open();
+    };
+
+    $scope.closeSideNav = function(){
+        $mdSidenav("sidenav").close();
+    };
 }]);

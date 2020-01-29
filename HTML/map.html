@@ -1,9 +1,55 @@
-<md-button hide-xs hide-sm class="md-fab md-primary sidebar-launch-button absolute">
-    <md-icon md-font-icon="view_headline"></md-icon>
-</md-button>
-<md-button hide-gt-sm class="md-fab md-mini md-primary sidebar-launch-button absolute">
-    <md-icon md-font-icon="view_headline"></md-icon>
+<md-button id="btnShowSideNav" class="md-fab md-primary sidebar-launch-button absolute" ng-click="openSideNav()">
+    <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
 </md-button>
 
+<!-- Sidenav search and unit display -->
+<md-sidenav md-component-id="sidenav" class="md-sidenav-right" md-is-open="false" style="width: 50%;">
+    <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="closeSideNav()">
+                <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-autocomplete
+          md-selected-item="search.selected"
+          md-search-text="search.query"
+          md-items="unit in data.units | filter: search.query | orderBy: ['pinned', 'name']"
+          md-item-text="unit.name"
+          md-min-length="0"
+          md-escape-options="clear"
+          placeholder="Unit Name">
+        <md-item-template>
+            <div layout="row" layout-align="space-between center">
+                <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
+                <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
+            </div>
+        </md-item-template>
+    </md-autocomplete>
+    <!-- Draw unit data display-->
+    <div ng-if="search.selected" layout-padding>
+        <!-- Pin button -->
+        <div layout="row">
+            <img ng-src="{{search.selected.spriteURL}}" />
+            <span>{{search.selected.name}}</span>
+            <md-button class="md-icon-button" ng-click="search.selected.pinned = !search.selected.pinned">
+                <i class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
+            </md-button>
+        </div>
+        <div layout="row">
+            {{search.selected.coordinates}}
+        </div>
+        <div layout="row">
+            <i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
+            <span>Stats</span>
+        </div>
+        <div ng-repeat="stat in ['Str', 'Mag', 'Lck', 'Def', 'Res', 'Spd']">
+            {{stat}}
+            <div ng-if="statsExpanded">
+                Buff: 20
+            </div>
+        </div>
+    </div>
+</md-sidenav>
+
 <div id="mapBox" layout-fill style="background-color:orange;"></div>
-<div></div>

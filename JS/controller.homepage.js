@@ -9,8 +9,8 @@ app.controller('HomepageCtrl', ['$scope', '$http', '$location', function ($scope
         $scope.teamList = response.data;
     });
 
-    $scope.LaunchAbout = function(){
-        $location.path("/about");
+    $scope.LaunchInfo = function(){
+        $location.path("/info");
     };
 
     $scope.LaunchMap = function(teamName){
