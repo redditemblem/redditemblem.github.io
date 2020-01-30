@@ -43,12 +43,30 @@
             <i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
             <span>Stats</span>
         </div>
-        <div ng-repeat="stat in ['Str', 'Mag', 'Lck', 'Def', 'Res', 'Spd']">
-            {{stat}}
-            <div ng-if="statsExpanded">
-                Buff: 20
+        <div ng-repeat="(stat, statObj) in search.selected.stats">
+            {{stat}}: <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
+                        {{statObj.finalValue}} <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i>
+                      </span>
+            <div ng-if="statsExpanded" style="margin-left: 7px;">
+                Base: {{statObj.baseValue}}
+            </div>
+            <div ng-repeat="(mod, modVal) in statObj.modifiers" ng-if="statsExpanded" style="margin-left: 7px;">
+                {{mod}}: {{modVal}}
             </div>
         </div>
+        <div layout="row">
+            <i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !inventoryExpanded}" ng-click="inventoryExpanded = !inventoryExpanded" aria-hidden="true"></i>
+            <span>Inventory</span>
+        </div>
+        <md-card ng-repeat="item in search.selected.inventory track by $index">
+            <div layout="row" layout-align="space-between">
+                <span ng-class="{'droppableItemColor': item.isDroppable == true}">
+                    {{item.name}}
+                    <span ng-if="item.uses > 0">({{item.uses}})</span>
+                </span>
+                <i class="fa fa-star" ng-if="item.isEquipped == true" aria-hidden="true"></i>
+            </div>
+        </md-card>
     </div>
 </md-sidenav>
 
