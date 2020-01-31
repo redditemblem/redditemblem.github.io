@@ -39,6 +39,7 @@
         <div layout="row">
             {{search.selected.coordinates}}
         </div>
+        <!-- UNIT STATS -->
         <div layout="row">
             <i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
             <span>Stats</span>
@@ -54,19 +55,42 @@
                 {{mod}}: {{modVal}}
             </div>
         </div>
+        <!-- INVENTORY -->
         <div layout="row">
-            <i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !inventoryExpanded}" ng-click="inventoryExpanded = !inventoryExpanded" aria-hidden="true"></i>
+            <!--<i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !inventoryExpanded}" ng-click="inventoryExpanded = !inventoryExpanded" aria-hidden="true"></i>-->
             <span>Inventory</span>
         </div>
-        <md-card ng-repeat="item in search.selected.inventory track by $index">
-            <div layout="row" layout-align="space-between">
-                <span ng-class="{'droppableItemColor': item.isDroppable == true}">
-                    {{item.name}}
+        <md-card ng-repeat="item in search.selected.inventory track by $index" ng-click="item.expanded = !item.expanded">
+            <div layout="row" layout-align="space-between center">
+                <span ng-class="{'droppableItemColor': item.isDroppable == true}" style="font-weight: bold;">
+                    <span>
+                        <img ng-if="item.spriteURL.length > 0" ng-src="{{item.spriteURL}}" style="max-height: 16px; max-width: 16px;"/>
+                        {{item.name}}
+                    </span>
                     <span ng-if="item.uses > 0">({{item.uses}})</span>
                 </span>
-                <i class="fa fa-star" ng-if="item.isEquipped == true" aria-hidden="true"></i>
+                <span>
+                    <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
+                    <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
+                </span>
+            </div>
+            <div layout="row">
+                <span ng-if="item.weaponRank.length > 0">{{item.weaponRank}}&nbsp;-&nbsp;</span>{{item.category}}
+            </div>
+            <div ng-if="item.expanded">
+                <md-divider layout-margin></md-divider>
+                <div layout="row" layout-align="space-between">
+                    <span ng-if="item.range.minimum > 0">Rng: {{item.range.minimum}}<span ng-if="item.range.minimum != item.range.maximum">&nbsp;-&nbsp;{{item.range.maximum}}</span></span>
+                    <span ng-if="item.uses > 0">Uses: {{item.uses}}<span ng-if="item.maxUses > 0">&nbsp;\&nbsp;{{item.maxUses}}</span></span>
+                </div>
+                <div ng-if="item.utilizedStat.length > 0" ng-repeat="(stat, statVal) in item.stats">
+                    {{stat}}: {{statVal}}
+                </div>
+                <md-divider layout-margin></md-divider>
+                <div layout="row" ng-repeat="text in item.textFields" ng-style="{'margin-bottom': !$last ? '7px' : '0px'}">{{text}}</div>
             </div>
         </md-card>
+        <!--SKILLS-->
     </div>
 </md-sidenav>
 
