@@ -1,3 +1,12 @@
+img{
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+  }
+
 .absolute{
     position: absolute;
 }
@@ -6,6 +15,17 @@
     right: 0px;
     border-radius: 50% 0% 0% 50% !important;
     margin-right: 0px;
+}
+
+.md-card-hover:focus {
+    outline: none;
+    border: 0;
+ }
+
+.md-card-hover:hover{
+    outline: none;
+    border: 0;
+    cursor: pointer;
 }
 
 .fa-rotate-45 {

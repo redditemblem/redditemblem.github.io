@@ -11,6 +11,7 @@
             </md-button>
         </div>
     </md-toolbar>
+    <!-- Search field -->
     <md-autocomplete
           md-selected-item="search.selected"
           md-search-text="search.query"
@@ -26,18 +27,16 @@
             </div>
         </md-item-template>
     </md-autocomplete>
-    <!-- Draw unit data display-->
-    <div ng-if="search.selected" layout-padding>
-        <!-- Pin button -->
-        <div layout="row">
-            <img ng-src="{{search.selected.spriteURL}}" />
-            <span>{{search.selected.name}}</span>
+    <md-content ng-if="search.selected" layout-padding>
+        <!-- Sprite, name, & pin icon -->
+        <div layout="row" layout-align="space-between top">
+            <div layout="column">
+                <img ng-src="{{search.selected.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
+                <div style="font-size: 20px; font-weight: bold;">{{search.selected.name}}</div>
+            </div>
             <md-button class="md-icon-button" ng-click="search.selected.pinned = !search.selected.pinned">
                 <i class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
             </md-button>
-        </div>
-        <div layout="row">
-            {{search.selected.coordinates}}
         </div>
         <!-- UNIT STATS -->
         <div layout="row">
@@ -56,11 +55,8 @@
             </div>
         </div>
         <!-- INVENTORY -->
-        <div layout="row">
-            <!--<i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !inventoryExpanded}" ng-click="inventoryExpanded = !inventoryExpanded" aria-hidden="true"></i>-->
-            <span>Inventory</span>
-        </div>
-        <md-card ng-repeat="item in search.selected.inventory track by $index" ng-click="item.expanded = !item.expanded">
+        <div layout="row">Inventory</div>
+        <md-card ng-repeat="item in search.selected.inventory track by $index" ng-click="item.expanded = !item.expanded" class="md-card-hover">
             <div layout="row" layout-align="space-between center">
                 <span ng-class="{'droppableItemColor': item.isDroppable == true}" style="font-weight: bold;">
                     <span>
@@ -91,7 +87,18 @@
             </div>
         </md-card>
         <!--SKILLS-->
-    </div>
+        <div layout="row">Skills</div>
+        <md-card ng-repeat="skill in search.selected.skills track by $index" ng-click="skill.expanded = !skill.expanded" class="md-card-hover">
+            <div layout="row">
+                <img ng-if="skill.spriteURL.length > 0" ng-src="{{skill.spriteURL}}" style="max-height: 16px; max-width: 16px;"/>
+                {{skill.name}}
+            </div>
+            <div ng-if="skill.expanded">
+                <md-divider layout-margin></md-divider>
+                <div layout="row" ng-repeat="text in skill.textFields" ng-style="{'margin-bottom': !$last ? '7px' : '0px'}">{{text}}</div>
+            </div>
+        </md-card>
+    </md-content>
 </md-sidenav>
 
 <div id="mapBox" layout-fill style="background-color:orange;"></div>
