@@ -1,0 +1,31 @@
+img{
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+i:focus{
+    outline: none;
+    border: 0;
+}
+
+.md-card-hover:focus {
+    outline: none;
+    border: 0;
+ }
+
+.md-card-hover:hover{
+    outline: none;
+    border: 0;
+}
+
+.fa-rotate-45 {
+    -webkit-transform:rotate(45deg); 
+    -moz-transform:rotate(45deg); 
+    -ms-transform:rotate(45deg); 
+    -o-transform:rotate(45deg); 
+    transform:rotate(45deg);
+}

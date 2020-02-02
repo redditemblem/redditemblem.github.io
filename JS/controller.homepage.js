@@ -1,4 +1,4 @@
-app.controller('HomepageCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('HomepageCtrl', ['$scope', '$http', '$location', '$cookies', '$mdTheming', function ($scope, $http, $location, $cookies, $mdTheming) {
     //Initalize variables
     $scope.teamList = [];
 
@@ -15,5 +15,18 @@ app.controller('HomepageCtrl', ['$scope', '$http', '$location', function ($scope
 
     $scope.LaunchMap = function(teamName){
         $location.path('/map/' + teamName.replace(' ', ''));
+    };
+
+    $scope.getAppTheme = function(){
+        return $mdTheming.defaultTheme();
+    };
+
+    $scope.toggleAppTheme = function(){
+        var theme = $mdTheming.defaultTheme();
+        if(theme == 'default') theme = 'dark';
+        else theme = 'default';
+
+        $cookies.put('RedditEmblemMaps-SavedTheme', theme)
+        location.reload();
     };
 }]);

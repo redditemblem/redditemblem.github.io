@@ -1,104 +1,140 @@
-<md-button id="btnShowSideNav" class="md-fab md-primary sidebar-launch-button absolute" ng-click="openSideNav()">
-    <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
-</md-button>
-
-<!-- Sidenav search and unit display -->
-<md-sidenav md-component-id="sidenav" class="md-sidenav-right" md-is-open="false" style="width: 50%;">
-    <md-toolbar class="md-primary">
-        <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" ng-click="closeSideNav()">
-                <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <!-- Search field -->
-    <md-autocomplete
-          md-selected-item="search.selected"
-          md-search-text="search.query"
-          md-items="unit in data.units | filter: search.query | orderBy: ['pinned', 'name']"
-          md-item-text="unit.name"
-          md-min-length="0"
-          md-escape-options="clear"
-          placeholder="Unit Name">
-        <md-item-template>
-            <div layout="row" layout-align="space-between center">
-                <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
-                <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
+<div  ng-if="!loadComplete" layout="column" layout-align="center center" layout-fill>
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    <span style="margin-top: 15px;">Fetching map data...</span>
+</div>
+<div ng-if="loadComplete" layout-fill>
+    <md-button id="btnShowSideNav" class="md-fab md-primary sidebar-launch-button absolute" ng-click="openSideNav()">
+        <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+    </md-button>
+    
+    <!-- Sidenav search and unit display -->
+    <md-sidenav md-component-id="sidenav" class="md-sidenav-right" md-is-open="false" layout="column">
+        <md-toolbar class="md-primary">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-click="closeSideNav()">
+                    <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+                </md-button>
             </div>
-        </md-item-template>
-    </md-autocomplete>
-    <md-content ng-if="search.selected" layout-padding>
-        <!-- Sprite, name, & pin icon -->
-        <div layout="row" layout-align="space-between top">
-            <div layout="column">
-                <img ng-src="{{search.selected.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
-                <div style="font-size: 20px; font-weight: bold;">{{search.selected.name}}</div>
+        </md-toolbar>
+        <!-- Search field -->
+        <md-autocomplete
+                md-selected-item="search.selected"
+                md-search-text="search.query"
+                md-items="unit in data.units | filter: search.query | orderBy: ['pinned', 'name']"
+                md-item-text="unit.name"
+                md-min-length="0"
+                md-escape-options="clear"
+                placeholder="Unit Name">
+            <md-item-template>
+                <div layout="row" layout-align="space-between center">
+                    <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
+                    <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
+                </div>
+            </md-item-template>
+        </md-autocomplete>
+        <md-content ng-if="search.selected" layout-padding>
+            <!-- Sprite, name, & pin icon -->
+            <div layout="row" layout-align="space-between">
+                <div layout="column">
+                    <div layout="row">
+                        <img ng-src="{{search.selected.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
+                    </div>
+                    <div layout="row" style="font-size: 1.4rem; font-weight: bold;">
+                        {{search.selected.name}}
+                    </div>
+                </div>
+                <md-button class="md-icon-button" ng-click="search.selected.pinned = !search.selected.pinned">
+                    <i class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
+                </md-button>
             </div>
-            <md-button class="md-icon-button" ng-click="search.selected.pinned = !search.selected.pinned">
-                <i class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
-            </md-button>
-        </div>
-        <!-- UNIT STATS -->
-        <div layout="row">
-            <i class="fa fa-angle-down" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
-            <span>Stats</span>
-        </div>
-        <div ng-repeat="(stat, statObj) in search.selected.stats">
-            {{stat}}: <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
-                        {{statObj.finalValue}} <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i>
-                      </span>
-            <div ng-if="statsExpanded" style="margin-left: 7px;">
-                Base: {{statObj.baseValue}}
+            <!-- UNIT STATS -->
+            <div class="header-text" layout="row">
+                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
+                Stats
             </div>
-            <div ng-repeat="(mod, modVal) in statObj.modifiers" ng-if="statsExpanded" style="margin-left: 7px;">
-                {{mod}}: {{modVal}}
-            </div>
-        </div>
-        <!-- INVENTORY -->
-        <div layout="row">Inventory</div>
-        <md-card ng-repeat="item in search.selected.inventory track by $index" ng-click="item.expanded = !item.expanded" class="md-card-hover">
-            <div layout="row" layout-align="space-between center">
-                <span ng-class="{'droppableItemColor': item.isDroppable == true}" style="font-weight: bold;">
-                    <span>
-                        <img ng-if="item.spriteURL.length > 0" ng-src="{{item.spriteURL}}" style="max-height: 16px; max-width: 16px;"/>
-                        {{item.name}}
-                    </span>
-                    <span ng-if="item.uses > 0">({{item.uses}})</span>
-                </span>
-                <span>
-                    <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
-                    <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
-                </span>
-            </div>
-            <div layout="row">
-                <span ng-if="item.weaponRank.length > 0">{{item.weaponRank}}&nbsp;-&nbsp;</span>{{item.category}}
-            </div>
-            <div ng-if="item.expanded">
-                <md-divider layout-margin></md-divider>
+            <div layout="row" ng-repeat="(stat, statObj) in search.selected.stats" style="display: inline-block; width: 40%;">
                 <div layout="row" layout-align="space-between">
-                    <span ng-if="item.range.minimum > 0">Rng: {{item.range.minimum}}<span ng-if="item.range.minimum != item.range.maximum">&nbsp;-&nbsp;{{item.range.maximum}}</span></span>
-                    <span ng-if="item.uses > 0">Uses: {{item.uses}}<span ng-if="item.maxUses > 0">&nbsp;\&nbsp;{{item.maxUses}}</span></span>
+                    {{stat}}
+                    <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
+                        {{statObj.finalValue}} <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i>
+                    </span>
                 </div>
-                <div ng-if="item.utilizedStat.length > 0" ng-repeat="(stat, statVal) in item.stats">
-                    {{stat}}: {{statVal}}
+                <div ng-if="statsExpanded" class="inset-text" layout="column" >
+                    <div layout="row" layout-align="space-between">
+                        <span>Base</span><span>{{statObj.baseValue}}</span>
+                    </div>
+                    <div ng-repeat="(mod, modVal) in statObj.modifiers" layout="row" layout-align="space-between">
+                        <span>{{mod}}</span><span>{{modVal}}</span>
+                    </div>
                 </div>
-                <md-divider layout-margin></md-divider>
-                <div layout="row" ng-repeat="text in item.textFields" ng-style="{'margin-bottom': !$last ? '7px' : '0px'}">{{text}}</div>
             </div>
-        </md-card>
-        <!--SKILLS-->
-        <div layout="row">Skills</div>
-        <md-card ng-repeat="skill in search.selected.skills track by $index" ng-click="skill.expanded = !skill.expanded" class="md-card-hover">
-            <div layout="row">
-                <img ng-if="skill.spriteURL.length > 0" ng-src="{{skill.spriteURL}}" style="max-height: 16px; max-width: 16px;"/>
-                {{skill.name}}
+            <md-divider></md-divider>
+            <!-- INVENTORY -->
+            <div class="header-text" layout="row">
+                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="invExpanded = !invExpanded" aria-hidden="true"></i>
+                Inventory
             </div>
-            <div ng-if="skill.expanded">
-                <md-divider layout-margin></md-divider>
-                <div layout="row" ng-repeat="text in skill.textFields" ng-style="{'margin-bottom': !$last ? '7px' : '0px'}">{{text}}</div>
+            <md-card ng-repeat="item in search.selected.inventory track by $index" ng-click="item.expanded = !item.expanded" ng-if="invExpanded" class="md-card-hover clickable" ng-style="{'pointer-events': item == null ? 'none' : 'auto'}">
+                <div layout="row" layout-align="space-between center">
+                    <span ng-class="{'droppableItemColor': item.isDroppable == true}" style="font-weight: bold;">
+                        <span>
+                            <img ng-if="item.spriteURL.length > 0" ng-src="{{item.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
+                            {{item.name}}
+                        </span>
+                        <span ng-if="item.uses > 0">({{item.uses}})</span>
+                    </span>
+                    <span>
+                        <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
+                        <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
+                    </span>
+                </div>
+                <div layout="row" class="inset-text">
+                    <span ng-if="item.weaponRank.length > 0">{{item.weaponRank}}&nbsp;-&nbsp;</span>{{item.category}}
+                </div>
+                <div ng-if="item.expanded">
+                    <div ng-if="item.range.minimum > 0 || item.uses > 0 || item.utilizedStat.length > 0">
+                        <md-divider layout-margin></md-divider>
+                        <div layout="row">
+                            <span ng-if="item.range.minimum > 0" layout="row" layout-align="space-between" style="width: 27%; margin-right: 6%; font-size: 0.8rem;">
+                                <span>Rng</span>
+                                <span>{{item.range.minimum}}<span ng-if="item.range.minimum != item.range.maximum">&nbsp;-&nbsp;{{item.range.maximum}}</span></span>
+                            </span>
+                            <span ng-if="item.uses > 0" layout="row" layout-align="space-between" style="width: 27%; margin-right: 6%; font-size: 0.8rem;">
+                                <span>Uses</span>
+                                <span>{{item.uses}}<span ng-if="item.maxUses > 0">&nbsp;\&nbsp;{{item.maxUses}}</span></span>
+                            </span>
+                        </div>
+                        <div ng-if="item.utilizedStat.length > 0" ng-repeat="(stat, statVal) in item.stats" style="display: inline-block; width: 27%; margin-right: 6%; font-size: 0.8rem;">
+                            <div layout="row" layout-align="space-between">
+                                <span>{{stat}}</span>
+                                <span>{{statVal}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="item.textFields.length > 0">
+                        <md-divider layout-margin></md-divider>
+                        <div ng-repeat="text in item.textFields" class="description-text" ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
+                    </div>
+                </div>
+            </md-card>
+            <md-divider></md-divider>
+            <!--SKILLS-->
+            <div class="header-text" layout="row">
+                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="skillsExpanded = !skillsExpanded" aria-hidden="true"></i>
+                Skills
             </div>
-        </md-card>
-    </md-content>
-</md-sidenav>
-
-<div id="mapBox" layout-fill style="background-color:orange;"></div>
+            <md-card ng-repeat="skill in search.selected.skills track by $index" ng-click="skill.expanded = !skill.expanded" ng-if="skillsExpanded" class="md-card-hover clickable">
+                <div layout="row" layout-align="start center">
+                    <img ng-if="skill.spriteURL.length > 0" ng-src="{{skill.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
+                    <span>{{skill.name}}</span>
+                </div>
+                <div ng-if="skill.expanded">
+                    <md-divider layout-margin></md-divider>
+                    <div ng-repeat="text in skill.textFields"  class="description-text"  ng-style="{'margin-bottom': !$last ? '7px' : '0px'}" layout="row">{{text}}</div>
+                </div>
+            </md-card>
+        </md-content>
+    </md-sidenav>
+    
+    <div id="mapBox" layout-fill style="background-color:orange;"></div>
+</div>

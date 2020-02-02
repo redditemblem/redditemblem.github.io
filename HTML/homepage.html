@@ -1,2 +1,18 @@
-<md-button class="md-raised md-primary" ng-click="LaunchInfo()">Info</md-button>
-<md-button class="md-raised md-primary" ng-repeat="team in teamList" ng-click="LaunchMap(team)">{{team}}</md-button>
+<div layout="column" layout-align="start center" layout-fill style="padding-top: 10%;">
+    <img src="IMG/re_logo.png" layout-padding />
+    <div layout="column" layout-align="center" style="width: 30%; min-width: 275px;">
+        <div layout="row" layout-align="center">
+            <md-button class="md-raised md-primary" ng-click="LaunchInfo()" flex>
+                <i class="fa fa-info-circle" aria-hidden="true"></i> Info
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="toggleAppTheme()" flex>
+                <span ng-if="getAppTheme() == 'dark'"><i class="fa fa-sun-o" aria-hidden="true"></i> Light Mode</span>
+                <span ng-if="getAppTheme() == 'default'"><i class="fa fa-moon-o" aria-hidden="true"></i> Dark Mode</span>
+            </md-button>
+        </div>
+        <md-divider layout-margin></md-divider>
+        <div layout="row" ng-repeat="team in teamList">
+            <md-button class="md-raised md-primary" ng-click="LaunchMap(team)" flex>{{team}}</md-button>
+        </div>
+    </div>
+</div>

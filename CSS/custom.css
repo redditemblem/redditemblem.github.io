@@ -1,15 +1,5 @@
-img{
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: -o-crisp-edges;
-    image-rendering: pixelated;
-    -ms-interpolation-mode: nearest-neighbor;
-  }
-
-.absolute{
-    position: absolute;
-}
+.absolute{  position: absolute; }
+.clickable:hover{ cursor: pointer; }
 
 .sidebar-launch-button{
     right: 0px;
@@ -17,21 +7,16 @@ img{
     margin-right: 0px;
 }
 
-.md-card-hover:focus {
-    outline: none;
-    border: 0;
- }
-
-.md-card-hover:hover{
-    outline: none;
-    border: 0;
-    cursor: pointer;
+.header-text{
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
-.fa-rotate-45 {
-    -webkit-transform:rotate(45deg); 
-    -moz-transform:rotate(45deg); 
-    -ms-transform:rotate(45deg); 
-    -o-transform:rotate(45deg); 
-    transform:rotate(45deg);
+.inset-text{
+    font-size: .8rem;
+    padding-left: 8px;
+}
+
+.description-text{
+    font-size: .9rem;
 }

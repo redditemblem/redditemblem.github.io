@@ -5,14 +5,20 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 		.when("/info", {templateUrl: "HTML/info.html", controller: "InfoCtrl"})
 		.when("/map/:teamName", {templateUrl: "HTML/map.html", controller: "MapCtrl"});
 
+	//Force injection of $cookies service
+	var $cookies;
+	angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+		$cookies = _$cookies_;
+	}]);
+
 	//Define color themes
 	$mdThemingProvider.theme('dark').dark();
-
-	//Load theme cookie, if it exists
-	//var savedTheme = $cookies.get('RedditEmblem-SavedTheme');
-	//if(savedTheme != undefined)
-	$mdThemingProvider.setDefaultTheme('dark');
+	
+	var theme = $cookies.get('RedditEmblemMaps-SavedTheme')
+	if(theme != undefined)
+		$mdThemingProvider.setDefaultTheme(theme);
 }]);
+
 
 //Custom directives
 /*app.directive('convoy', function(){
