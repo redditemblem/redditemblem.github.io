@@ -1,6 +1,28 @@
 <div  ng-if="!loadComplete" layout="column" layout-align="center center" layout-fill>
-    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-    <span style="margin-top: 15px;">Fetching map data...</span>
+    <div ng-if="!errorContext" layout="column" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        <span style="margin-top: 15px;">Fetching map data...</span>
+    </div>
+    <div ng-if="errorContext" layout="row" layout-align="center" style="width: 75%;">
+        <div layout="column" style="font-size: 2.25rem; color: crimson;">
+            <div layout="row" style="font-size: 2.25rem; color: crimson;">
+                <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div layout="column">
+            <div layout="row" style="font-size: 2.25rem; color: crimson;">
+                A fatal error has occurred.
+            </div>
+            <div layout="column">
+                {{errorContext.message}}
+                <span ng-if="!errorContext.innerException" style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.stackTrace)}}</span>
+            </div>
+            <div ng-if="errorContext.innerException" layout="column">
+                <span>{{errorContext.innerException.message}}</span>
+                <span style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
+            </div>
+        </div>
+    </div>
 </div>
 <div ng-if="loadComplete" layout-fill>
     <md-button id="btnShowSideNav" class="md-fab md-primary sidebar-launch-button absolute" ng-click="openSideNav()">
@@ -20,15 +42,20 @@
         <md-autocomplete
                 md-selected-item="search.selected"
                 md-search-text="search.query"
-                md-items="unit in data.units | filter: search.query | orderBy: ['pinned', 'name']"
+                md-items="unit in data.units | orderBy: [unitSort, 'name'] | filter: search.query"
                 md-item-text="unit.name"
+                md-dropdown-items="5"
                 md-min-length="0"
                 md-escape-options="clear"
+                md-no-cache="true"
                 placeholder="Unit Name">
             <md-item-template>
                 <div layout="row" layout-align="space-between center">
                     <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
-                    <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
+                    <div layout="row">
+                        <i ng-if="unit.coordinates.isHidden" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
+                    </div>
                 </div>
             </md-item-template>
         </md-autocomplete>
@@ -39,13 +66,43 @@
                     <div layout="row">
                         <img ng-src="{{search.selected.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
                     </div>
-                    <div layout="row" style="font-size: 1.4rem; font-weight: bold;">
-                        {{search.selected.name}}
+                    <div layout="row">
+                        <div layout="column" style="font-size: 1.4rem; font-weight: bold;">
+                            <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
+                        </div>
+                        <div layout="column">
+                            <span style="font-size: 1.4rem; font-weight: bold;">{{search.selected.name}}</span>
+                            <span style="font-size: 0.9rem; padding-left: 8px;">Lvl. {{search.selected.level}} {{search.selected.class}}</span>
+                        </div>
                     </div>
                 </div>
-                <md-button class="md-icon-button" ng-click="search.selected.pinned = !search.selected.pinned">
-                    <i class="fa fa-thumb-tack fa-lg fa-rotate-45" aria-hidden="true"></i>
-                </md-button>
+                <div layout="column">
+                    <i ng-click="search.selected.pinned = !search.selected.pinned" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
+                        <md-tooltip md-direction="left">Pin this unit</md-tooltip>
+                    </i>
+                </div>
+            </div>
+            <div ng-if="unitInfoExpanded" class="description-text" layout="column">
+                <div ng-repeat="text in search.selected.textFields" style="margin-bottom: 8px;">
+                    {{text}}
+                </div>
+                <div>
+                    Affiliation: {{search.selected.affiliation}}
+                </div>
+                <md-divider layout-margin></md-divider>
+            </div>
+            <div layout="row">
+                HP: {{search.selected.hp.current}} / {{search.selected.hp.maximum}}
+            </div>
+            <div ng-if="search.selected.tags.length > 0" layout="row">
+                <div layout="row" style="margin-right: 8px; padding-top: 5px;">
+                    <i class="fa fa-tags" aria-hidden="true">
+                        <md-tooltip md-direction="top">Tags</md-tooltip>
+                    </i>
+                </div>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="tag in search.selected.tags" class="md-chip-custom">{{tag}}</div>
+                </div>
             </div>
             <!-- UNIT STATS -->
             <div class="header-text" layout="row">
@@ -130,7 +187,7 @@
                 </div>
                 <div ng-if="skill.expanded">
                     <md-divider layout-margin></md-divider>
-                    <div ng-repeat="text in skill.textFields"  class="description-text"  ng-style="{'margin-bottom': !$last ? '7px' : '0px'}" layout="row">{{text}}</div>
+                    <div ng-repeat="text in skill.textFields"  class="description-text"  ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
                 </div>
             </md-card>
         </md-content>

@@ -1,3 +1,3 @@
-app.controller('AboutCtrl', ['$scope', '$location', function ($scope, $location) {
+app.controller('InfoCtrl', ['$scope', '$location', function ($scope, $location) {
     
 }]);

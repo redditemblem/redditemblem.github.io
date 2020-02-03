@@ -12,6 +12,14 @@ i:focus{
     border: 0;
 }
 
+.md-chip-custom{
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background-color: gray;
+    padding: 5px;
+    font-size: 0.8rem;
+}
+
 .md-card-hover:focus {
     outline: none;
     border: 0;
@@ -21,6 +29,7 @@ i:focus{
     outline: none;
     border: 0;
 }
+
 
 .fa-rotate-45 {
     -webkit-transform:rotate(45deg); 

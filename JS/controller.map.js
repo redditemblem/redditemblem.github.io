@@ -2,6 +2,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdS
     
     $scope.data = {};
     $scope.loadComplete = false
+    $scope.unitInfoExpanded = false;
     $scope.statsExpanded = false;
     $scope.invExpanded = true;
     $scope.skillsExpanded = true;
@@ -13,7 +14,13 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdS
     }).then(function successCallback(response) {
         $scope.data = response.data;
         $scope.loadComplete = true;
+    },function errorCallback(response){
+        $scope.errorContext = response.data;
     });
+
+    $scope.formatStackTrace = function(stacktrace){
+        return stacktrace.replace("\tat", "\nat").trim();
+    };
 
     $scope.openSideNav = function(){
         $mdSidenav("sidenav").open();
@@ -21,5 +28,12 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdS
 
     $scope.closeSideNav = function(){
         $mdSidenav("sidenav").close();
+    };
+
+    $scope.unitSort = function(a){
+        var sort = 0;
+        if(a.pinned) sort -= 2;
+        if(a.coordinates.isHidden) sort += 1;
+        return sort;
     };
 }]);
