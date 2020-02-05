@@ -2,9 +2,20 @@
 .clickable:hover{ cursor: pointer; }
 
 .sidebar-launch-button{
+    position: fixed;
     right: 0px;
     border-radius: 50% 0% 0% 50% !important;
     margin-right: 0px;
+}
+
+.md-sidenav-partial-width{
+    width: 400px;
+    min-width: 400px;
+}
+
+.md-sidenav-full-width{
+    width: 100%;
+    min-width: 100%;
 }
 
 .header-text{
@@ -19,4 +30,27 @@
 
 .description-text{
     font-size: .9rem;
+}
+
+.mapBackground{
+    background-repeat: no-repeat;
+    padding: 0px;
+}
+
+.mapRow{
+    margin-left: 1px;
+}
+
+.mapTile{
+    display: inline-block;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    margin-left: -1px;
+}
+
+.mapTile:hover{
+    cursor: default;
+    box-shadow: 0px 0px 10px #00ffff;
+	z-index:1;
 }

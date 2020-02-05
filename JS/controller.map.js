@@ -1,4 +1,4 @@
-app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdSidenav', function ($scope, $http, $location, $routeParams, $mdSidenav) {
+app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSidenav', function ($scope, $http, $window, $routeParams, $mdSidenav) {
     
     $scope.data = {};
     $scope.loadComplete = false
@@ -7,7 +7,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdS
     $scope.invExpanded = true;
     $scope.skillsExpanded = true;
     
-    //Call API to fetch JSON
+    //Call API to fetch JSON on load
     $http({
         method: "GET",
         url: "https://localhost:44380/api/team/" + $routeParams.teamName
@@ -15,12 +15,20 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdS
         $scope.data = response.data;
         $scope.loadComplete = true;
     },function errorCallback(response){
-        $scope.errorContext = response.data;
+        if(response.data == null)
+            //Set manual error context
+            $scope.errorContext = { 'message': 'The API endpoint could not be reached.' };
+        else{
+            $scope.errorContext = response.data;
+            $scope.errorContext.status = response.status;
+        }     
     });
 
     $scope.formatStackTrace = function(stacktrace){
         return stacktrace.replace("\tat", "\nat").trim();
     };
+
+    // SIDE NAV FUNCTIONS ---------s--------------------------------
 
     $scope.openSideNav = function(){
         $mdSidenav("sidenav").open();
@@ -30,10 +38,20 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$routeParams', '$mdS
         $mdSidenav("sidenav").close();
     };
 
+    $scope.browserWidthCheck = function(){
+        return $window.innerWidth < 500;
+    };
+
+    $scope.launchChapterPostTab = function(){
+        $window.open($scope.data.map.chapterPostURL);
+    };
+
     $scope.unitSort = function(a){
         var sort = 0;
         if(a.pinned) sort -= 2;
         if(a.coordinates.isHidden) sort += 1;
         return sort;
     };
+
+    //-------------------------------------------------------------
 }]);

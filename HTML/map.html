@@ -4,18 +4,20 @@
         <span style="margin-top: 15px;">Fetching map data...</span>
     </div>
     <div ng-if="errorContext" layout="row" layout-align="center" style="width: 75%;">
-        <div layout="column" style="font-size: 2.25rem; color: crimson;">
-            <div layout="row" style="font-size: 2.25rem; color: crimson;">
-                <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+        <div layout="column">
+            <div layout="row" style="font-size: 2.25rem;">
+                <i ng-if="errorContext.status != 403" class="fa fa-exclamation-circle fa-fw" style="color: crimson;" aria-hidden="true"></i>
+                <i ng-if="errorContext.status == 403" class="fa fa-exclamation-triangle fa-fw" style="color: orange;" aria-hidden="true"></i>
             </div>
         </div>
         <div layout="column">
-            <div layout="row" style="font-size: 2.25rem; color: crimson;">
-                A fatal error has occurred.
+            <div layout="row" style="font-size: 2.25rem; ">
+                <span ng-if="errorContext.status != 403" style="color: crimson;">A fatal error has occurred.</span>
+                <span ng-if="errorContext.status == 403" style="color: orange;">Access is blocked.</span>
             </div>
             <div layout="column">
                 {{errorContext.message}}
-                <span ng-if="!errorContext.innerException" style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.stackTrace)}}</span>
+                <span ng-if="!errorContext.innerException && errorContext.stackTrace && errorContext.status != 403" style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.stackTrace)}}</span>
             </div>
             <div ng-if="errorContext.innerException" layout="column">
                 <span>{{errorContext.innerException.message}}</span>
@@ -24,17 +26,21 @@
         </div>
     </div>
 </div>
-<div ng-if="loadComplete" layout-fill>
-    <md-button id="btnShowSideNav" class="md-fab md-primary sidebar-launch-button absolute" ng-click="openSideNav()">
+<div ng-if="loadComplete" layout="column" layout-fill>
+    <md-button id="btnShowSideNav" class="md-fab md-primary sidebar-launch-button" ng-click="openSideNav()">
         <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
     </md-button>
-    
+
     <!-- Sidenav search and unit display -->
-    <md-sidenav md-component-id="sidenav" class="md-sidenav-right" md-is-open="false" layout="column">
+    <md-sidenav md-component-id="sidenav" class="md-sidenav-right" ng-class="browserWidthCheck() ? 'md-sidenav-full-width' : 'md-sidenav-partial-width'" md-is-open="false" layout="column">
         <md-toolbar class="md-primary">
-            <div class="md-toolbar-tools">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
                 <md-button class="md-icon-button" ng-click="closeSideNav()">
                     <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+                </md-button>
+                <md-button ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()" class="md-icon-button">
+                    <i class="fa fa-reddit fa-lg" aria-hidden="true"></i>
+                    <md-tooltip md-direction="left">Open Chapter Post</md-tooltip>
                 </md-button>
             </div>
         </md-toolbar>
@@ -192,6 +198,19 @@
             </md-card>
         </md-content>
     </md-sidenav>
-    
-    <div id="mapBox" layout-fill style="background-color:orange;"></div>
+
+    <!-- Map -->
+    <md-content id="mapScollBox" layout-padding>
+        <div class="mapBackground" style="width: 1280px; height: 1280px;" ng-style="{'background-image': 'url({{data.map.mapImageURL}})'}">
+            <div ng-repeat="row in data.map.tiles"
+                 class="mapRow"
+                 ng-style="{'height': data.map.constants.gridSize+'px', 'margin-bottom': data.map.constants.gridSpacing+'px'}">
+                <div ng-repeat="tile in row" 
+                     class="mapTile" 
+                     ng-style="{'width': (data.map.constants.gridSize-1)+'px', 'height': (data.map.constants.gridSize-1)+'px', 'margin-right': data.map.constants.gridSpacing+'px'}">
+                    {{tile.coordinate.x}},{{tile.coordinate.y}}
+                </div>
+            </div>
+        </div>
+    </md-content>
 </div>
