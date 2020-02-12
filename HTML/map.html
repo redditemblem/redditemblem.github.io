@@ -59,7 +59,7 @@
                 <div layout="row" layout-align="space-between center">
                     <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
                     <div layout="row">
-                        <i ng-if="unit.coordinates.isHidden" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.coordinates.x < 1 || unit.coordinates.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
                 </div>
@@ -204,11 +204,13 @@
         <div class="mapBackground" style="width: 1280px; height: 1280px;" ng-style="{'background-image': 'url({{data.map.mapImageURL}})'}">
             <div ng-repeat="row in data.map.tiles"
                  class="mapRow"
-                 ng-style="{'height': data.map.constants.gridSize+'px', 'margin-bottom': data.map.constants.gridSpacing+'px'}">
+                 ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">
                 <div ng-repeat="tile in row" 
-                     class="mapTile" 
-                     ng-style="{'width': (data.map.constants.gridSize-1)+'px', 'height': (data.map.constants.gridSize-1)+'px', 'margin-right': data.map.constants.gridSpacing+'px'}">
-                    {{tile.coordinate.x}},{{tile.coordinate.y}}
+                     class="mapTile"
+                     ng-style="{'width': (data.map.constants.tileSize-1)+'px', 'height': (data.map.constants.tileSize-1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
+                     ng-attr-title="({{tile.coordinate.x}},{{tile.coordinate.y}})"
+                >
+                    {{tile.terrainTypeName}}
                 </div>
             </div>
         </div>

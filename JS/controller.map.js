@@ -49,7 +49,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     $scope.unitSort = function(a){
         var sort = 0;
         if(a.pinned) sort -= 2;
-        if(a.coordinates.isHidden) sort += 1;
+        if(unit.coordinates.x < 1 || unit.coordinates.y < 1) sort += 1;
         return sort;
     };
 
