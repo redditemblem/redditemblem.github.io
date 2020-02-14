@@ -43,14 +43,52 @@
 
 .mapTile{
     display: inline-block;
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
     margin-left: -1px;
 }
 
 .mapTile:hover{
     cursor: default;
     box-shadow: 0px 0px 10px #00ffff;
-	z-index:1;
+	z-index: 1;
+}
+
+.mapTile:focus{
+    outline: none;
+    border: 0;
+}
+
+.unitSpriteContainer{
+    position: absolute;
+    pointer-events: none;
+}
+
+.unitSpriteHover{
+    cursor: pointer;
+	filter: brightness(160%);
+}
+
+.unitSpriteImage{
+    margin-bottom: 1px;
+}
+
+.healthBarFill{
+    max-width: 100%;
+    height: 100%;
+    margin-bottom: -1px;
+}
+
+.healthBarBorder{
+    position: absolute;
+    width: calc(100% - 4px);
+    height: 1px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    bottom: 1px;
+}
+
+.unitNumber{
+    position: absolute;
+    right: 2px;
+    bottom: 4px;
 }

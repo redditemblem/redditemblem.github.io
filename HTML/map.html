@@ -207,10 +207,31 @@
                  ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">
                 <div ng-repeat="tile in row" 
                      class="mapTile"
-                     ng-style="{'width': (data.map.constants.tileSize-1)+'px', 'height': (data.map.constants.tileSize-1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
+                     ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
                      ng-attr-title="({{tile.coordinate.x}},{{tile.coordinate.y}})"
+                     ng-mouseover="mapTile_OnMouseover(tile)"
+                     ng-mouseout="mapTile_OnMouseout(tile)"
+                     ng-click="mapTile_OnClick(tile)"
                 >
-                    {{tile.terrainTypeName}}
+                    <!--Draw unit-->
+                    <div ng-if="tile.isUnitAnchor"
+                         class="unitSpriteContainer"
+                         ng-style="{'width': (data.map.constants.tileSize * getUnitByName(tile.occupyingUnitName).unitSize)+'px', 'height': (data.map.constants.tileSize * getUnitByName(tile.occupyingUnitName).unitSize)+'px'}"
+                         layout="row"
+                         layout-align="center end"
+                    >
+                        <img id="{{tile.occupyingUnitName}}_sprite" ng-src="{{getUnitByName(tile.occupyingUnitName).spriteURL}}" class="unitSpriteImage" />
+                        <div id="healthBarBorder" class="healthBarBorder">
+                            <div id="healthBarFillBackground" class="healthBarFill" style="background-color: gray;"></div>
+                            <div id="healthBarFillColor"
+                                 class="healthBarFill"
+                                 ng-style="{'width': getUnitByName(tile.occupyingUnitName).hp.percentage + '%'}"
+                                 ng-class="selectUnitHealthColorClass(tile.occupyingUnitName)"
+                            ></div>
+                        </div>
+                        <div id="unitNumber" class="unitNumber" ng-style="{'font-size': (data.map.constants.tileSize * getUnitByName(tile.occupyingUnitName).unitSize / 8)+'px'}">100</div>
+                    </div>
+                    
                 </div>
             </div>
         </div>

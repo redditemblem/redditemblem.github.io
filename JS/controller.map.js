@@ -46,12 +46,50 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
         $window.open($scope.data.map.chapterPostURL);
     };
 
-    $scope.unitSort = function(a){
+    $scope.unitSort = function(unit){
         var sort = 0;
-        if(a.pinned) sort -= 2;
+        if(unit.pinned) sort -= 2;
         if(unit.coordinates.x < 1 || unit.coordinates.y < 1) sort += 1;
         return sort;
     };
 
     //-------------------------------------------------------------
+
+    $scope.mapTile_OnMouseover = function(tile){
+        if(tile.occupyingUnitName.length > 0){
+            var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
+            imgSprite.classList.add("unitSpriteHover");
+        }
+    };
+
+    $scope.mapTile_OnMouseout = function(tile){
+        if(tile.occupyingUnitName.length > 0){
+            var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
+            imgSprite.classList.remove("unitSpriteHover");
+        }
+    };
+
+    $scope.mapTile_OnClick = function(tile){
+        if(tile.occupyingUnitName.length > 0){
+            var unit = $scope.getUnitByName(tile.occupyingUnitName);
+            unit.pinned = true;
+            this.search.selected = unit;
+        }
+    };
+
+    $scope.getUnitByName = function(unitName){
+        return $scope.data.units.find((u) => { return u["name"] === unitName });
+    };
+
+    $scope.selectUnitHealthColorClass = function(unitName){
+        var unit = $scope.getUnitByName(unitName);
+        if(unit.hp.percentage <= 25)
+            return "hp25PercentColor";
+        if(unit.hp.percentage <= 50)
+            return "hp50PercentColor";
+        if(unit.hp.percentage <= 100)
+            return "hp100PercentColor";
+        if(unit.hp.percentage > 100)
+            return "hpOverfillColor";
+    };
 }]);

@@ -1,11 +1,8 @@
-.buffedStatColor{
-    color: #42adf4;
-}
+.buffedStatColor{ color: #5CB4EF; }
+.debuffedStatColor{ color: #F13535; }
+.droppableItemColor{ color: #3CD66F; }
 
-.debuffedStatColor{
-    color: #cc0000;
-}
-
-.droppableItemColor{
-    color: #009933;
-}
+.hp25PercentColor{ background-color: #F13535; }
+.hp50PercentColor{ background-color: #FFE14B; }
+.hp100PercentColor{ background-color: #7ED836; }
+.hpOverfillColor{ background-color: #992DE4; }
