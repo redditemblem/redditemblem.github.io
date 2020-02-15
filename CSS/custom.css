@@ -1,6 +1,18 @@
 .absolute{  position: absolute; }
 .clickable:hover{ cursor: pointer; }
 
+@font-face
+{
+    font-family: pixelFill;
+    src: url('TINYBBBA.TTF');
+}
+
+@font-face
+{
+    font-family: pixelOutline;
+    src: url('TINYBBA_.TTF');
+}
+
 .sidebar-launch-button{
     position: fixed;
     right: 0px;
@@ -47,7 +59,6 @@
 }
 
 .mapTile:hover{
-    cursor: default;
     box-shadow: 0px 0px 10px #00ffff;
 	z-index: 1;
 }
@@ -63,8 +74,17 @@
 }
 
 .unitSpriteHover{
-    cursor: pointer;
 	filter: brightness(160%);
+}
+
+.grayscaleSprite{
+    -webkit-filter: grayscale(95%);
+    filter: grayscale(95%);
+}
+
+.grayscaleSpriteHover{
+    -webkit-filter: grayscale(80%) brightness(160%);
+    filter: grayscale(80%) brightness(160%);
 }
 
 .unitSpriteImage{
@@ -90,5 +110,5 @@
 .unitNumber{
     position: absolute;
     right: 2px;
-    bottom: 4px;
+    bottom: 1px;
 }

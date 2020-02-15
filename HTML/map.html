@@ -92,13 +92,30 @@
                 <div ng-repeat="text in search.selected.textFields" style="margin-bottom: 8px;">
                     {{text}}
                 </div>
+                <div layout="column" style="margin-bottom: 8px;">
+                    <div layout="row">
+                        <b>Class</b>: {{search.selected.class}}
+                    </div>
+                    <div layout="row" ng-repeat="text in data.classes[search.selected.class].textFields">
+                        {{text}}
+                    </div>
+                </div>
                 <div>
-                    Affiliation: {{search.selected.affiliation}}
+                    <b>Affiliation</b>: {{search.selected.affiliation}}
                 </div>
                 <md-divider layout-margin></md-divider>
             </div>
-            <div layout="row">
-                HP: {{search.selected.hp.current}} / {{search.selected.hp.maximum}}
+            <div layout="row" style="width: 40%; display: inline-block;">
+                <div layout="row" layout-align="space-between">
+                    <span>HP</span>
+                    <span>{{search.selected.hp.current}} / {{search.selected.hp.maximum}}</span>
+                </div>
+            </div>
+            <div layout="row" style="width: 40%; display: inline-block;">
+                <div layout="row" layout-align="space-between">
+                    <span>Exp</span>
+                    <span>{{search.selected.experience}}</span>
+                </div>
             </div>
             <div ng-if="search.selected.tags.length > 0" layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
@@ -212,24 +229,30 @@
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
+                     ng-class="{'clickable': tile.occupyingUnitName.length > 0}"
                 >
                     <!--Draw unit-->
                     <div ng-if="tile.isUnitAnchor"
+                         ng-init="unit = getUnitByName(tile.occupyingUnitName)"
                          class="unitSpriteContainer"
-                         ng-style="{'width': (data.map.constants.tileSize * getUnitByName(tile.occupyingUnitName).unitSize)+'px', 'height': (data.map.constants.tileSize * getUnitByName(tile.occupyingUnitName).unitSize)+'px'}"
+                         ng-style="{'width': (data.map.constants.tileSize * unit.unitSize)+'px', 'height': (data.map.constants.tileSize * unit.unitSize)+'px'}"
                          layout="row"
                          layout-align="center end"
                     >
-                        <img id="{{tile.occupyingUnitName}}_sprite" ng-src="{{getUnitByName(tile.occupyingUnitName).spriteURL}}" class="unitSpriteImage" />
+                        <img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscaleSprite': unit.hasMoved}" />
+                        <div id="unitNumber" class="unitNumber">
+                            <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
+                                 ng-src="IMG/num_{{digit}}.png"
+                                 style="width: 5px; height: 7px;" />
+                        </div>
                         <div id="healthBarBorder" class="healthBarBorder">
                             <div id="healthBarFillBackground" class="healthBarFill" style="background-color: gray;"></div>
                             <div id="healthBarFillColor"
                                  class="healthBarFill"
-                                 ng-style="{'width': getUnitByName(tile.occupyingUnitName).hp.percentage + '%'}"
-                                 ng-class="selectUnitHealthColorClass(tile.occupyingUnitName)"
+                                 ng-style="{'width': unit.hp.percentage + '%'}"
+                                 ng-class="{'hpOverfillColor': unit.hp.percentage > 100, 'hp100PercentColor': unit.hp.percentage <= 100 && unit.hp.percentage > 50, 'hp50PercentColor': unit.hp.percentage <= 50 && unit.hp.percentage > 25, 'hp25PercentColor': unit.hp.percentage <= 25}"
                             ></div>
                         </div>
-                        <div id="unitNumber" class="unitNumber" ng-style="{'font-size': (data.map.constants.tileSize * getUnitByName(tile.occupyingUnitName).unitSize / 8)+'px'}">100</div>
                     </div>
                     
                 </div>

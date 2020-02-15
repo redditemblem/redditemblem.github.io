@@ -58,13 +58,15 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     $scope.mapTile_OnMouseover = function(tile){
         if(tile.occupyingUnitName.length > 0){
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
-            imgSprite.classList.add("unitSpriteHover");
+            if(imgSprite.classList.contains("grayscaleSprite")) imgSprite.classList.add("grayscaleSpriteHover");
+            else imgSprite.classList.add("unitSpriteHover");
         }
     };
 
     $scope.mapTile_OnMouseout = function(tile){
         if(tile.occupyingUnitName.length > 0){
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
+            imgSprite.classList.remove("grayscaleSpriteHover");
             imgSprite.classList.remove("unitSpriteHover");
         }
     };
@@ -79,17 +81,5 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
 
     $scope.getUnitByName = function(unitName){
         return $scope.data.units.find((u) => { return u["name"] === unitName });
-    };
-
-    $scope.selectUnitHealthColorClass = function(unitName){
-        var unit = $scope.getUnitByName(unitName);
-        if(unit.hp.percentage <= 25)
-            return "hp25PercentColor";
-        if(unit.hp.percentage <= 50)
-            return "hp50PercentColor";
-        if(unit.hp.percentage <= 100)
-            return "hp100PercentColor";
-        if(unit.hp.percentage > 100)
-            return "hpOverfillColor";
     };
 }]);
