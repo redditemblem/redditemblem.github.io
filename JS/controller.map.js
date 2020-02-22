@@ -74,10 +74,44 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     $scope.mapTile_OnClick = function(tile){
         if(tile.occupyingUnitName.length > 0){
             var unit = $scope.getUnitByName(tile.occupyingUnitName);
-            unit.pinned = true;
-            this.search.selected = unit;
+            $scope.toggleUnitPinnedStatus(unit);
         }
     };
+
+    $scope.toggleUnitPinnedStatus = function(unit){
+        if(!unit.pinned){
+            unit.pinned = true;
+            //this.search.selected = unit;
+            UpdateVisibleRanges(unit, 1);
+        }
+        else{
+            unit.pinned = false;
+            UpdateVisibleRanges(unit, -1);
+        }
+    };
+
+    function UpdateVisibleRanges(unit, updateVal){
+        //Movement
+        for(var i = 0; i < unit.movementRange.length; i++)
+        {
+            var coord = unit.movementRange[i];
+            $scope.data.map.tiles[coord.y - 1][coord.x - 1].movCount += updateVal;
+        } 
+        
+        //Attack
+        for(var i = 0; i < unit.attackRange.length; i++)
+        {
+            var coord = unit.attackRange[i];
+            $scope.data.map.tiles[coord.y - 1][coord.x - 1].atkCount += updateVal;
+        } 
+
+        //Utility
+        for(var i = 0; i < unit.utilityRange.length; i++)
+        {
+            var coord = unit.utilityRange[i];
+            $scope.data.map.tiles[coord.y - 1][coord.x - 1].utilCount += updateVal;
+        } 
+    }
 
     $scope.getUnitByName = function(unitName){
         return $scope.data.units.find((u) => { return u["name"] === unitName });

@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div layout="column">
-                    <i ng-click="search.selected.pinned = !search.selected.pinned" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
+                    <i ng-click="toggleUnitPinnedStatus(search.selected)" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
                         <md-tooltip md-direction="left">Pin this unit</md-tooltip>
                     </i>
                 </div>
@@ -229,7 +229,7 @@
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
-                     ng-class="{'clickable': tile.occupyingUnitName.length > 0}"
+                     ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMov': tile.movCount > 0, 'inRangeAtk': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaff': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
                     <!--Draw unit-->
                     <div ng-if="tile.isUnitAnchor"
