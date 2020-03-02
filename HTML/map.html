@@ -92,11 +92,11 @@
                 <div ng-repeat="text in search.selected.textFields" style="margin-bottom: 8px;">
                     {{text}}
                 </div>
-                <div layout="column" style="margin-bottom: 8px;">
+                <div ng-repeat="class in search.selected.classes" layout="column" style="margin-bottom: 8px;">
                     <div layout="row">
-                        <b>Class</b>: {{search.selected.class}}
+                        <b>Class</b>: {{class}}
                     </div>
-                    <div layout="row" ng-repeat="text in data.classes[search.selected.class].textFields">
+                    <div layout="row" ng-repeat="text in data.system.classes[class].textFields">
                         {{text}}
                     </div>
                 </div>
@@ -117,6 +117,14 @@
                     <span>{{search.selected.experience}}</span>
                 </div>
             </div>
+            <div layout="row" style="width: 40%; display: inline-block;">
+                <div ng-if="search.selected.heldCurrency > -1" layout="row" layout-align="space-between">
+                    <span>Money</span>
+                    <span>
+                        <span ng-if="data.system.currency.isIconLeftAligned" ng-style="{'margin-right': data.system.currency.includeSpace ? '3px' : '0px'}">{{data.system.currency.currencyIcon}}</span>{{search.selected.heldCurrency}}<span ng-if="!data.system.currency.isIconLeftAligned" ng-style="{'margin-left': data.system.currency.includeSpace ? '3px' : '0px'}">{{data.system.currency.currencyIcon}}</span>
+                    </span>
+                </div>
+            </div>
             <div ng-if="search.selected.tags.length > 0" layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
                     <i class="fa fa-tags" aria-hidden="true">
@@ -131,6 +139,12 @@
             <div class="header-text" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
                 Stats
+            </div>
+            <div layout="row" ng-repeat="(stat, val) in search.selected.calculatedStats" style="display: inline-block; width: 40%;">
+                <div layout="row" layout-align="space-between">
+                    <span>{{stat}}</span>
+                    <span>{{val}}</span>
+                </div>
             </div>
             <div layout="row" ng-repeat="(stat, statObj) in search.selected.stats" style="display: inline-block; width: 40%;">
                 <div layout="row" layout-align="space-between">
