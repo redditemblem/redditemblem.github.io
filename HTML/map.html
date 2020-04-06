@@ -6,14 +6,14 @@
     <div ng-if="errorContext" layout="row" layout-align="center" style="width: 75%;">
         <div layout="column">
             <div layout="row" style="font-size: 2.25rem;">
-                <i ng-if="errorContext.status != 403" class="fa fa-exclamation-circle fa-fw" style="color: crimson;" aria-hidden="true"></i>
-                <i ng-if="errorContext.status == 403" class="fa fa-exclamation-triangle fa-fw" style="color: orange;" aria-hidden="true"></i>
+                <i ng-if="errorContext.status != 403" class="fa fa-exclamation-circle fa-fw errorMessageColor" aria-hidden="true"></i>
+                <i ng-if="errorContext.status == 403" class="fa fa-exclamation-triangle fa-fw warningMessageColor" aria-hidden="true"></i>
             </div>
         </div>
         <div layout="column">
             <div layout="row" style="font-size: 2.25rem; ">
-                <span ng-if="errorContext.status != 403" style="color: crimson;">A fatal error has occurred.</span>
-                <span ng-if="errorContext.status == 403" style="color: orange;">Access is blocked.</span>
+                <span ng-if="errorContext.status != 403" class="errorMessageColor">A fatal error has occurred.</span>
+                <span ng-if="errorContext.status == 403" class="warningMessageColor">Access is blocked.</span>
             </div>
             <div layout="column">
                 {{errorContext.message}}
@@ -88,6 +88,7 @@
                     </i>
                 </div>
             </div>
+            <!--Expanded unit info-->
             <div ng-if="unitInfoExpanded" class="description-text" layout="column">
                 <div ng-repeat="text in search.selected.textFields" style="margin-bottom: 8px;">
                     {{text}}
@@ -103,20 +104,23 @@
                 <div>
                     <b>Affiliation</b>: {{search.selected.affiliation}}
                 </div>
-                <md-divider layout-margin></md-divider>
             </div>
+            <md-divider ng-if="unitInfoExpanded"></md-divider>
+            <!--HP-->
             <div layout="row" style="width: 40%; display: inline-block;">
                 <div layout="row" layout-align="space-between">
                     <span>HP</span>
                     <span>{{search.selected.hp.current}} / {{search.selected.hp.maximum}}</span>
                 </div>
             </div>
+            <!--Exp-->
             <div layout="row" style="width: 40%; display: inline-block;">
                 <div layout="row" layout-align="space-between">
                     <span>Exp</span>
                     <span>{{search.selected.experience}}</span>
                 </div>
             </div>
+            <!--Currency-->
             <div layout="row" style="width: 40%; display: inline-block;">
                 <div ng-if="search.selected.heldCurrency > -1" layout="row" layout-align="space-between">
                     <span>Money</span>
@@ -125,6 +129,7 @@
                     </span>
                 </div>
             </div>
+            <!--Tags-->
             <div ng-if="search.selected.tags.length > 0" layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
                     <i class="fa fa-tags" aria-hidden="true">
@@ -243,7 +248,7 @@
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
-                     ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMov': tile.movCount > 0, 'inRangeAtk': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaff': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
+                     ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
                     <!--Draw unit-->
                     <div ng-if="tile.isUnitAnchor"
