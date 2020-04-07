@@ -237,7 +237,8 @@
 
     <!-- Map -->
     <md-content id="mapScollBox" layout-padding>
-        <div class="mapBackground" style="width: 1280px; height: 1280px;" ng-style="{'background-image': 'url({{data.map.mapImageURL}})'}">
+        <div class="mapBackground"
+             ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.mapImageWidth + 'px', 'height': data.map.mapImageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
             <div ng-repeat="row in data.map.tiles"
                  class="mapRow"
                  ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">

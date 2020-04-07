@@ -51,6 +51,7 @@
 
 .mapRow{
     margin-left: 1px;
+    white-space: nowrap;
 }
 
 .mapTile{
