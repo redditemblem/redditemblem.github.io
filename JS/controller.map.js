@@ -10,7 +10,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     //Call API to fetch JSON on load
     $http({
         method: "GET",
-        url: "https://localhost:44380/api/team/" + $routeParams.teamName
+        url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/team/" + $routeParams.teamName
     }).then(function successCallback(response) {
         $scope.data = response.data;
         $scope.loadComplete = true;
