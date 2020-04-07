@@ -1,0 +1,21 @@
+<div layout="column" layout-align="start center" layout-fill style="padding-top: 10%;">
+    <img src="IMG/re_logo.png" layout-padding />
+    <div layout="column" layout-align="center" style="width: 30%; min-width: 300px;">
+        <div layout="row" layout-align="center">
+            <md-button class="md-raised md-primary" ng-click="LaunchInfo()" flex>
+                <i class="fa fa-info-circle" aria-hidden="true"></i> Info
+            </md-button>
+            <md-button class="md-raised md-primary" ng-click="toggleAppTheme()" flex>
+                <span ng-if="getAppTheme() == 'dark'"><i class="fa fa-sun-o fa-lg fa-fw" aria-hidden="true"></i> Light Mode</span>
+                <span ng-if="getAppTheme() == 'default'"><i class="fa fa-moon-o fa-lg fa-fw" aria-hidden="true"></i> Dark Mode</span>
+            </md-button>
+        </div>
+        <md-divider layout-margin></md-divider>
+        <div ng-repeat="team in teamList" ng-if="teamList.length > 0" layout="row" >
+            <md-button class="md-raised md-primary" ng-click="LaunchMap(team)" flex>{{team}}</md-button>
+        </div>
+        <div ng-if="teamList.length == 0" layout="row" layout-align="center" layout-padding>
+            No teams were found. This could indicate an API outage.
+        </div>
+    </div>
+</div>

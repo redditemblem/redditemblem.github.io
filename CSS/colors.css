@@ -1,0 +1,14 @@
+.errorMessageColor{ color: crimson; }
+.warningMessageColor{ color: orange; }
+.buffedStatColor{ color: #5CB4EF; }
+.debuffedStatColor{ color: #F13535; }
+.droppableItemColor{ color: #3CD66F; }
+
+.hp25PercentColor{ background-color: #F13535; }
+.hp50PercentColor{ background-color: #FFE14B; }
+.hp100PercentColor{ background-color: #7ED836; }
+.hpOverfillColor{ background-color: #992DE4; }
+
+.inRangeMovColor{ background: rgba(92, 180, 239, 0.5); }
+.inRangeAtkColor{ background: rgba(241, 53, 53, 0.5); }
+.inRangeStaffColor{ background: rgba(60, 214, 111, 0.5); }

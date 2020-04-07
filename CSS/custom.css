@@ -1,0 +1,114 @@
+.absolute{  position: absolute; }
+.clickable:hover{ cursor: pointer; }
+
+@font-face
+{
+    font-family: pixelFill;
+    src: url('TINYBBBA.TTF');
+}
+
+@font-face
+{
+    font-family: pixelOutline;
+    src: url('TINYBBA_.TTF');
+}
+
+.sidebar-launch-button{
+    position: fixed;
+    right: 0px;
+    border-radius: 50% 0% 0% 50% !important;
+    margin-right: 0px;
+}
+
+.md-sidenav-partial-width{
+    width: 400px;
+    min-width: 400px;
+}
+
+.md-sidenav-full-width{
+    width: 100%;
+    min-width: 100%;
+}
+
+.header-text{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.inset-text{
+    font-size: .8rem;
+    padding-left: 8px;
+}
+
+.description-text{
+    font-size: .9rem;
+}
+
+.mapBackground{
+    background-repeat: no-repeat;
+    padding: 0px;
+}
+
+.mapRow{
+    margin-left: 1px;
+}
+
+.mapTile{
+    display: inline-block;
+    margin-left: -1px;
+}
+
+.mapTile:hover{
+    box-shadow: 0px 0px 10px #00ffff;
+	z-index: 1;
+}
+
+.mapTile:focus{
+    outline: none;
+    border: 0;
+}
+
+.unitSpriteContainer{
+    position: absolute;
+    pointer-events: none;
+}
+
+.unitSpriteHover{
+	filter: brightness(160%);
+}
+
+.grayscaleSprite{
+    -webkit-filter: grayscale(95%);
+    filter: grayscale(95%);
+}
+
+.grayscaleSpriteHover{
+    -webkit-filter: grayscale(80%) brightness(160%);
+    filter: grayscale(80%) brightness(160%);
+}
+
+.unitSpriteImage{
+    margin-bottom: 1px;
+}
+
+.healthBarFill{
+    max-width: 100%;
+    height: 100%;
+    margin-bottom: -1px;
+}
+
+.healthBarBorder{
+    position: absolute;
+    width: calc(100% - 4px);
+    height: 1px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    bottom: 1px;
+}
+
+.unitNumber{
+    position: absolute;
+    right: 2px;
+    bottom: 1px;
+}
