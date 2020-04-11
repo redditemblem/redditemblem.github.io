@@ -173,11 +173,16 @@
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="invExpanded = !invExpanded" aria-hidden="true"></i>
                 Inventory
             </div>
-            <md-card ng-repeat="item in search.selected.inventory track by $index" ng-click="item.expanded = !item.expanded" ng-if="invExpanded" class="md-card-hover clickable" ng-style="{'pointer-events': item == null ? 'none' : 'auto'}">
+            <md-card ng-repeat="item in search.selected.inventory track by $index" 
+                     ng-click="item.expanded = !item.expanded" 
+                     ng-if="invExpanded"
+                     ng-init="itemData = data.system.items[item.name]"
+                     class="md-card-hover clickable" 
+                     ng-style="{'pointer-events': item == null ? 'none' : 'auto'}">
                 <div layout="row" layout-align="space-between center">
                     <span ng-class="{'droppableItemColor': item.isDroppable == true}" style="font-weight: bold;">
                         <span>
-                            <img ng-if="item.spriteURL.length > 0" ng-src="{{item.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
+                            <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
                             {{item.name}}
                         </span>
                         <span ng-if="item.uses > 0">({{item.uses}})</span>
@@ -188,31 +193,31 @@
                     </span>
                 </div>
                 <div layout="row" class="inset-text">
-                    <span ng-if="item.weaponRank.length > 0">{{item.weaponRank}}&nbsp;-&nbsp;</span>{{item.category}}
+                    <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}
                 </div>
                 <div ng-if="item.expanded">
-                    <div ng-if="item.range.minimum > 0 || item.uses > 0 || item.utilizedStat.length > 0">
+                    <div ng-if="itemData.range.minimum > 0 || itemData.uses > 0 || itemData.utilizedStat.length > 0">
                         <md-divider layout-margin></md-divider>
                         <div layout="row">
-                            <span ng-if="item.range.minimum > 0" layout="row" layout-align="space-between" style="width: 27%; margin-right: 6%; font-size: 0.8rem;">
+                            <span ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" style="width: 27%; margin-right: 6%; font-size: 0.8rem;">
                                 <span>Rng</span>
-                                <span>{{item.range.minimum}}<span ng-if="item.range.minimum != item.range.maximum">&nbsp;-&nbsp;{{item.range.maximum}}</span></span>
+                                <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
                             </span>
-                            <span ng-if="item.uses > 0" layout="row" layout-align="space-between" style="width: 27%; margin-right: 6%; font-size: 0.8rem;">
+                            <span ng-if="itemData.uses > 0" layout="row" layout-align="space-between" style="width: 27%; margin-right: 6%; font-size: 0.8rem;">
                                 <span>Uses</span>
-                                <span>{{item.uses}}<span ng-if="item.maxUses > 0">&nbsp;\&nbsp;{{item.maxUses}}</span></span>
+                                <span>{{itemData.uses}}<span ng-if="itemData.maxUses > 0">&nbsp;\&nbsp;{{itemData.maxUses}}</span></span>
                             </span>
                         </div>
-                        <div ng-if="item.utilizedStat.length > 0" ng-repeat="(stat, statVal) in item.stats" style="display: inline-block; width: 27%; margin-right: 6%; font-size: 0.8rem;">
+                        <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" style="display: inline-block; width: 27%; margin-right: 6%; font-size: 0.8rem;">
                             <div layout="row" layout-align="space-between">
                                 <span>{{stat}}</span>
                                 <span>{{statVal}}</span>
                             </div>
                         </div>
                     </div>
-                    <div ng-if="item.textFields.length > 0">
+                    <div ng-if="itemData.textFields.length > 0">
                         <md-divider layout-margin></md-divider>
-                        <div ng-repeat="text in item.textFields" class="description-text" ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
+                        <div ng-repeat="text in itemData.textFields" class="description-text" ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
                     </div>
                 </div>
             </md-card>
@@ -222,14 +227,18 @@
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="skillsExpanded = !skillsExpanded" aria-hidden="true"></i>
                 Skills
             </div>
-            <md-card ng-repeat="skill in search.selected.skills track by $index" ng-click="skill.expanded = !skill.expanded" ng-if="skillsExpanded" class="md-card-hover clickable">
+            <md-card ng-repeat="skill in search.selected.skills track by $index"
+                     ng-click="skill.expanded = !skill.expanded"
+                     ng-if="skillsExpanded"
+                     ng-init="skillData = data.system.skills[skill]"
+                     class="md-card-hover clickable">
                 <div layout="row" layout-align="start center">
-                    <img ng-if="skill.spriteURL.length > 0" ng-src="{{skill.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                    <span>{{skill.name}}</span>
+                    <img ng-if="skillData.spriteURL.length > 0" ng-src="{{skillData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
+                    <span>{{skillData.name}}</span>
                 </div>
-                <div ng-if="skill.expanded">
+                <div ng-if="skillData.expanded">
                     <md-divider layout-margin></md-divider>
-                    <div ng-repeat="text in skill.textFields"  class="description-text"  ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
+                    <div ng-repeat="text in skillData.textFields"  class="description-text"  ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
                 </div>
             </md-card>
         </md-content>
