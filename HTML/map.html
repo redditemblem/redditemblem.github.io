@@ -83,8 +83,9 @@
                     </div>
                 </div>
                 <div layout="column">
-                    <i ng-click="toggleUnitPinnedStatus(search.selected)" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
-                        <md-tooltip md-direction="left">Pin this unit</md-tooltip>
+                    <i ng-click="toggleUnitPinnedStatus(search.selected)" ng-class="{'opacity50': !search.selected.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
+                        <md-tooltip md-direction="left" ng-if="!search.selected.pinned">Pin unit</md-tooltip>
+                        <md-tooltip md-direction="left" ng-if="search.selected.pinned">Unpin unit</md-tooltip>
                     </i>
                 </div>
             </div>
@@ -102,7 +103,12 @@
                     </div>
                 </div>
                 <div>
-                    <b>Affiliation</b>: {{search.selected.affiliation}}
+                    <div layout="row">
+                        <b>Affiliation</b>: {{search.selected.affiliation}}
+                    </div>
+                    <div layout="row" ng-repeat="text in data.system.affiliations[search.selected.affiliation].textFields" style="margin-bottom: 8px;">
+                        {{text}}
+                    </div>
                 </div>
             </div>
             <md-divider ng-if="unitInfoExpanded"></md-divider>
@@ -167,6 +173,17 @@
                     </div>
                 </div>
             </div>
+            <!--Weapon ranks-->
+            <div layout="row">
+                <div layout="row" style="margin-right: 8px; padding-top: 5px;">
+                    <i class="fa fa-tasks" aria-hidden="true">
+                        <md-tooltip md-direction="top">Weapon Ranks</md-tooltip>
+                    </i>
+                </div>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="(tag, rank) in search.selected.weaponRanks" class="md-chip-custom">{{tag}} - {{rank}}</div>
+                </div>
+            </div>
             <md-divider></md-divider>
             <!-- INVENTORY -->
             <div class="header-text" layout="row">
@@ -178,12 +195,13 @@
                      ng-if="invExpanded"
                      ng-init="itemData = data.system.items[item.name]"
                      class="md-card-hover clickable" 
-                     ng-style="{'pointer-events': item == null ? 'none' : 'auto'}">
+                     ng-style="{'pointer-events': item != null ? 'auto' : 'none'}">
                 <div layout="row" layout-align="space-between center">
-                    <span ng-class="{'droppableItemColor': item.isDroppable == true}" style="font-weight: bold;">
+                    <span ng-class="{'droppableItemColor': item.isDroppable == true}">
                         <span>
                             <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                            {{item.name}}
+                            <span ng-if="item != null" style="font-style: bold">{{item.name}}</span>
+                            <span ng-if="item == null" class="opacity50" style="font-style: italic;">Empty</span>
                         </span>
                         <span ng-if="item.uses > 0">({{item.uses}})</span>
                     </span>
@@ -228,15 +246,14 @@
                 Skills
             </div>
             <md-card ng-repeat="skill in search.selected.skills track by $index"
-                     ng-click="skill.expanded = !skill.expanded"
                      ng-if="skillsExpanded"
                      ng-init="skillData = data.system.skills[skill]"
-                     class="md-card-hover clickable">
+                     class="md-card-hover">
                 <div layout="row" layout-align="start center">
                     <img ng-if="skillData.spriteURL.length > 0" ng-src="{{skillData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
                     <span>{{skillData.name}}</span>
                 </div>
-                <div ng-if="skillData.expanded">
+                <div>
                     <md-divider layout-margin></md-divider>
                     <div ng-repeat="text in skillData.textFields"  class="description-text"  ng-style="{'margin-bottom': !$last ? '8px' : '0px'}" layout="row">{{text}}</div>
                 </div>
@@ -254,7 +271,7 @@
                 <div ng-repeat="tile in row" 
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
-                     ng-attr-title="({{tile.coordinate.x}},{{tile.coordinate.y}})"
+                     ng-attr-title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainTypeName}}"
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
