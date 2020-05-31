@@ -1,4 +1,4 @@
-var app = angular.module('RedditEmblemViewer', ['ngRoute', 'ngCookies', 'ngMaterial']);
+var app = angular.module('RedditEmblemViewer', ['ngRoute', 'ngCookies', 'ngMaterial', 'ngAnimate']);
 app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $mdThemingProvider) {
 	$routeProvider
 		.when("/", {templateUrl: "HTML/homepage.html", controller: "HomepageCtrl"})

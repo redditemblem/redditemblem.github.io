@@ -1,7 +1,7 @@
 app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSidenav', function ($scope, $http, $window, $routeParams, $mdSidenav) {
     
     $scope.data = {};
-    $scope.loadComplete = false
+    $scope.loadComplete = false;
     $scope.unitInfoExpanded = false;
     $scope.statsExpanded = false;
     $scope.invExpanded = true;
@@ -28,19 +28,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
         return stacktrace.replace("\tat", "\nat").trim();
     };
 
-    // SIDE NAV FUNCTIONS ---------s--------------------------------
-
-    $scope.openSideNav = function(){
-        $mdSidenav("sidenav").open();
-    };
-
-    $scope.closeSideNav = function(){
-        $mdSidenav("sidenav").close();
-    };
-
-    $scope.browserWidthCheck = function(){
-        return $window.innerWidth < 500;
-    };
+    // MENU FUNCTIONS ----------------------------------------------
 
     $scope.launchChapterPostTab = function(){
         $window.open($scope.data.map.chapterPostURL);
@@ -58,16 +46,16 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     $scope.mapTile_OnMouseover = function(tile){
         if(tile.occupyingUnitName.length > 0){
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
-            if(imgSprite.classList.contains("grayscaleSprite")) imgSprite.classList.add("grayscaleSpriteHover");
-            else imgSprite.classList.add("unitSpriteHover");
+            if(imgSprite.classList.contains("grayscale")) imgSprite.classList.add("brightGrayscale");
+            else imgSprite.classList.add("bright");
         }
     };
 
     $scope.mapTile_OnMouseout = function(tile){
         if(tile.occupyingUnitName.length > 0){
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
-            imgSprite.classList.remove("grayscaleSpriteHover");
-            imgSprite.classList.remove("unitSpriteHover");
+            imgSprite.classList.remove("brightGrayscale");
+            imgSprite.classList.remove("bright");
         }
     };
 

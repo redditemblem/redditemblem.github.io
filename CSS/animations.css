@@ -1,0 +1,25 @@
+.slide.ng-hide-remove {
+    animation: 0.25s enter;
+}
+
+.slide.ng-hide-add {
+    animation: 0.25s leave;
+}
+
+@keyframes enter {
+    from {
+        width: 0px;
+    }
+    to {
+        width: 375px;
+    }
+}
+
+@keyframes leave {
+    from {
+        width: 375px;
+    }
+    to {
+        width: 0px;
+    }
+} 

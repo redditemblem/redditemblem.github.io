@@ -1,3 +1,19 @@
+body {
+    scrollbar-width: thin;
+    scrollbar-color: gray lightgray;
+}
+
+::-webkit-scrollbar {
+    width: 12px; 
+}
+::-webkit-scrollbar-track {
+    background: lightgray; 
+}
+::-webkit-scrollbar-thumb {
+    background-color: gray; 
+    border-radius: 20px;
+}
+
 img{
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
@@ -5,6 +21,22 @@ img{
     image-rendering: -o-crisp-edges;
     image-rendering: pixelated;
     -ms-interpolation-mode: nearest-neighbor;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
+}
+
+i{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none;
 }
 
 i:focus{
@@ -13,10 +45,10 @@ i:focus{
 }
 
 .md-chip-custom{
-    margin-right: 8px;
-    margin-bottom: 8px;
-    background-color: lightsteelblue;
+    margin-right: 5px;
+    margin-bottom: 5px;
     padding: 5px;
+    background-color: gray;
     font-size: 0.8rem;
 }
 
@@ -24,12 +56,15 @@ i:focus{
     outline: none;
     border: 0;
  }
-
 .md-card-hover:hover{
     outline: none;
     border: 0;
 }
 
+md-divider{
+    margin-top: 8px;
+    padding: 0px 0px 8px 0px !important;
+}
 
 .fa-rotate-45 {
     -webkit-transform:rotate(45deg); 

@@ -1,0 +1,76 @@
+.backgroundTexture{
+    background-image: url("../IMG/background.png");
+    background-repeat: repeat;
+}
+
+.absolute{  position: absolute; }
+.clickable:hover{ cursor: pointer; }
+
+.leftPadding{ 
+    padding-left: 8px;
+}
+.verticalPadding{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.horizontalPadding{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.halfBottomMargin{
+    margin-bottom: 4px;
+}
+.bottomMargin{
+    margin-bottom: 8px;
+}
+
+.errorMessageColor{ color: crimson; }
+.warningMessageColor{ color: orange; }
+.buffedStatColor{ color: #5CB4EF; }
+.debuffedStatColor{ color: #F13535; }
+.droppableItemColor{ color: #3CD66F; }
+
+.hp25PercentColor{ background-color: #F13535; }
+.hp50PercentColor{ background-color: #FFE14B; }
+.hp100PercentColor{ background-color: #7ED836; }
+.hpOverfillColor{ background-color: #992DE4; }
+
+.inRangeMovColor{ background: rgba(92, 180, 239, 0.5); }
+.inRangeAtkColor{ background: rgba(241, 53, 53, 0.5); }
+.inRangeStaffColor{ background: rgba(157, 255, 0, 0.5); }
+
+.opacity50{ opacity: 0.5; }
+
+.rem0_8Text{ font-size: .8rem; }
+.rem0_9Text{ font-size: .9rem; }
+.rem1_2Text{ font-size: 1.2rem; }
+.rem1_4Text{ font-size: 1.4rem; }
+.rem2_25Text{ font-size: 2.25rem; }
+
+.boldText{ font-weight: bold; }
+
+@font-face
+{
+    font-family: pixelFill;
+    src: url('TINYBBBA.TTF');
+}
+
+@font-face
+{
+    font-family: pixelOutline;
+    src: url('TINYBBA_.TTF');
+}
+
+.bright{
+	filter: brightness(160%);
+}
+
+.grayscale{
+    -webkit-filter: grayscale(95%);
+    filter: grayscale(95%);
+}
+
+.brightGrayscale{
+    -webkit-filter: grayscale(80%) brightness(160%);
+    filter: grayscale(80%) brightness(160%);
+}
