@@ -28,21 +28,26 @@
 </div>
 <div ng-if="loadComplete" layout="row" layout-fill>
     <!--Button toolbar-->
-    <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding" style="width: 55px; height: 100%;">
+    <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div>
-            <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'md-warn': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false;">
+            <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false;">
                 <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
             </md-button>
-            <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'md-warn': displayTile}" ng-click="displayTile = !displayTile; displayUnits = false;">
+            <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTile}" ng-click="displayTile = !displayTile; displayUnits = false;">
                 <i class="fa fa-square-o fa-lg" aria-hidden="true"></i>
             </md-button>
         </div>
-        <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
-            <i class="fa fa-reddit fa-lg" aria-hidden="true"></i>
-        </md-button>
+        <div>
+            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
+                <i class="fa fa-reddit fa-lg" aria-hidden="true"></i>
+            </md-button>
+            <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
+                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
+            </md-button>
+        </div>
     </div>
     <!-- Search and unit display -->
-    <div id="divUnitDisplay" ng-show="displayUnits" layout="column" class="slide" style="width: 375px; height: 100%;">
+    <div id="divUnitDisplay" ng-show="displayUnits" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
         <!-- Search field -->
         <md-autocomplete
                 id="mdAutoComplete"
@@ -239,14 +244,14 @@
             </md-card>
             <md-divider></md-divider>
             <!--SKILLS-->
-            <div class="rem1_2Text boldText" layout="row">
+            <div ng-if="selectedUnit.skills.length > 0" class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="skillsExpanded = !skillsExpanded" aria-hidden="true"></i>
                 Skills
             </div>
             <md-card ng-repeat="skill in selectedUnit.skills track by $index"
-                     ng-if="skillsExpanded"
-                     ng-init="skillData = data.system.skills[skill]"
-                     class="md-card-hover">
+                        ng-if="skillsExpanded"
+                        ng-init="skillData = data.system.skills[skill]"
+                        class="md-card-hover">
                 <div layout="row" layout-align="start center">
                     <img ng-if="skillData.spriteURL.length > 0" ng-src="{{skillData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
                     <span>{{skillData.name}}</span>
@@ -256,6 +261,37 @@
                     {{text}}
                 </div>
             </md-card>
+        </md-content>
+    </div>
+    <!-- Tile display -->
+    <div id="divTileDisplay" ng-show="displayTile" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
+        <md-content ng-if="selectedTile"class="horizontalPadding">
+            <div layout="row" layout-align="left center" class="rem1_4Text boldText bottomMargin">
+                <!--Tile preview-->
+                <div ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'background-position': 'left -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.x-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'overflow': hidden}"></div>
+                <!--Coords-->
+                <span class="leftPadding">Tile ({{selectedTile.coordinate.x}},{{selectedTile.coordinate.y}})</span>
+            </div>
+            <md-divider></md-divider>
+            <div ng-if="selectedTile.occupyingUnitName.length > 0" layout="row" class="bottomMargin">
+                <span class="boldText">Occupying Unit:</span>&nbsp;{{selectedTile.occupyingUnitName}}
+            </div>
+            <div layout="column" class="bottomMargin">
+                <div layout="row">
+                    <span class="boldText">Terrain Type:</span>&nbsp;{{selectedTile.terrainTypeName}}
+                </div>
+                <div layout="row" layout-wrap class="bottomMargin">
+                    <div ng-repeat="(stat, val) in data.system.terrainTypes[selectedTile.terrainTypeName].statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>{{stat}}</span>
+                        <span>
+                            <span ng-if="val >= 0">+</span>{{val}}
+                        </span>
+                    </div>
+                </div>
+                <div layout="row" ng-repeat="text in data.system.terrainTypes[selectedTile.terrainTypeName].textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
+                    {{text}}
+                </div>
+            </div>
         </md-content>
     </div>
 

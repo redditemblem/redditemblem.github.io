@@ -1,4 +1,4 @@
-app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSidenav', function ($scope, $http, $window, $routeParams, $mdSidenav) {
+app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routeParams', '$mdSidenav', function ($scope, $http, $location, $window, $routeParams, $mdSidenav) {
     
     $scope.data = {};
     $scope.loadComplete = false;
@@ -6,6 +6,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     $scope.statsExpanded = false;
     $scope.invExpanded = true;
     $scope.skillsExpanded = true;
+    $scope.selectedTile = null;
     
     //Call API to fetch JSON on load
     $http({
@@ -13,6 +14,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
         url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/team/" + $routeParams.teamName
     }).then(function successCallback(response) {
         $scope.data = response.data;
+        $scope.selectedTile = $scope.data.map.tiles[0][0];
         $scope.loadComplete = true;
     },function errorCallback(response){
         if(response.data == null)
@@ -34,6 +36,10 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
         $window.open($scope.data.map.chapterPostURL);
     };
 
+    $scope.navigateHome = function(){
+        $location.path('');
+    };
+
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;
@@ -44,6 +50,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$window', '$routeParams', '$mdSid
     //-------------------------------------------------------------
 
     $scope.mapTile_OnMouseover = function(tile){
+        $scope.selectedTile = tile;
         if(tile.occupyingUnitName.length > 0){
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
             if(imgSprite.classList.contains("grayscale")) imgSprite.classList.add("brightGrayscale");
