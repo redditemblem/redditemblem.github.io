@@ -147,7 +147,7 @@
                     <div ng-repeat="tag in selectedUnit.tags" class="md-chip-custom">{{tag}}</div>
                 </div>
             </div>
-            <!-- UNIT STATS -->
+            <!-- Stats -->
             <div class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
                 Stats
@@ -189,8 +189,34 @@
                     <div ng-repeat="(tag, rank) in selectedUnit.weaponRanks" class="md-chip-custom">{{tag}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
                 </div>
             </div>
+            <!-- Statuses -->
+            <div ng-if="selectedUnit.statuses.length > 0" layout="row">
+                <div layout="row" style="margin-right: 8px; padding-top: 5px;">
+                    <i class="fa fa-medkit" aria-hidden="true">
+                        <md-tooltip md-direction="top">Status Conditions</md-tooltip>
+                    </i>
+                </div>
+                <div ng-if="true" layout="column" flex="100">
+                    <div ng-repeat="name in selectedUnit.statuses"
+                         ng-init="status = data.system.statuses[name]" 
+                         class="md-chip-custom"
+                         style="width: 100%;">
+                         <div layout="row" layout-align="space-between center" class="boldText">
+                            <span>
+                                {{status.name}}&nbsp;({{status.turns}} turns)
+                            </span>
+                            <i ng-if="status.type == 0" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="left">Positive</md-tooltip></i>
+                            <i ng-if="status.type == 1" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="left">Negative</md-tooltip></i>
+                            <i ng-if="status.type == 2" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="left">Neutral</md-tooltip></i>
+                         </div>
+                         <div ng-repeat="text in status.textFields" layout="row" ng-class="{'halfBottomMargin': !$last}">
+                            {{text}}
+                         </div>
+                    </div>
+                </div>
+            </div>
             <md-divider></md-divider>
-            <!-- INVENTORY -->
+            <!-- Inventory -->
             <div class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="invExpanded = !invExpanded" aria-hidden="true"></i>
                 Inventory
@@ -243,7 +269,7 @@
                 </div>
             </md-card>
             <md-divider></md-divider>
-            <!--SKILLS-->
+            <!--Skills-->
             <div ng-if="selectedUnit.skills.length > 0" class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="skillsExpanded = !skillsExpanded" aria-hidden="true"></i>
                 Skills
