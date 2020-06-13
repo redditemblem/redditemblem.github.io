@@ -22,4 +22,70 @@
     to {
         width: 0px;
     }
-} 
+}
+
+.fade.ng-hide-remove {
+    animation-name: fade-in;
+    -webkit-animation-name: fade-in;  
+
+    animation-duration: 0.3s;  
+    -webkit-animation-duration: 0.3s;
+
+    animation-timing-function: ease-out;  
+    -webkit-animation-timing-function: ease-out;  
+
+    transform-origin: 50% 100%;
+    -ms-transform-origin: 50% 100%;
+    -webkit-transform-origin: 50% 100%;
+}
+
+.fade.ng-hide-add {
+    animation-name: fade-out;
+    -webkit-animation-name: fade-out;  
+
+    animation-duration: 0.3s;  
+    -webkit-animation-duration: 0.3s;
+
+    animation-timing-function: ease-out;  
+    -webkit-animation-timing-function: ease-out;  
+
+    transform-origin: 50% 100%;
+    -ms-transform-origin: 50% 100%;
+    -webkit-transform-origin: 50% 100%;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }      
+}
+
+@-webkit-keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

@@ -1,4 +1,4 @@
-app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routeParams', '$mdSidenav', function ($scope, $http, $location, $window, $routeParams, $mdSidenav) {
+app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routeParams', function ($scope, $http, $location, $window, $routeParams) {
     
     $scope.data = {};
     $scope.loadComplete = false;
@@ -30,15 +30,13 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
         return stacktrace.replace("\tat", "\nat").trim();
     };
 
-    // MENU FUNCTIONS ----------------------------------------------
+    // TOOLBAR FUNCTIONS ----------------------------------------------
 
-    $scope.launchChapterPostTab = function(){
-        $window.open($scope.data.map.chapterPostURL);
-    };
-
-    $scope.navigateHome = function(){
-        $location.path('');
-    };
+    //Links
+    $scope.launchChapterPostTab = function(){ $window.open($scope.data.chapterPostURL); };
+    $scope.navigateHome = function(){ $location.path(''); };
+    $scope.navigateConvoy = function(){ $location.path("/convoy/" + $routeParams.teamName); };
+    $scope.navigateShop = function(){ $location.path("/shop/" + $routeParams.teamName); };
 
     $scope.unitSort = function(unit){
         var sort = 0;
@@ -46,6 +44,10 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
         if(unit.coordinates.x < 1 || unit.coordinates.y < 1) sort += 1;
         return sort;
     };
+
+    $scope.toggleStatsExpanded = function(){ $scope.statsExpanded = !$scope.statsExpanded; };
+    $scope.toggleInvExpanded = function(){ $scope.invExpanded = !$scope.invExpanded; };
+    $scope.toggleSkillsExpanded = function(){ $scope.skillsExpanded = !$scope.skillsExpanded; };
 
     //-------------------------------------------------------------
 

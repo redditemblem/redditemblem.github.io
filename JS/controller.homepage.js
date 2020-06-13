@@ -9,13 +9,10 @@ app.controller('HomepageCtrl', ['$scope', '$http', '$location', '$cookies', '$md
         $scope.teamList = response.data;
     });
 
-    $scope.LaunchInfo = function(){
-        $location.path("/info");
-    };
-
-    $scope.LaunchMap = function(teamName){
-        $location.path('/map/' + teamName.replace(' ', ''));
-    };
+    $scope.NavigateToInfo = function(){ $location.path("/info"); };
+    $scope.NavigateToMap = function(teamName){ $location.path('/map/' + teamName.replace(' ', '')); };
+    $scope.NavigateToConvoy = function(teamName){ $location.path('/convoy/' + teamName.replace(' ', '')); };
+    $scope.NavigateToShop = function(teamName){ $location.path('/shop/' + teamName.replace(' ', '')); };
 
     $scope.getAppTheme = function(){
         return $mdTheming.defaultTheme();

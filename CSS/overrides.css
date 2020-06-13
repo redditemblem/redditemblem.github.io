@@ -45,9 +45,9 @@ i:focus{
 }
 
 .md-chip-custom{
-    margin-right: 5px;
-    margin-bottom: 5px;
-    padding: 5px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    padding: 4px;
     background-color: gray;
     font-size: 0.8rem;
 }

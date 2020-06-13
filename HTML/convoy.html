@@ -1,0 +1,148 @@
+<div  ng-if="!loadComplete" layout="column" layout-align="center center" layout-fill>
+    <div ng-if="!errorContext" layout="column" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        <span style="margin-top: 15px;">Fetching convoy data...</span>
+    </div>
+    <div ng-if="errorContext" layout="row" layout-align="center" style="width: 75%;">
+        <div layout="column">
+            <div layout="row" class="rem2_25Text">
+                <i ng-if="errorContext.status != 403" class="fa fa-exclamation-circle fa-fw errorMessageColor" aria-hidden="true"></i>
+                <i ng-if="errorContext.status == 403" class="fa fa-exclamation-triangle fa-fw warningMessageColor" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div layout="column">
+            <div layout="row" class="rem2_25Text">
+                <span ng-if="errorContext.status != 403" class="errorMessageColor">A fatal error has occurred.</span>
+                <span ng-if="errorContext.status == 403" class="warningMessageColor">Access is blocked.</span>
+            </div>
+            <div layout="column">
+                {{errorContext.message}}
+                <span ng-if="!errorContext.innerException && errorContext.stackTrace && errorContext.status != 403" style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.stackTrace)}}</span>
+            </div>
+            <div ng-if="errorContext.innerException" layout="column">
+                <span>{{errorContext.innerException.message}}</span>
+                <span style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="loadComplete" layout="row" layout-fill>
+    <!--Button toolbar-->
+    <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
+        <div></div>
+        <div>
+            <md-button id="btnMap" class="md-icon-button" ng-click="navigateToMap()">
+                <i class="fa fa-map-o fa-lg" aria-hidden="true"></i>
+            </md-button>
+            <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
+                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
+            </md-button>
+        </div>
+    </div>
+    <div layout="column" style="width: 275px;" layout-padding>
+        <md-content>
+            <div layout="row" class="rem1_4Text boldText bottomMargin">
+                <i class="fa fa-archive fa-fw fa-lg" aria-hidden="true"></i>
+                &nbsp;Convoy
+            </div>
+            <div layout="row">
+                <md-input-container>
+                    <label>Sort By</label>
+                    <md-select ng-model="filters.selectedSort" ng-model-options="{trackBy: '$value.displayName'}" ng-change="sortItems()" class="md-no-underline">
+                        <md-option ng-repeat="option in data.parameters.sorts" ng-value="{{option}}">{{option.displayName}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="column">
+                <md-checkbox ng-model="filters.expandItemInfo" 
+                             aria-label="Show Expanded Data">
+                             Show Expanded Item Data
+                </md-checkbox>
+            </div>
+            <md-divider></md-divider>
+            <!-- Item Categories -->
+            <div layout="column" style="margin-top: 16px;">
+                <md-checkbox ng-model="filters.showCategory.all"
+                             ng-change="toggleCategoryFilters()" 
+                             aria-label="Show All">
+                             Show All
+                </md-checkbox>
+                <div layout="column" class="leftPadding">
+                    <md-checkbox ng-repeat="category in data.parameters.itemCategories" ng-model="filters.showCategory[category]" ng-change="updateCategoryFilters()" aria-label="{{category}}">{{category}}</md-checkbox>
+                </div>
+            </div>
+            <md-divider></md-divider>
+            <!-- Utilized Stats -->
+            <div layout="column" style="margin-top: 16px;">
+                <md-checkbox ng-model="filters.showStat.all"
+                             ng-change="toggleStatFilters()" 
+                             aria-label="Show All">
+                             Show All
+                </md-checkbox>
+                <div layout="column" class="leftPadding">
+                    <md-checkbox ng-repeat="stat in data.parameters.utilizedStats" ng-model="filters.showStat[stat]" ng-change="updateStatFilters()" aria-label="{{stat}}">{{stat}}</md-checkbox>
+                </div>
+            </div>
+        </md-content>
+    </div>
+    <md-content id="convoyItemsBox" class="backgroundTexture" layout-padding flex>
+        <md-card ng-repeat="item in data.convoyItems"
+                 ng-init="itemData = data.items[item.name]"
+                 ng-show="filters.showCategory[itemData.category] && (filters.showStat[itemData.utilizedStat] || filters.showStat.all)"
+                 class="fade">
+                 <div layout="row" layout-align="space-between center">
+                    <div layout="column">
+                        <div layout="row" layout-align="left center">
+                            <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
+                            <span class="boldText">{{item.name}} <span ng-if="item.uses > 0">({{item.uses}})</span></span>
+                        </div>
+                        <div layout="row" class="rem0_8Text leftPadding">
+                            <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}<span ng-if="itemData.utilizedStat.length > 0">&nbsp;({{itemData.utilizedStat}})</span>
+                        </div>
+                     </div>
+                     <div layout="column">
+                        <div ng-if="item.quantity > 1" layout="row" layout-align="end" class="rem0_9Text">
+                            {{item.quantity}} Available
+                        </div>
+                        <div ng-if="item.owner.length > 0" layout="row" layout-align="end" class="rem0_9Text">
+                            Owned by {{item.owner}}
+                        </div>
+                    </div>
+                 </div>
+                 <div ng-if="filters.expandItemInfo">
+                    <div ng-if="itemData.range.minimum > 0 || itemData.uses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
+                        <md-divider></md-divider>
+                        <div layout="row" layout-wrap>
+                            <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                                <span>{{stat}}</span>
+                                <span>{{statVal}}</span>
+                            </div>
+                            <div ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                                <span>Rng</span>
+                                <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
+                            </div>
+                            <div ng-if="itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                                <span>Uses</span>
+                                <span>
+                                    <span>{{item.uses > 0 ? item.uses : itemData.maxUses}}</span>
+                                    <span ng-if="itemData.maxUses > 0">&nbsp;/&nbsp;{{itemData.maxUses}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                     <div ng-if="itemData.textFields.length > 0" layout="column">
+                        <md-divider></md-divider>
+                        <div ng-if="item.value > -1" layout="row" class="rem0_9Text bottomMargin">
+                            Sells for <span ng-if="data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>{{item.value}}<span ng-if="!data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>.
+                        </div>
+                        <div ng-repeat="text in itemData.textFields" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
+                            {{text}}
+                        </div>
+                     </div>
+                 </div>
+        </md-card>
+        <div ng-if="data.convoyItems.length == 0" layout="row" layout-align="center center" class="rem2_25Text" layout-fill>
+            There are no items stored in the convoy.
+        </div>
+    </md-content>
+</div>

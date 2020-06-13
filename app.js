@@ -3,7 +3,9 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 	$routeProvider
 		.when("/", {templateUrl: "HTML/homepage.html", controller: "HomepageCtrl"})
 		.when("/info", {templateUrl: "HTML/info.html", controller: "InfoCtrl"})
-		.when("/map/:teamName", {templateUrl: "HTML/map.html", controller: "MapCtrl"});
+		.when("/map/:teamName", {templateUrl: "HTML/map.html", controller: "MapCtrl"})
+		.when('/convoy/:teamName', {templateUrl: "HTML/convoy.html", controller: "ConvoyCtrl"})
+		.when('/shop/:teamName', {templateUrl: "HTML/shop.html", controller: "ShopCtrl"});
 
 	//Force injection of $cookies service
 	var $cookies;
@@ -18,27 +20,3 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 	if(theme != undefined)
 		$mdThemingProvider.setDefaultTheme(theme);
 }]);
-
-
-//Custom directives
-/*app.directive('convoy', function(){
-	return {
-		restrict: 'E', 
-		scope: {
-			title: '@' //@ reads the attribute value, = provides two-way binding, & works with functions
-		},
-		templateUrl: 'convoy.html',
-		controller: 'ConvoyCtrl', //Embed a custom controller in the directive
-		//link: function ($scope, element, attrs) { } //DOM manipulation
-	}
-});
-app.directive('shop', function(){
-	return {
-		restrict: 'E', 
-		scope: {
-			title: '@'
-		},
-		templateUrl: 'shop.html',
-		controller: 'ShopCtrl', //Embed a custom controller in the directive
-	}
-});*/

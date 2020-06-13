@@ -38,7 +38,13 @@
             </md-button>
         </div>
         <div>
-            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
+            <md-button id="btnLaunchConvoy" class="md-icon-button" ng-if="data.showConvoyLink" ng-click="navigateConvoy()">
+                <i class="fa fa-archive fa-lg" aria-hidden="true"></i>
+            </md-button>
+            <md-button id="btnLaunchShop" class="md-icon-button" ng-if="data.showShopLink" ng-click="navigateShop()">
+                <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i>
+            </md-button>
+            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
                 <i class="fa fa-reddit fa-lg" aria-hidden="true"></i>
             </md-button>
             <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
@@ -99,6 +105,9 @@
                 <div layout="row" ng-repeat="text in selectedUnit.textFields" class="rem0_9Text bottomMargin">
                     {{text}}
                 </div>
+                <div ng-if="selectedUnit.player.length > 0" layout="row" class="rem0_9Text bottomMargin">
+                    <b>Player</b>: {{selectedUnit.player}}
+                </div>
                 <div ng-repeat="class in selectedUnit.classes" layout="column" class="bottomMargin">
                     <div layout="row" class="rem0_9Text">
                         <b>Class</b>: {{class}}
@@ -132,7 +141,7 @@
                 <div ng-if="selectedUnit.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Money</span>
                     <span>
-                        <span ng-if="data.system.currency.isIconLeftAligned" ng-style="{'margin-right': data.system.currency.includeSpace ? '3px' : '0px'}">{{data.system.currency.currencyIcon}}</span>{{selectedUnit.heldCurrency}}<span ng-if="!data.system.currency.isIconLeftAligned" ng-style="{'margin-left': data.system.currency.includeSpace ? '3px' : '0px'}">{{data.system.currency.currencyIcon}}</span>
+                        <span ng-if="data.system.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>{{selectedUnit.heldCurrency}}<span ng-if="!data.system.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>
                     </span>
                 </div>
             </div>
@@ -149,7 +158,7 @@
             </div>
             <!-- Stats -->
             <div class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="statsExpanded = !statsExpanded" aria-hidden="true"></i>
+                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="toggleStatsExpanded()" aria-hidden="true"></i>
                 Stats
             </div>
             <!-- Calculated stats -->
@@ -196,20 +205,23 @@
                         <md-tooltip md-direction="top">Status Conditions</md-tooltip>
                     </i>
                 </div>
-                <div ng-if="true" layout="column" flex="100">
-                    <div ng-repeat="name in selectedUnit.statuses"
-                         ng-init="status = data.system.statuses[name]" 
+                <div ng-if="true" layout="column" flex="100" style="padding-right: 8px;">
+                    <div ng-repeat="status in selectedUnit.statuses"
+                         ng-init="statusData = data.system.statuses[status.name]" 
                          class="md-chip-custom"
                          style="width: 100%;">
                          <div layout="row" layout-align="space-between center" class="boldText">
                             <span>
-                                {{status.name}}&nbsp;({{status.turns}} turns)
+                                {{status.name}}
+                                <span ng-if="status.remainingTurns > 0">
+                                    ({{status.remainingTurns}}<span ng-if="statusData.turns > 0">/{{statusData.turns}}</span> turns)
+                                </span>
                             </span>
-                            <i ng-if="status.type == 0" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="left">Positive</md-tooltip></i>
-                            <i ng-if="status.type == 1" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="left">Negative</md-tooltip></i>
-                            <i ng-if="status.type == 2" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="left">Neutral</md-tooltip></i>
+                            <i ng-if="statusData.type == 0" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="left">Positive</md-tooltip></i>
+                            <i ng-if="statusData.type == 1" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="left">Negative</md-tooltip></i>
+                            <i ng-if="statusData.type == 2" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="left">Neutral</md-tooltip></i>
                          </div>
-                         <div ng-repeat="text in status.textFields" layout="row" ng-class="{'halfBottomMargin': !$last}">
+                         <div ng-repeat="text in statusData.textFields" layout="row" ng-class="{'halfBottomMargin': !$last}">
                             {{text}}
                          </div>
                     </div>
@@ -218,14 +230,14 @@
             <md-divider></md-divider>
             <!-- Inventory -->
             <div class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="invExpanded = !invExpanded" aria-hidden="true"></i>
+                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
             <md-card ng-repeat="item in selectedUnit.inventory track by $index" 
                      ng-click="item.expanded = !item.expanded" 
                      ng-if="invExpanded"
                      ng-init="itemData = data.system.items[item.name]"
-                     class="md-card-hover clickable" 
+                     class="md-card-hover clickable"
                      ng-style="{'pointer-events': item != null ? 'auto' : 'none'}">
                 <div layout="row" layout-align="space-between center">
                     <span>
@@ -242,7 +254,7 @@
                     </span>
                 </div>
                 <div layout="row" class="rem0_8Text leftPadding" ng-class="{'opacity50': !item.canEquip}">
-                    <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}
+                    <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}<span ng-if="itemData.utilizedStat.length > 0">&nbsp;({{itemData.utilizedStat}})</span>
                 </div>
                 <div ng-if="item.expanded">
                     <div ng-if="itemData.range.minimum > 0 || itemData.uses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
@@ -256,9 +268,9 @@
                                 <span>Rng</span>
                                 <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
                             </div>
-                            <div ng-if="itemData.uses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                            <div ng-if="itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Uses</span>
-                                <span>{{itemData.uses}}<span ng-if="itemData.maxUses > 0">&nbsp;\&nbsp;{{itemData.maxUses}}</span></span>
+                                <span>{{item.uses}}<span ng-if="itemData.maxUses > 0">&nbsp;/&nbsp;{{itemData.maxUses}}</span></span>
                             </div>
                         </div>
                     </div>
@@ -271,7 +283,7 @@
             <md-divider></md-divider>
             <!--Skills-->
             <div ng-if="selectedUnit.skills.length > 0" class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="skillsExpanded = !skillsExpanded" aria-hidden="true"></i>
+                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
                 Skills
             </div>
             <md-card ng-repeat="skill in selectedUnit.skills track by $index"
