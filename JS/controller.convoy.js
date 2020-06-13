@@ -7,7 +7,7 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', fu
     //Call API to fetch JSON on load
     $http({
         method: "GET",
-        url: "2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/convoy/" + $routeParams.teamName
+        url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/convoy/" + $routeParams.teamName
     }).then(function successCallback(response) {
         $scope.data = response.data;
 
