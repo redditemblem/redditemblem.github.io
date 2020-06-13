@@ -11,7 +11,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     //Call API to fetch JSON on load
     $http({
         method: "GET",
-        url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/team/" + $routeParams.teamName
+        url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/map/" + $routeParams.teamName
     }).then(function successCallback(response) {
         $scope.data = response.data;
         $scope.selectedTile = $scope.data.map.tiles[0][0];
