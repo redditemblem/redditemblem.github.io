@@ -39,7 +39,7 @@
             </md-button>
         </div>
     </div>
-    <div layout="column" style="width: 275px;" layout-padding>
+    <div layout="column" style="width: 325px;" layout-padding>
         <md-content>
             <div layout="row" class="rem1_4Text boldText bottomMargin">
                 <i class="fa fa-archive fa-fw fa-lg" aria-hidden="true"></i>
@@ -60,8 +60,10 @@
                 </md-checkbox>
             </div>
             <md-divider></md-divider>
-            <!-- Item Categories -->
-            <div layout="column" style="margin-top: 16px;">
+            <!-- Item Categories --><div layout="row" layout-align="start center" class="rem1_2Text boldText verticalPadding">
+                Category
+            </div>
+            <div layout="column">
                 <md-checkbox ng-model="filters.showCategory.all"
                              ng-change="toggleCategoryFilters()" 
                              aria-label="Show All">
@@ -73,7 +75,10 @@
             </div>
             <md-divider></md-divider>
             <!-- Utilized Stats -->
-            <div layout="column" style="margin-top: 16px;">
+            <div layout="row" layout-align="start center" class="rem1_2Text boldText verticalPadding">
+                Utilized Stat
+            </div>
+            <div layout="column">
                 <md-checkbox ng-model="filters.showStat.all"
                              ng-change="toggleStatFilters()" 
                              aria-label="Show All">
@@ -110,7 +115,7 @@
                     </div>
                  </div>
                  <div ng-if="filters.expandItemInfo">
-                    <div ng-if="itemData.range.minimum > 0 || itemData.uses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
+                    <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
                             <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
@@ -121,11 +126,16 @@
                                 <span>Rng</span>
                                 <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
                             </div>
-                            <div ng-if="itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
-                                <span>Uses</span>
+                            <div ng-if="item.uses > 0 || itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>
-                                    <span>{{item.uses > 0 ? item.uses : itemData.maxUses}}</span>
-                                    <span ng-if="itemData.maxUses > 0">&nbsp;/&nbsp;{{itemData.maxUses}}</span>
+                                    {{item.uses > 0 && itemData.maxUses == 0 ? "Quantity" : "Uses"}}
+                                </span>
+                                <span>
+                                    <span ng-if="item.uses > 0">{{item.uses}}</span>
+                                    <span ng-if="itemData.maxUses > 0">
+                                        <span ng-if="item.uses > 0">&nbsp;/&nbsp;</span>
+                                        {{itemData.maxUses}}
+                                    </span>
                                 </span>
                             </div>
                         </div>

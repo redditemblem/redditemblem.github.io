@@ -54,3 +54,11 @@
     right: 2px;
     bottom: 1px;
 }
+
+.unitStatusCondition{
+    position: absolute;
+    top: -6px;
+    left: 1px;
+    height: 7px;
+    width: 7px;
+}

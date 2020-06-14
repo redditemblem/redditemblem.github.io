@@ -7,6 +7,7 @@
 .clickable:hover{ cursor: pointer; }
 
 .leftPadding{ padding-left: 8px; }
+.rightPadding{ padding-right: 8px; }
 .verticalPadding{
     padding-top: 8px;
     padding-bottom: 8px;
@@ -15,7 +16,8 @@
     padding-left: 8px;
     padding-right: 8px;
 }
-.halfBottomMargin{ margin-bottom: 4px;}
+.topMargin{ margin-top: 8px; }
+.halfBottomMargin{ margin-bottom: 4px; }
 .bottomMargin{ margin-bottom: 8px; }
 
 .toolbarColor{ background-color: #5CB4EF;}
@@ -45,6 +47,11 @@
 .rem2_25Text{ font-size: 2.25rem; }
 
 .boldText{ font-weight: bold; }
+.salePriceText
+{
+    color: crimson;
+    text-decoration: line-through;
+}
 
 @font-face
 {

@@ -141,7 +141,7 @@
                 <div ng-if="selectedUnit.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Money</span>
                     <span>
-                        <span ng-if="data.system.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>{{selectedUnit.heldCurrency}}<span ng-if="!data.system.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>
+                        <span ng-if="data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>{{selectedUnit.heldCurrency}}<span ng-if="!data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>
                     </span>
                 </div>
             </div>
@@ -257,7 +257,7 @@
                     <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}<span ng-if="itemData.utilizedStat.length > 0">&nbsp;({{itemData.utilizedStat}})</span>
                 </div>
                 <div ng-if="item.expanded">
-                    <div ng-if="itemData.range.minimum > 0 || itemData.uses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
+                    <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
                             <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
@@ -268,9 +268,17 @@
                                 <span>Rng</span>
                                 <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
                             </div>
-                            <div ng-if="itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
-                                <span>Uses</span>
-                                <span>{{item.uses}}<span ng-if="itemData.maxUses > 0">&nbsp;/&nbsp;{{itemData.maxUses}}</span></span>
+                            <div ng-if="item.uses > 0 || itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                                <span>
+                                    {{item.uses > 0 && itemData.maxUses == 0 ? "Quantity" : "Uses"}}
+                                </span>
+                                <span>
+                                    <span ng-if="item.uses > 0">{{item.uses}}</span>
+                                    <span ng-if="itemData.maxUses > 0">
+                                        <span ng-if="item.uses > 0">/</span>
+                                        {{itemData.maxUses}}
+                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -359,6 +367,9 @@
                          layout-align="center end"
                     >
                         <img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved}" />
+                        <div ng-if="unit.statuses.length > 0" id="statusConditionIcon" class="unitStatusCondition">
+                            <img ng-src="IMG/status_heart.png" />
+                        </div>
                         <div id="unitNumber" class="unitNumber">
                             <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
                                  ng-src="IMG/num_{{digit}}.png"
