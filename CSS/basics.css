@@ -47,6 +47,7 @@
 .rem2_25Text{ font-size: 2.25rem; }
 
 .boldText{ font-weight: bold; }
+.strikethroughText{ text-decoration: line-through; }
 .salePriceText
 {
     color: crimson;

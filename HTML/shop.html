@@ -158,7 +158,7 @@
                             </div>
                             <div ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Rng</span>
-                                <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
+                                <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">-{{itemData.range.maximum}}</span></span>
                             </div>
                             <div ng-if="itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Uses</span>

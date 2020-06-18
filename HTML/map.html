@@ -70,7 +70,7 @@
                 <div layout="row" layout-align="space-between center">
                     <span md-highlight-text="searchQuery" md-highlight-flags="^i">{{unit.name}}</span>
                     <div layout="row">
-                        <i ng-if="unit.coordinates.x < 1 || unit.coordinates.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.coordinate.x < 1 || unit.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
                 </div>
@@ -161,11 +161,23 @@
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="toggleStatsExpanded()" aria-hidden="true"></i>
                 Stats
             </div>
-            <!-- Calculated stats -->
+            <!-- Combat stats -->
             <div layout="row" layout-wrap>
-                <div ng-repeat="(stat, val) in selectedUnit.calculatedStats" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
-                    <span>{{stat}}</span>
-                    <span>{{val}}</span>
+                <div ng-repeat="(stat, statObj) in selectedUnit.combatStats" layout="column" flex="50" class="horizontalPadding">
+                    <div layout="row" layout-align="space-between">
+                        <span>{{stat}}</span>
+                        <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
+                            <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i> {{statObj.finalValue}}
+                        </span>
+                    </div>
+                    <div layout="column" ng-if="statsExpanded" class="rem0_8Text leftPadding halfBottomMargin">
+                        <div layout="row" layout-align="space-between">
+                            <span>Base</span><span>{{statObj.baseValue}}</span>
+                        </div>
+                        <div ng-repeat="(mod, modVal) in statObj.modifiers" layout="row" layout-align="space-between">
+                            <span>{{mod}}</span><span>{{modVal}}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Regular stats -->
@@ -199,15 +211,15 @@
                 </div>
             </div>
             <!-- Statuses -->
-            <div ng-if="selectedUnit.statuses.length > 0" layout="row">
+            <div ng-if="selectedUnit.statusConditions.length > 0" layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
                     <i class="fa fa-medkit" aria-hidden="true">
                         <md-tooltip md-direction="top">Status Conditions</md-tooltip>
                     </i>
                 </div>
                 <div ng-if="true" layout="column" flex="100" style="padding-right: 8px;">
-                    <div ng-repeat="status in selectedUnit.statuses"
-                         ng-init="statusData = data.system.statuses[status.name]" 
+                    <div ng-repeat="status in selectedUnit.statusConditions"
+                         ng-init="statusData = data.system.statusConditions[status.name]" 
                          class="md-chip-custom"
                          style="width: 100%;">
                          <div layout="row" layout-align="space-between center" class="boldText">
@@ -266,7 +278,14 @@
                             </div>
                             <div ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Rng</span>
-                                <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">&nbsp;-&nbsp;{{itemData.range.maximum}}</span></span>
+                                <span>{{itemData.range.minimum}}
+                                    <span ng-if="itemData.range.minimum != itemData.range.maximum + item.maxRangeModifier || item.maxRangeModifier != 0">
+                                        <span>-</span>
+                                        <span ng-class="{'buffedStatColor': item.maxRangeModifier > 0, 'debuffedStatColor': item.maxRangeModifier < 0}">
+                                            {{itemData.range.maximum + item.maxRangeModifier}} <i class="fa fa-long-arrow-up" ng-if="item.maxRangeModifier > 0" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="item.maxRangeModifier < 0" aria-hidden="true"></i> 
+                                        </span>
+                                    </span>
+                                </span>
                             </div>
                             <div ng-if="item.uses > 0 || itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>
@@ -378,7 +397,7 @@
                          layout-align="center end"
                     >
                         <img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved}" />
-                        <div ng-if="unit.statuses.length > 0" id="statusConditionIcon" class="unitStatusCondition">
+                        <div ng-if="unit.statusConditions.length > 0" id="statusConditionIcon" class="unitStatusCondition">
                             <img ng-src="IMG/status_heart.png" />
                         </div>
                         <div id="unitNumber" class="unitNumber">
