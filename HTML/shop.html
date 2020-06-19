@@ -62,12 +62,12 @@
             <md-divider></md-divider>
             <!-- Filters -->
             <div layout="column" style="margin-top: 16px;">
-                <md-checkbox ng-if="data.parameters.displayFilters.AllowNew"
+                <md-checkbox ng-if="data.parameters.filterConditions.AllowNew"
                              ng-model="filters.showNew"
                              aria-label="New">
                             New
                 </md-checkbox>
-                <md-checkbox ng-if="data.parameters.displayFilters.AllowSales"
+                <md-checkbox ng-if="data.parameters.filterConditions.AllowSales"
                              ng-model="filters.showSales"
                              aria-label="On Sale">
                             On Sale
