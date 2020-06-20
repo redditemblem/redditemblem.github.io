@@ -1,6 +1,7 @@
 app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routeParams', function ($scope, $http, $location, $window, $routeParams) {
     
     $scope.data = {};
+    $scope.search = {};
     $scope.loadComplete = false;
     $scope.unitInfoExpanded = false;
     $scope.statsExpanded = false;
@@ -35,7 +36,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     //Links
-    $scope.launchChapterPostTab = function(){ $window.open($scope.data.chapterPostURL); };
+    $scope.launchChapterPostTab = function(){ $window.open($scope.data.map.chapterPostURL); };
     $scope.navigateHome = function(){ $location.path(''); };
     $scope.navigateConvoy = function(){ $location.path("/convoy/" + $routeParams.teamName); };
     $scope.navigateShop = function(){ $location.path("/shop/" + $routeParams.teamName); };
@@ -71,6 +72,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     };
 
     $scope.mapTile_OnClick = function(tile){
+        $scope.selectedTile = tile;
         if(tile.occupyingUnitName.length > 0){
             var unit = $scope.getUnitByName(tile.occupyingUnitName);
             $scope.toggleUnitPinnedStatus(unit);

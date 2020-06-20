@@ -48,7 +48,7 @@
             <md-button id="btnLaunchShop" class="md-icon-button" ng-if="data.showShopLink" ng-click="navigateShop()">
                 <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i>
             </md-button>
-            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
+            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
                 <i class="fa fa-reddit fa-lg" aria-hidden="true"></i>
             </md-button>
             <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
@@ -61,9 +61,9 @@
         <!-- Search field -->
         <md-autocomplete
                 id="mdAutoComplete"
-                md-selected-item="selectedUnit"
-                md-search-text="searchQuery"
-                md-items="unit in data.units | orderBy: [unitSort, 'name'] | filter: searchQuery"
+                md-selected-item="search.selected"
+                md-search-text="search.query"
+                md-items="unit in data.units | orderBy: [unitSort, 'name'] | filter: search.query"
                 md-item-text="unit.name"
                 md-dropdown-items="5"
                 md-min-length="0"
@@ -72,7 +72,7 @@
                 placeholder="Unit Name">
             <md-item-template>
                 <div layout="row" layout-align="space-between center">
-                    <span md-highlight-text="searchQuery" md-highlight-flags="^i">{{unit.name}}</span>
+                    <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
                     <div layout="row">
                         <i ng-if="unit.coordinate.x < 1 || unit.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
@@ -81,50 +81,50 @@
             </md-item-template>
         </md-autocomplete>
         <!--Unit display-->
-        <md-content ng-if="selectedUnit" layout-padding>
+        <md-content ng-if="search.selected" layout-padding>
             <!-- Sprite, name, & pin icon -->
             <div layout="row" layout-align="space-between">
                 <div layout="column">
                     <div layout="row">
-                        <img ng-src="{{selectedUnit.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
+                        <img ng-src="{{search.selected.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
                             <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
                         </div>
                         <div layout="column">
-                            <span class="rem1_4Text boldText">{{selectedUnit.name}}</span>
-                            <span class="rem0_9Text leftPadding">Lvl. {{selectedUnit.level}} {{selectedUnit.classes[0]}}</span>
+                            <span class="rem1_4Text boldText">{{search.selected.name}}</span>
+                            <span class="rem0_9Text leftPadding">Lvl. {{search.selected.level}} {{search.selected.classes[0]}}</span>
                         </div>
                     </div>
                 </div>
                 <div layout="column">
-                    <i ng-click="toggleUnitPinnedStatus(selectedUnit)" ng-class="{'opacity50': !selectedUnit.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
-                        <md-tooltip md-direction="left">{{selectedUnit.pinned ? 'Unpin' : 'Pin'}} unit</md-tooltip>
+                    <i ng-click="toggleUnitPinnedStatus(search.selected)" ng-class="{'opacity50': !search.selected.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
+                        <md-tooltip md-direction="left">{{search.selected.pinned ? 'Unpin' : 'Pin'}} unit</md-tooltip>
                     </i>
                 </div>
             </div>
             <!--Expanded unit info-->
             <div layout="column" ng-if="unitInfoExpanded">
-                <div layout="row" ng-repeat="text in selectedUnit.textFields" class="rem0_9Text bottomMargin">
+                <div layout="row" ng-repeat="text in search.selected.textFields track by $index" class="rem0_9Text bottomMargin">
                     {{text}}
                 </div>
-                <div ng-if="selectedUnit.player.length > 0" layout="row" class="rem0_9Text bottomMargin">
-                    <b>Player</b>: {{selectedUnit.player}}
+                <div ng-if="search.selected.player.length > 0" layout="row" class="rem0_9Text bottomMargin">
+                    <b>Player</b>: {{search.selected.player}}
                 </div>
-                <div ng-repeat="class in selectedUnit.classes" layout="column" class="bottomMargin">
+                <div ng-repeat="class in search.selected.classes track by class" layout="column" class="bottomMargin">
                     <div layout="row" class="rem0_9Text">
                         <b>Class</b>: {{class}}
                     </div>
-                    <div layout="row" ng-repeat="text in data.system.classes[class].textFields" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
+                    <div layout="row" ng-repeat="text in data.system.classes[class].textFields track by $index" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
                         {{text}}
                     </div>
                 </div>
                 <div layout="column">
                     <div layout="row" class="rem0_9Text">
-                        <b>Affiliation</b>: {{selectedUnit.affiliation}}
+                        <b>Affiliation</b>: {{search.selected.affiliation}}
                     </div>
-                    <div layout="row" ng-repeat="text in data.system.affiliations[selectedUnit.affiliation].textFields" class="rem0_8Text leftPadding">
+                    <div layout="row" ng-repeat="text in data.system.affiliations[search.selected.affiliation].textFields track by $index" class="rem0_8Text leftPadding">
                         {{text}}
                     </div>
                 </div>      
@@ -134,30 +134,30 @@
                 <!--HP-->
                 <div layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>HP</span>
-                    <span>{{selectedUnit.hp.current}} / {{selectedUnit.hp.maximum}}</span>
+                    <span>{{search.selected.hp.current}} / {{search.selected.hp.maximum}}</span>
                 </div>
                 <!--Exp-->
                 <div layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Exp</span>
-                    <span>{{selectedUnit.experience}}</span>
+                    <span>{{search.selected.experience}}</span>
                 </div>
                 <!--Currency-->
-                <div ng-if="selectedUnit.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                <div ng-if="search.selected.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Money</span>
                     <span>
-                        <span ng-if="data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>{{selectedUnit.heldCurrency}}<span ng-if="!data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>
+                        <span ng-if="data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>{{search.selected.heldCurrency}}<span ng-if="!data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>
                     </span>
                 </div>
             </div>
             <!--Tags-->
-            <div layout="row" ng-if="selectedUnit.tags.length > 0">
+            <div layout="row" ng-if="search.selected.tags.length > 0">
                 <div layout="column" style="margin-right: 8px; padding-top: 5px;">
                     <i class="fa fa-tags" aria-hidden="true">
                         <md-tooltip md-direction="top">Tags</md-tooltip>
                     </i>
                 </div>
                 <div layout="row" layout-wrap>
-                    <div ng-repeat="tag in selectedUnit.tags" class="md-chip-custom">{{tag}}</div>
+                    <div ng-repeat="tag in search.selected.tags track by tag" class="md-chip-custom">{{tag}}</div>
                 </div>
             </div>
             <!-- Stats -->
@@ -167,7 +167,7 @@
             </div>
             <!-- Combat stats -->
             <div layout="row" layout-wrap>
-                <div ng-repeat="(stat, statObj) in selectedUnit.combatStats" layout="column" flex="50" class="horizontalPadding">
+                <div ng-repeat="(stat, statObj) in search.selected.combatStats track by stat" layout="column" flex="50" class="horizontalPadding">
                     <div layout="row" layout-align="space-between">
                         <span>{{stat}}</span>
                         <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
@@ -178,7 +178,7 @@
                         <div layout="row" layout-align="space-between">
                             <span>Base</span><span>{{statObj.baseValue}}</span>
                         </div>
-                        <div ng-repeat="(mod, modVal) in statObj.modifiers" layout="row" layout-align="space-between">
+                        <div ng-repeat="(mod, modVal) in statObj.modifiers track by mod" layout="row" layout-align="space-between">
                             <span>{{mod}}</span><span>{{modVal}}</span>
                         </div>
                     </div>
@@ -186,7 +186,7 @@
             </div>
             <!-- Regular stats -->
             <div layout="row" layout-wrap>
-                <div ng-repeat="(stat, statObj) in selectedUnit.stats" layout="column" flex="50" class="horizontalPadding">
+                <div ng-repeat="(stat, statObj) in search.selected.stats track by stat" layout="column" flex="50" class="horizontalPadding">
                     <div layout="row" layout-align="space-between">
                         <span>{{stat}}</span>
                         <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
@@ -197,7 +197,7 @@
                         <div layout="row" layout-align="space-between">
                             <span>Base</span><span>{{statObj.baseValue}}</span>
                         </div>
-                        <div ng-repeat="(mod, modVal) in statObj.modifiers" layout="row" layout-align="space-between">
+                        <div ng-repeat="(mod, modVal) in statObj.modifiers track by mod" layout="row" layout-align="space-between">
                             <span>{{mod}}</span><span>{{modVal}}</span>
                         </div>
                     </div>
@@ -211,18 +211,18 @@
                     </i>
                 </div>
                 <div layout="row" layout-wrap>
-                    <div ng-repeat="(tag, rank) in selectedUnit.weaponRanks" class="md-chip-custom">{{tag}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
+                    <div ng-repeat="(tag, rank) in search.selected.weaponRanks track by tag" class="md-chip-custom">{{tag}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
                 </div>
             </div>
             <!-- Statuses -->
-            <div ng-if="selectedUnit.statusConditions.length > 0" layout="row">
+            <div ng-if="search.selected.statusConditions.length > 0" layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
                     <i class="fa fa-medkit" aria-hidden="true">
                         <md-tooltip md-direction="top">Status Conditions</md-tooltip>
                     </i>
                 </div>
                 <div ng-if="true" layout="column" flex="100" style="padding-right: 8px;">
-                    <div ng-repeat="status in selectedUnit.statusConditions"
+                    <div ng-repeat="status in search.selected.statusConditions track by $index"
                          ng-init="statusData = data.system.statusConditions[status.name]" 
                          class="md-chip-custom"
                          style="width: 100%;">
@@ -237,7 +237,7 @@
                             <i ng-if="statusData.type == 1" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="left">Negative</md-tooltip></i>
                             <i ng-if="statusData.type == 2" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="left">Neutral</md-tooltip></i>
                          </div>
-                         <div ng-repeat="text in statusData.textFields" layout="row" ng-class="{'halfBottomMargin': !$last}">
+                         <div ng-repeat="text in statusData.textFields track by $index" layout="row" ng-class="{'halfBottomMargin': !$last}">
                             {{text}}
                          </div>
                     </div>
@@ -249,7 +249,7 @@
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
-            <md-card ng-repeat="item in selectedUnit.inventory track by $index" 
+            <md-card ng-repeat="item in search.selected.inventory track by $index" 
                      ng-click="item.expanded = !item.expanded" 
                      ng-if="invExpanded"
                      ng-init="itemData = data.system.items[item.name]"
@@ -276,7 +276,7 @@
                     <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
-                            <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                            <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>{{stat}}</span>
                                 <span>{{statVal}}</span>
                             </div>
@@ -307,26 +307,26 @@
                     </div>
                     <div ng-if="itemData.textFields.length > 0">
                         <md-divider></md-divider>
-                        <div ng-repeat="text in itemData.textFields" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+                        <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
                     </div>
                 </div>
             </md-card>
             <md-divider></md-divider>
             <!--Skills-->
-            <div ng-if="selectedUnit.skills.length > 0" class="rem1_2Text boldText" layout="row">
+            <div ng-if="search.selected.skills.length > 0" class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
                 Skills
             </div>
-            <md-card ng-repeat="skill in selectedUnit.skills track by $index"
-                        ng-if="skillsExpanded"
-                        ng-init="skillData = data.system.skills[skill]"
-                        class="md-card-hover">
+            <md-card ng-repeat="skill in search.selected.skills track by $index"
+                     ng-if="skillsExpanded"
+                     ng-init="skillData = data.system.skills[skill]"
+                     class="md-card-hover">
                 <div layout="row" layout-align="start center">
                     <img ng-if="skillData.spriteURL.length > 0" ng-src="{{skillData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                    <span>{{skillData.name}}</span>
+                    <span>{{skill}}</span>
                 </div>
                 <md-divider></md-divider>
-                <div ng-repeat="text in skillData.textFields" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
+                <div ng-repeat="text in skillData.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
                     {{text}}
                 </div>
             </md-card>
@@ -351,7 +351,21 @@
                 <div layout="row">
                     <span class="boldText">Terrain Type:</span>&nbsp;{{selectedTile.terrainType}}
                 </div>
-                <div layout="row" layout-wrap class="bottomMargin">
+                <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
+                    <div ng-if="data.system.terrainTypes[selectedTile.terrainType].hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>HP</span>
+                        <span>
+                            <span ng-if="data.system.terrainTypes[selectedTile.terrainType].hpModifier >= 0">+</span>{{effectData.hpModifier}}%
+                        </span>
+                    </div>
+                    <!-- Combat Stat Modifiers -->
+                    <div ng-repeat="(stat, val) in data.system.terrainTypes[selectedTile.terrainType].combatStatModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>{{stat}}</span>
+                        <span>
+                            <span ng-if="val >= 0">+</span>{{val}}
+                        </span>
+                    </div>
+                    <!-- Stat Modifiers -->
                     <div ng-repeat="(stat, val) in data.system.terrainTypes[selectedTile.terrainType].statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>{{stat}}</span>
                         <span>
@@ -371,7 +385,7 @@
                 <div layout="row">
                     <span class="boldText">Terrain Effect:</span>&nbsp;{{effectData.name}}
                 </div>
-                <div layout="row" layout-wrap class="bottomMargin">
+                <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
                     <div ng-if="effectData.hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>HP</span>
                         <span>
@@ -379,14 +393,14 @@
                         </span>
                     </div>
                     <!-- Combat Stat Modifiers -->
-                    <div ng-repeat="(stat, val) in effectData.combatStatModifiers" ng-if="val != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                    <div ng-repeat="(stat, val) in effectData.combatStatModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>{{stat}}</span>
                         <span>
                             <span ng-if="val >= 0">+</span>{{val}}
                         </span>
                     </div>
                     <!-- Stat Modifiers -->
-                    <div ng-repeat="(stat, val) in effectData.statModifiers" ng-if="val != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                    <div ng-repeat="(stat, val) in effectData.statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>{{stat}}</span>
                         <span>
                             <span ng-if="val >= 0">+</span>{{val}}
@@ -406,10 +420,10 @@
         <div class="mapBackground"
              ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.mapImageWidth + 'px', 'height': data.map.mapImageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
              <!--Draw tiles-->
-             <div ng-repeat="row in data.map.tiles"
+             <div ng-repeat="row in data.map.tiles track by $index"
                  class="mapRow"
                  ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">
-                <div ng-repeat="tile in row" 
+                <div ng-repeat="tile in row track by $index" 
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
                      title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}}"
@@ -419,7 +433,7 @@
                      ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
                     <!-- Draw terrain effect -->
-                    <div ng-repeat="effect in tile.terrainEffects"
+                    <div ng-repeat="effect in tile.terrainEffects track by effect.name"
                          ng-if="effect.isAnchor"
                          ng-init="effectData = data.system.terrainEffects[effect.name]"
                          class="spriteContainer"
@@ -433,7 +447,7 @@
                     <div ng-if="tile.isUnitAnchor"
                          ng-init="unit = getUnitByName(tile.occupyingUnitName)"
                          class="spriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'z-index': tile.coordinate.y + 1}"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'z-index': tile.coordinate.y + unit.unitSize}"
                          layout="row"
                          layout-align="center end"
                     >
