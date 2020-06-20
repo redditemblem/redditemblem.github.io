@@ -24,7 +24,7 @@
     border: 0;
 }
 
-.unitSpriteContainer{
+.spriteContainer{
     position: absolute;
     pointer-events: none;
 }

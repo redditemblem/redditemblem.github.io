@@ -16,12 +16,16 @@
                 <span ng-if="errorContext.status == 403" class="warningMessageColor">Access is blocked.</span>
             </div>
             <div layout="column">
-                {{errorContext.message}}
-                <span ng-if="!errorContext.innerException && errorContext.stackTrace && errorContext.status != 403" style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.stackTrace)}}</span>
-            </div>
-            <div ng-if="errorContext.innerException" layout="column">
-                <span>{{errorContext.innerException.message}}</span>
-                <span style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
+                <div layout="row" layout-align="left center">
+                    <span>{{errorContext.message}}</span>
+                </div>
+                <div ng-if="errorContext.innerException != null" layout="row" layout-align="left center">
+                    <span>{{errorContext.innerException.message}}</span>
+                </div>
+                <div layout="row" layout-align="left center" style="white-space: pre-wrap; color: gray;">
+                    <span ng-if="errorContext.innerException == null && errorContext.status != 403">{{formatStackTrace(errorContext.stackTrace)}}</span>
+                    <span ng-if="errorContext.innerException != null">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
+                </div>
             </div>
         </div>
     </div>

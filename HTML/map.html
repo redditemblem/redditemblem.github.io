@@ -16,12 +16,16 @@
                 <span ng-if="errorContext.status == 403" class="warningMessageColor">Access is blocked.</span>
             </div>
             <div layout="column">
-                {{errorContext.message}}
-                <span ng-if="!errorContext.innerException && errorContext.stackTrace && errorContext.status != 403" style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.stackTrace)}}</span>
-            </div>
-            <div ng-if="errorContext.innerException" layout="column">
-                <span>{{errorContext.innerException.message}}</span>
-                <span style="white-space: pre-wrap; color: gray;">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
+                <div layout="row" layout-align="left center">
+                    <span>{{errorContext.message}}</span>
+                </div>
+                <div ng-if="errorContext.innerException != null" layout="row" layout-align="left center">
+                    <span>{{errorContext.innerException.message}}</span>
+                </div>
+                <div layout="row" layout-align="left center" style="white-space: pre-wrap; color: gray;">
+                    <span ng-if="errorContext.innerException == null && errorContext.status != 403">{{formatStackTrace(errorContext.stackTrace)}}</span>
+                    <span ng-if="errorContext.innerException != null">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -338,9 +342,11 @@
                 <span class="leftPadding">Tile ({{selectedTile.coordinate.x}},{{selectedTile.coordinate.y}})</span>
             </div>
             <md-divider></md-divider>
+            <!-- Occupying Unit -->
             <div ng-if="selectedTile.occupyingUnitName.length > 0" layout="row" class="bottomMargin">
                 <span class="boldText">Occupying Unit:</span>&nbsp;{{selectedTile.occupyingUnitName}}
             </div>
+            <!-- Terrain Type -->
             <div layout="column" class="bottomMargin">
                 <div layout="row">
                     <span class="boldText">Terrain Type:</span>&nbsp;{{selectedTile.terrainType}}
@@ -357,12 +363,35 @@
                     {{text}}
                 </div>
             </div>
+            <!-- Terrain Effects -->
             <div ng-repeat="effect in selectedTile.terrainEffects"
-                 ng-init="effectData = data.system.terrainEffects[effect]"
+                 ng-init="effectData = data.system.terrainEffects[effect.name]"
                  layout="column"
                  class="bottomMargin">
                 <div layout="row">
                     <span class="boldText">Terrain Effect:</span>&nbsp;{{effectData.name}}
+                </div>
+                <div layout="row" layout-wrap class="bottomMargin">
+                    <div ng-if="effectData.hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>HP</span>
+                        <span>
+                            <span ng-if="effectData.hpModifier >= 0">+</span>{{effectData.hpModifier}}%
+                        </span>
+                    </div>
+                    <!-- Combat Stat Modifiers -->
+                    <div ng-repeat="(stat, val) in effectData.combatStatModifiers" ng-if="val != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>{{stat}}</span>
+                        <span>
+                            <span ng-if="val >= 0">+</span>{{val}}
+                        </span>
+                    </div>
+                    <!-- Stat Modifiers -->
+                    <div ng-repeat="(stat, val) in effectData.statModifiers" ng-if="val != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>{{stat}}</span>
+                        <span>
+                            <span ng-if="val >= 0">+</span>{{val}}
+                        </span>
+                    </div>
                 </div>
                 <div layout="row" ng-repeat="text in effectData.textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
                     {{text}}
@@ -372,7 +401,8 @@
     </div>
 
     <!-- Map -->
-    <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
+    <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex
+                ng-style="{'min-width': data.map.mapImageWidth + 'px', 'min-height': data.map.mapImageHeight + 'px'}">
         <div class="mapBackground"
              ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.mapImageWidth + 'px', 'height': data.map.mapImageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
              <!--Draw tiles-->
@@ -388,11 +418,22 @@
                      ng-click="mapTile_OnClick(tile)"
                      ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
+                    <!-- Draw terrain effect -->
+                    <div ng-repeat="effect in tile.terrainEffects"
+                         ng-if="effect.isAnchor"
+                         ng-init="effectData = data.system.terrainEffects[effect.name]"
+                         class="spriteContainer"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px'}"
+                         layout="row"
+                         layout-align="center end">
+                         <img ng-src="{{effectData.spriteURL}}" />
+                    </div>
+
                     <!--Draw unit-->
                     <div ng-if="tile.isUnitAnchor"
                          ng-init="unit = getUnitByName(tile.occupyingUnitName)"
-                         class="unitSpriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px'}"
+                         class="spriteContainer"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'z-index': tile.coordinate.y + 1}"
                          layout="row"
                          layout-align="center end"
                     >
