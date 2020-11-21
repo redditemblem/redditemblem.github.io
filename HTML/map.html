@@ -166,43 +166,11 @@
                 Stats
             </div>
             <!-- Combat stats -->
-            <div layout="row" layout-wrap>
-                <div ng-repeat="(stat, statObj) in search.selected.combatStats track by stat" layout="column" flex="50" class="horizontalPadding">
-                    <div layout="row" layout-align="space-between">
-                        <span>{{stat}}</span>
-                        <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
-                            <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i> {{statObj.finalValue}}
-                        </span>
-                    </div>
-                    <div layout="column" ng-if="statsExpanded" class="rem0_8Text leftPadding halfBottomMargin">
-                        <div layout="row" layout-align="space-between">
-                            <span>Base</span><span>{{statObj.baseValue}}</span>
-                        </div>
-                        <div ng-repeat="(mod, modVal) in statObj.modifiers track by mod" layout="row" layout-align="space-between">
-                            <span>{{mod}}</span><span>{{modVal}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <modifiedstatlist data="search.selected.combatStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <!-- System stats -->
+            <modifiedstatlist ng-if="Object.keys(search.selected.systemStats).length > 0" data="search.selected.systemStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Regular stats -->
-            <div layout="row" layout-wrap>
-                <div ng-repeat="(stat, statObj) in search.selected.stats track by stat" layout="column" flex="50" class="horizontalPadding">
-                    <div layout="row" layout-align="space-between">
-                        <span>{{stat}}</span>
-                        <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
-                            <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i> {{statObj.finalValue}}
-                        </span>
-                    </div>
-                    <div layout="column" ng-if="statsExpanded" class="rem0_8Text leftPadding halfBottomMargin">
-                        <div layout="row" layout-align="space-between">
-                            <span>Base</span><span>{{statObj.baseValue}}</span>
-                        </div>
-                        <div ng-repeat="(mod, modVal) in statObj.modifiers track by mod" layout="row" layout-align="space-between">
-                            <span>{{mod}}</span><span>{{modVal}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <modifiedstatlist data="search.selected.stats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!--Weapon ranks-->
             <div layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
@@ -221,26 +189,10 @@
                         <md-tooltip md-direction="top">Status Conditions</md-tooltip>
                     </i>
                 </div>
-                <div ng-if="true" layout="column" flex="100" style="padding-right: 8px;">
-                    <div ng-repeat="status in search.selected.statusConditions track by $index"
-                         ng-init="statusData = data.system.statusConditions[status.name]" 
-                         class="md-chip-custom"
-                         style="width: 100%;">
-                         <div layout="row" layout-align="space-between center" class="boldText">
-                            <span>
-                                {{status.name}}
-                                <span ng-if="status.remainingTurns > 0">
-                                    ({{status.remainingTurns}}<span ng-if="statusData.turns > 0">/{{statusData.turns}}</span> turns)
-                                </span>
-                            </span>
-                            <i ng-if="statusData.type == 0" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="left">Positive</md-tooltip></i>
-                            <i ng-if="statusData.type == 1" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="left">Negative</md-tooltip></i>
-                            <i ng-if="statusData.type == 2" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="left">Neutral</md-tooltip></i>
-                         </div>
-                         <div ng-repeat="text in statusData.textFields track by $index" layout="row" ng-class="{'halfBottomMargin': !$last}">
-                            {{text}}
-                         </div>
-                    </div>
+                <div layout="column" flex="100" style="padding-right: 8px;">
+                   <statuscondition ng-repeat="status in search.selected.statusConditions track by $index"
+                                    status="status"
+                                    sysdata="data.system.statusConditions[status.name]"></statuscondition>
                 </div>
             </div>
             <md-divider></md-divider>
@@ -249,87 +201,24 @@
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
-            <md-card ng-repeat="item in search.selected.inventory track by $index" 
-                     ng-click="item.expanded = !item.expanded" 
-                     ng-if="invExpanded"
-                     ng-init="itemData = data.system.items[item.name]"
-                     class="md-card-hover clickable"
-                     ng-style="{'pointer-events': item != null ? 'auto' : 'none'}">
-                <div layout="row" layout-align="space-between center">
-                    <span>
-                        <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                        <span ng-class="{'droppableItemColor': item.isDroppable == true, 'opacity50': item == null || !item.canEquip}">
-                            <span ng-if="item != null" style="font-style: bold;" >{{item.name}}</span>
-                            <span ng-if="item == null" style="font-style: italic;">Empty</span>
-                            <span ng-if="item.uses > 0">({{item.uses}})</span>
-                        </span>
-                    </span>
-                    <span>
-                        <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
-                        <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
-                    </span>
-                </div>
-                <div layout="row" class="rem0_8Text leftPadding" ng-class="{'opacity50': !item.canEquip}">
-                    <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}<span ng-if="itemData.utilizedStat.length > 0">&nbsp;({{itemData.utilizedStat}})</span>
-                </div>
-                <div ng-if="item.expanded">
-                    <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
-                        <md-divider></md-divider>
-                        <div layout="row" layout-wrap>
-                            <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
-                                <span>{{stat}}</span>
-                                <span>{{statVal}}</span>
-                            </div>
-                            <div ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
-                                <span>Rng</span>
-                                <span>{{itemData.range.minimum}}
-                                    <span ng-if="itemData.range.minimum != itemData.range.maximum + item.maxRangeModifier || item.maxRangeModifier != 0">
-                                        <span>-</span>
-                                        <span ng-class="{'buffedStatColor': item.maxRangeModifier > 0, 'debuffedStatColor': item.maxRangeModifier < 0}">
-                                            {{itemData.range.maximum + item.maxRangeModifier}} <i class="fa fa-long-arrow-up" ng-if="item.maxRangeModifier > 0" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="item.maxRangeModifier < 0" aria-hidden="true"></i> 
-                                        </span>
-                                    </span>
-                                </span>
-                            </div>
-                            <div ng-if="item.uses > 0 || itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
-                                <span>
-                                    {{item.uses > 0 && itemData.maxUses == 0 ? "Quantity" : "Uses"}}
-                                </span>
-                                <span>
-                                    <span ng-if="item.uses > 0">{{item.uses}}</span>
-                                    <span ng-if="itemData.maxUses > 0">
-                                        <span ng-if="item.uses > 0">/</span>
-                                        {{itemData.maxUses}}
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-if="itemData.textFields.length > 0">
-                        <md-divider></md-divider>
-                        <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
-                    </div>
-                </div>
-            </md-card>
+            <div layout="column" ng-if="invExpanded">
+                <inventoryitem ng-repeat="item in search.selected.inventory track by $index"  
+                               item="item"
+                               sysdata="data.system.items[item.name]">
+                </inventoryitem>
+            </div>
             <md-divider></md-divider>
             <!--Skills-->
             <div ng-if="search.selected.skills.length > 0" class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
                 Skills
             </div>
-            <md-card ng-repeat="skill in search.selected.skills track by $index"
-                     ng-if="skillsExpanded"
-                     ng-init="skillData = data.system.skills[skill]"
-                     class="md-card-hover">
-                <div layout="row" layout-align="start center">
-                    <img ng-if="skillData.spriteURL.length > 0" ng-src="{{skillData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                    <span>{{skill}}</span>
-                </div>
-                <md-divider></md-divider>
-                <div ng-repeat="text in skillData.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
-                    {{text}}
-                </div>
-            </md-card>
+            <div layout="column" ng-if="skillsExpanded">
+                <skill ng-repeat="skill in search.selected.skills track by $index"
+                       skill="skill"
+                       sysdata="data.system.skills[skill]">
+                </skill>
+            </div>
         </md-content>
     </div>
     <!-- Tile display -->

@@ -1,0 +1,59 @@
+<md-card ng-click="expanded = !expanded"
+         class="md-card-hover clickable verticalPadding horizontalPadding"
+         ng-style="{'pointer-events': item != null ? 'auto' : 'none'}">
+    <div layout="row" layout-align="space-between center">
+        <span>
+            <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
+            <span ng-class="{'droppableItemColor': item.isDroppable == true, 'opacity50': item == null || !item.canEquip}">
+                <span ng-if="item != null" style="font-style: bold;" >{{item.name}}</span>
+                <span ng-if="item == null" style="font-style: italic;">Empty</span>
+                <span ng-if="item.uses > 0">({{item.uses}})</span>
+            </span>
+        </span>
+        <span>
+            <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
+            <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
+        </span>
+    </div>
+    <div layout="row" class="rem0_8Text leftPadding" ng-class="{'opacity50': !item.canEquip}">
+        <span ng-if="sysdata.weaponRank.length > 0">{{sysdata.weaponRank}}&nbsp;-&nbsp;</span>{{sysdata.category}}<span ng-if="sysdata.utilizedStat.length > 0">&nbsp;({{sysdata.utilizedStat}})</span>
+    </div>
+    <div ng-if="expanded">
+        <div ng-if="sysdata.range.minimum > 0 || item.uses > 0 || sysdata.maxUses > 0 || sysdata.utilizedStat.length > 0" class="rem0_8Text">
+            <md-divider></md-divider>
+            <div layout="row" layout-wrap>
+                <div ng-if="sysdata.utilizedStat.length > 0" ng-repeat="(stat, statVal) in sysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>{{stat}}</span>
+                    <span>{{statVal}}</span>
+                </div>
+                <div ng-if="sysdata.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>Rng</span>
+                    <span>{{sysdata.range.minimum}}
+                        <span ng-if="sysdata.range.minimum != sysdata.range.maximum + item.maxRangeModifier || item.maxRangeModifier != 0">
+                            <span>-</span>
+                            <span ng-class="{'buffedStatColor': item.maxRangeModifier > 0, 'debuffedStatColor': item.maxRangeModifier < 0}">
+                                {{sysdata.range.maximum + item.maxRangeModifier}} <i class="fa fa-long-arrow-up" ng-if="item.maxRangeModifier > 0" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="item.maxRangeModifier < 0" aria-hidden="true"></i> 
+                            </span>
+                        </span>
+                    </span>
+                </div>
+                <div ng-if="item.uses > 0 || sysdata.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>
+                        {{item.uses > 0 && sysdata.maxUses == 0 ? "Quantity" : "Uses"}}
+                    </span>
+                    <span>
+                        <span ng-if="item.uses > 0">{{item.uses}}</span>
+                        <span ng-if="sysdata.maxUses > 0">
+                            <span ng-if="item.uses > 0">/</span>
+                            {{sysdata.maxUses}}
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div ng-if="sysdata.textFields.length > 0">
+            <md-divider></md-divider>
+            <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+        </div>
+    </div>
+</md-card>
