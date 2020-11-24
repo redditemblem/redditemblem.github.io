@@ -40,7 +40,7 @@ app.controller('ShopCtrl', ['$scope', '$http', '$location', '$routeParams', func
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     $scope.navigateHome = function(){ $location.path(''); };
-    $scope.navigateToMap = function(){ $location.path("/map/" + $routeParams.teamName); };
+    $scope.navigateToMap = function(){ $location.path($routeParams.teamName + "/map"); };
 
     //ITEM FILTERING --------------------------------------------------
 

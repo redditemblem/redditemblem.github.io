@@ -3,9 +3,10 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 	$routeProvider
 		.when("/", {templateUrl: "HTML/homepage.html", controller: "HomepageCtrl"})
 		.when("/info", {templateUrl: "HTML/info.html", controller: "InfoCtrl"})
-		.when("/map/:teamName", {templateUrl: "HTML/map.html", controller: "MapCtrl"})
-		.when('/convoy/:teamName', {templateUrl: "HTML/convoy.html", controller: "ConvoyCtrl"})
-		.when('/shop/:teamName', {templateUrl: "HTML/shop.html", controller: "ShopCtrl"});
+		.when("/:teamName/map", {templateUrl: "HTML/map.html", controller: "MapCtrl"})
+		.when('/:teamName/convoy', {templateUrl: "HTML/convoy.html", controller: "ConvoyCtrl"})
+		.when('/:teamName/shop', {templateUrl: "HTML/shop.html", controller: "ShopCtrl"})
+		.otherwise({ redirectTo: "/" });
 
 	//Force injection of $cookies service
 	var $cookies;

@@ -38,8 +38,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     //Links
     $scope.launchChapterPostTab = function(){ $window.open($scope.data.map.chapterPostURL); };
     $scope.navigateHome = function(){ $location.path(''); };
-    $scope.navigateConvoy = function(){ $location.path("/convoy/" + $routeParams.teamName); };
-    $scope.navigateShop = function(){ $location.path("/shop/" + $routeParams.teamName); };
+    $scope.navigateConvoy = function(){ $location.path($routeParams.teamName + "/convoy"); };
+    $scope.navigateShop = function(){ $location.path($routeParams.teamName + "/shop"); };
 
     $scope.unitSort = function(unit){
         var sort = 0;

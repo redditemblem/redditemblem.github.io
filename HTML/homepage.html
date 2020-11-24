@@ -3,7 +3,7 @@
         <img src="IMG/re_logo.png" layout-padding />
         <div layout="column" layout-align="center" style="width: 400px;">
             <div layout="row" layout-align="center">
-                <md-button class="md-raised md-primary" ng-click="LaunchInfo()" flex>
+                <md-button class="md-raised md-primary" ng-click="navigateToInfo()" flex>
                     <i class="fa fa-info-circle" aria-hidden="true"></i> Info
                 </md-button>
                 <md-button class="md-raised md-primary" ng-click="toggleAppTheme()" flex>
@@ -17,14 +17,14 @@
                     <div layout="row" layout-align="space-between center">
                         <div>{{team.teamName}}</div>
                         <div>
-                            <md-button ng-if="team.showShopLink" class="md-icon-button" ng-click="NavigateToShop(team.teamName)">
-                                <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i>
+                            <md-button class="md-icon-button" ng-click="navigateToMap(team.teamName)">
+                                <i class="fa fa-map-o fa-lg" aria-hidden="true"><md-tooltip md-direction="top">Map</md-tooltip></i>
                             </md-button>
-                            <md-button ng-if="team.showConvoyLink" class="md-icon-button" ng-click="NavigateToConvoy(team.teamName)">
-                                <i class="fa fa-archive fa-lg" aria-hidden="true"></i>
+                            <md-button ng-disabled="!team.showConvoyLink" class="md-icon-button" ng-click="navigateToConvoy(team.teamName)">
+                                <i class="fa fa-archive fa-lg" ng-if="team.showConvoyLink" aria-hidden="true"><md-tooltip md-direction="top">Convoy</md-tooltip></i>
                             </md-button>
-                            <md-button class="md-icon-button" ng-click="NavigateToMap(team.teamName)">
-                                <i class="fa fa-map-o fa-lg" aria-hidden="true"></i>
+                            <md-button ng-disabled="!team.showShopLink" class="md-icon-button" ng-click="navigateToShop(team.teamName)">
+                                <i class="fa fa-shopping-basket fa-lg" ng-if="team.showShopLink" aria-hidden="true"><md-tooltip md-direction="top">Shop</md-tooltip></i>
                             </md-button>
                         </div>
                     </div>

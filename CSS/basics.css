@@ -54,18 +54,6 @@
     text-decoration: line-through;
 }
 
-@font-face
-{
-    font-family: pixelFill;
-    src: url('TINYBBBA.TTF');
-}
-
-@font-face
-{
-    font-family: pixelOutline;
-    src: url('TINYBBA_.TTF');
-}
-
 .bright{
 	filter: brightness(160%);
 }
