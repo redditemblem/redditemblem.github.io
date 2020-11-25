@@ -1,0 +1,34 @@
+<div layout="column" layout-align="center center" layout-fill>
+    <div ng-if="!error" layout="column" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        <span style="margin-top: 15px;">Fetching data</span>
+    </div>
+    <div ng-if="error" layout="row" layout-align="center" style="width: 75%;">
+        <div layout="column">
+            <div layout="row" class="rem2_25Text">
+                <i ng-if="error.status != 403" class="fa fa-exclamation-circle fa-fw errorMessageColor" aria-hidden="true"></i>
+                <i ng-if="error.status == 403" class="fa fa-exclamation-triangle fa-fw warningMessageColor" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div layout="column">
+            <div layout="row" class="rem2_25Text">
+                <span ng-if="error.status != 403" class="errorMessageColor">A fatal error has occurred.</span>
+                <span ng-if="error.status == 403" class="warningMessageColor">Access is blocked.</span>
+            </div>
+            <div layout="column">
+                <div layout="row" layout-align="left center">
+                    <span>{{error.message ? error.message : error.Message}}</span>
+                </div>
+                <div ng-if="error.innerException != null" layout="row" layout-align="left center">
+                    <span>{{error.innerException.message ? error.innerException.message : error.innerException.Message}}</span>
+                </div>
+                <div ng-if="error.InnerException != null" layout="row" layout-align="left center">
+                    <span>{{error.InnerException.message ? error.InnerException.message : error.InnerException.Message}}</span>
+                </div>
+                <div layout="row" layout-align="left center" style="white-space: pre-wrap; color: gray;">
+                    {{formatStackTrace()}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

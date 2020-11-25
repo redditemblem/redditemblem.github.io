@@ -27,12 +27,6 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
         }     
     });
 
-    $scope.formatStackTrace = function(stacktrace){
-        if(stacktrace == undefined || stacktrace == null)
-            stacktrace = "";
-        return stacktrace.replace("\tat", "\nat").trim();
-    };
-
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     //Links

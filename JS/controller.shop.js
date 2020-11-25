@@ -32,10 +32,6 @@ app.controller('ShopCtrl', ['$scope', '$http', '$location', '$routeParams', func
             $scope.errorContext.status = response.status;
         }     
     });
-
-    $scope.formatStackTrace = function(stacktrace){
-        return stacktrace.replace("\tat", "\nat").trim();
-    };
     
     // TOOLBAR FUNCTIONS ----------------------------------------------
 

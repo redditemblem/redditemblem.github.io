@@ -1,35 +1,4 @@
-<div  ng-if="!loadComplete" layout="column" layout-align="center center" layout-fill>
-    <div ng-if="!errorContext" layout="column" layout-align="center center">
-        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-        <span style="margin-top: 15px;">Fetching convoy data...</span>
-    </div>
-    <div ng-if="errorContext" layout="row" layout-align="center" style="width: 75%;">
-        <div layout="column">
-            <div layout="row" class="rem2_25Text">
-                <i ng-if="errorContext.status != 403" class="fa fa-exclamation-circle fa-fw errorMessageColor" aria-hidden="true"></i>
-                <i ng-if="errorContext.status == 403" class="fa fa-exclamation-triangle fa-fw warningMessageColor" aria-hidden="true"></i>
-            </div>
-        </div>
-        <div layout="column">
-            <div layout="row" class="rem2_25Text">
-                <span ng-if="errorContext.status != 403" class="errorMessageColor">A fatal error has occurred.</span>
-                <span ng-if="errorContext.status == 403" class="warningMessageColor">Access is blocked.</span>
-            </div>
-            <div layout="column">
-                <div layout="row" layout-align="left center">
-                    <span>{{errorContext.message}}</span>
-                </div>
-                <div ng-if="errorContext.innerException != null" layout="row" layout-align="left center">
-                    <span>{{errorContext.innerException.message}}</span>
-                </div>
-                <div layout="row" layout-align="left center" style="white-space: pre-wrap; color: gray;">
-                    <span ng-if="errorContext.innerException == null && errorContext.status != 403">{{formatStackTrace(errorContext.stackTrace)}}</span>
-                    <span ng-if="errorContext.innerException != null">{{formatStackTrace(errorContext.innerException.stackTrace)}}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<loadingscreen ng-if="!loadComplete" error="errorContext"></loadingscreen>
 <div ng-if="loadComplete" layout="row" layout-fill>
     <!--Button toolbar-->
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">

@@ -33,10 +33,6 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', fu
         }     
     });
 
-    $scope.formatStackTrace = function(stacktrace){
-        return stacktrace.replace("\tat", "\nat").trim();
-    };
-
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     $scope.navigateHome = function(){ $location.path(''); };
