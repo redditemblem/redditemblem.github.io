@@ -28,8 +28,9 @@
                 </div>
                 <div ng-if="sysdata.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                     <span>Rng</span>
-                    <span>{{sysdata.range.minimum}}
-                        <span ng-if="sysdata.range.minimum != sysdata.range.maximum + item.maxRangeModifier || item.maxRangeModifier != 0">
+                    <span>
+                        {{sysdata.range.minimum}}
+                        <span ng-if="sysdata.range.minimum != sysdata.range.maximum + item.maxRangeModifier">
                             <span>-</span>
                             <span ng-class="{'buffedStatColor': item.maxRangeModifier > 0, 'debuffedStatColor': item.maxRangeModifier < 0}">
                                 {{sysdata.range.maximum + item.maxRangeModifier}} <i class="fa fa-long-arrow-up" ng-if="item.maxRangeModifier > 0" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="item.maxRangeModifier < 0" aria-hidden="true"></i> 

@@ -15,8 +15,9 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 	}]);
 
 	//Define color themes
-	$mdThemingProvider.theme('dark').dark();
-	
+	$mdThemingProvider.theme('default').primaryPalette('blue');
+	$mdThemingProvider.theme('dark').primaryPalette('blue').dark();
+
 	var theme = $cookies.get('RedditEmblemMaps-SavedTheme')
 	if(theme != undefined)
 		$mdThemingProvider.setDefaultTheme(theme);

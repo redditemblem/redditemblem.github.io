@@ -20,18 +20,18 @@
 .halfBottomMargin{ margin-bottom: 4px; }
 .bottomMargin{ margin-bottom: 8px; }
 
-.toolbarColor{ background-color: #5CB4EF;}
-.toolbarButtonColor{ color: orange; }
+.toolbarColor{ background-color: #2196F3;}
+.toolbarButtonColor{ color: #FFC107; }
 
 .errorMessageColor{ color: crimson; }
-.warningMessageColor{ color: orange; }
+.warningMessageColor{ color: #FFC107; }
 .buffedStatColor{ color: #5CB4EF; }
 .debuffedStatColor{ color: #F13535; }
 .droppableItemColor{ color: #3CD66F; }
 
 .hp25PercentColor{ background-color: #F13535; }
-.hp50PercentColor{ background-color: #FFE14B; }
-.hp100PercentColor{ background-color: #7ED836; }
+.hp50PercentColor{ background-color: #FFC107; }
+.hp100PercentColor{ background-color: #3CD66F; }
 .hpOverfillColor{ background-color: #992DE4; }
 
 .inRangeMovColor{ background: rgba(92, 180, 239, 0.5); }
