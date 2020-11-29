@@ -13,7 +13,13 @@
             </div>
             <md-divider></md-divider>
             <md-content flex>
-                <div ng-repeat="team in teamList" ng-if="teamList.length > 0">
+                <div ng-if="teamList.length == 0 && loadingTeams" layout="row" layout-align="center center">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
+                <div ng-if="teamList.length == 0 && !loadingTeams" style="text-align: center; padding-top: 8px;">
+                    No teams were found.
+                </div>
+                <div ng-if="teamList.length > 0" ng-repeat="team in teamList">
                     <div layout="row" layout-align="space-between center">
                         <div>{{team.teamName}}</div>
                         <div>
@@ -29,9 +35,6 @@
                         </div>
                     </div>
                     <md-divider></md-divider>
-                </div>
-                <div ng-if="teamList.length == 0" style="text-align: center; padding-top: 8px;">
-                    No teams were found.
                 </div>
             </md-content>
         </div>
