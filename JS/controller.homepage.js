@@ -1,12 +1,16 @@
 app.controller('HomepageCtrl', ['$scope', '$http', '$location', '$cookies', '$mdTheming', function ($scope, $http, $location, $cookies, $mdTheming) {
     //Initalize variables
     $scope.teamList = [];
+    $scope.loadingTeams = true;
 
     $http({
         method: "GET",
         url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/teamList"
     }).then(function successCallback(response) {
         $scope.teamList = response.data;
+        $scope.loadingTeams = false;
+    },function errorCallback(response){
+        $scope.loadingTeams = false;
     });
 
     $scope.navigateToInfo = function(){ $location.path("/info"); };

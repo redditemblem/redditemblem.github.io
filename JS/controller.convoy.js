@@ -36,7 +36,7 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', fu
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     $scope.navigateHome = function(){ $location.path(''); };
-    $scope.navigateToMap = function(){ $location.path("/map/" + $routeParams.teamName); };
+    $scope.navigateToMap = function(){ $location.path($routeParams.teamName + "/map"); };
 
     //ITEM FILTERING --------------------------------------------------
 
