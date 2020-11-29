@@ -93,7 +93,7 @@
                     <div layout="row" class="rem0_9Text">
                         <b>Affiliation</b>: {{search.selected.affiliation}}
                     </div>
-                    <div layout="row" ng-repeat="text in data.system.affiliations[search.selected.affiliation].textFields track by $index" class="rem0_8Text leftPadding">
+                    <div layout="row" ng-repeat="text in data.system.affiliations[search.selected.affiliation].textFields track by $index" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
                         {{text}}
                     </div>
                 </div>      
@@ -106,7 +106,7 @@
                     <span>{{search.selected.hp.current}} / {{search.selected.hp.maximum}}</span>
                 </div>
                 <!--Exp-->
-                <div layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                <div ng-if="search.selected.experience > -1" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Exp</span>
                     <span>{{search.selected.experience}}</span>
                 </div>
@@ -148,7 +148,7 @@
                     </i>
                 </div>
                 <div layout="row" layout-wrap>
-                    <div ng-repeat="(tag, rank) in search.selected.weaponRanks track by tag" class="md-chip-custom">{{tag}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
+                    <div ng-repeat="(type, rank) in search.selected.weaponRanks track by type" class="md-chip-custom">{{type}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
                 </div>
             </div>
             <!-- Statuses -->
