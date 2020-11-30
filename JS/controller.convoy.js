@@ -36,6 +36,7 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', fu
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     $scope.navigateHome = function(){ $location.path(''); };
+    $scope.navigateToShop = function(){ $location.path($routeParams.teamName + "/shop"); };
     $scope.navigateToMap = function(){ $location.path($routeParams.teamName + "/map"); };
 
     //ITEM FILTERING --------------------------------------------------
@@ -57,6 +58,14 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', fu
             else if(valueA == valueB) return 0;
             else return valueA < valueB ? -1 : 1;
         });
+    };
+
+    $scope.showUtilizedStat = function(utilizedStatList){
+        for(var utilStat in utilizedStatList){
+            if($scope.filters.showStat[utilizedStatList[utilStat]])
+                return true;
+        }
+        return false;
     };
 
     $scope.toggleCategoryFilters = function(){

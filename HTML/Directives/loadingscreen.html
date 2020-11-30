@@ -25,7 +25,7 @@
                 <div ng-if="error.InnerException != null" layout="row" layout-align="left center">
                     <span>{{error.InnerException.message ? error.InnerException.message : error.InnerException.Message}}</span>
                 </div>
-                <div layout="row" layout-align="left center" style="white-space: pre-wrap; color: gray;">
+                <div ng-if="error.status != 403" layout="row" layout-align="left center" style="white-space: pre-wrap; color: gray;">
                     {{formatStackTrace()}}
                 </div>
             </div>

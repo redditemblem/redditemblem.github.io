@@ -16,13 +16,16 @@
         </span>
     </div>
     <div layout="row" class="rem0_8Text leftPadding" ng-class="{'opacity50': !item.canEquip}">
-        <span ng-if="sysdata.weaponRank.length > 0">{{sysdata.weaponRank}}&nbsp;-&nbsp;</span>{{sysdata.category}}<span ng-if="sysdata.utilizedStat.length > 0">&nbsp;({{sysdata.utilizedStat}})</span>
+        <span ng-if="sysdata.weaponRank.length > 0">{{sysdata.weaponRank}}&nbsp;-&nbsp;</span>{{sysdata.category}}
+        <span ng-if="sysdata.utilizedStats.length > 0" >
+            &nbsp;(<span ng-repeat="stat in sysdata.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
+        </span>
     </div>
     <div ng-if="expanded">
-        <div ng-if="sysdata.range.minimum > 0 || item.uses > 0 || sysdata.maxUses > 0 || sysdata.utilizedStat.length > 0" class="rem0_8Text">
+        <div ng-if="sysdata.range.minimum > 0 || item.uses > 0 || sysdata.maxUses > 0 || sysdata.utilizedStats.length > 0" class="rem0_8Text">
             <md-divider></md-divider>
             <div layout="row" layout-wrap>
-                <div ng-if="sysdata.utilizedStat.length > 0" ng-repeat="(stat, statVal) in sysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <div ng-if="sysdata.utilizedStats.length > 0" ng-repeat="(stat, statVal) in sysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                     <span>{{stat}}</span>
                     <span>{{statVal}}</span>
                 </div>

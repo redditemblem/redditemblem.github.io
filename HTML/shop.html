@@ -4,11 +4,14 @@
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div></div>
         <div>
+            <md-button id="btnConvoy" class="md-icon-button" ng-if="data.showConvoyLink" ng-click="navigateToConvoy()">
+                <i class="fa fa-archive fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Convoy</md-tooltip></i>
+            </md-button>
             <md-button id="btnMap" class="md-icon-button" ng-click="navigateToMap()">
-                <i class="fa fa-map-o fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-map-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Map</md-tooltip></i>
             </md-button>
             <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
-                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Return to homepage</md-tooltip></i>
             </md-button>
         </div>
     </div>
@@ -85,7 +88,7 @@
     <md-content id="shopItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.shopItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="filters.showCategory[itemData.category] && (filters.showStat[itemData.utilizedStat] || filters.showStat.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0))"
+                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0))"
                  class="fade">
                  <div layout="row" layout-align="space-between center">
                     <div layout="column">
@@ -94,7 +97,10 @@
                             <span class="boldText">{{item.name}} <span ng-if="item.uses > 0">({{item.uses}})</span></span>
                         </div>
                         <div layout="row" class="rem0_8Text leftPadding">
-                            <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}<span ng-if="itemData.utilizedStat.length > 0">&nbsp;({{itemData.utilizedStat}})</span>
+                            <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}
+                            <span ng-if="itemData.utilizedStats.length > 0" >
+                                &nbsp;(<span ng-repeat="stat in itemData.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
+                            </span>
                         </div>
                      </div>
                      <div layout="row">
@@ -122,10 +128,10 @@
                     </div>
                  </div>
                  <div ng-if="filters.expandItemInfo">
-                    <div ng-if="itemData.range.minimum > 0 || itemData.maxUses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
+                    <div ng-if="itemData.range.minimum > 0 || itemData.maxUses > 0 || itemData.utilizedStats.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
-                            <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                            <div ng-if="itemData.utilizedStats.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>{{stat}}</span>
                                 <span>{{statVal}}</span>
                             </div>
@@ -141,7 +147,7 @@
                     </div>
                      <div ng-if="itemData.textFields.length > 0" layout="column">
                         <md-divider></md-divider>
-                        <div ng-repeat="text in itemData.textFields" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
+                        <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
                             {{text}}
                         </div>
                      </div>

@@ -4,11 +4,14 @@
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div></div>
         <div>
+            <md-button id="btnShop" class="md-icon-button" ng-if="data.showShopLink" ng-click="navigateToShop()">
+                <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Shop</md-tooltip></i>
+            </md-button>
             <md-button id="btnMap" class="md-icon-button" ng-click="navigateToMap()">
-                <i class="fa fa-map-o fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-map-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Map</md-tooltip></i>
             </md-button>
             <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
-                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Return to homepage</md-tooltip></i>
             </md-button>
         </div>
     </div>
@@ -66,7 +69,7 @@
     <md-content id="convoyItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.convoyItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="filters.showCategory[itemData.category] && (filters.showStat[itemData.utilizedStat] || filters.showStat.all)"
+                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all)"
                  class="fade">
                  <div layout="row" layout-align="space-between center">
                     <div layout="column">
@@ -75,7 +78,10 @@
                             <span class="boldText">{{item.name}} <span ng-if="item.uses > 0">({{item.uses}})</span></span>
                         </div>
                         <div layout="row" class="rem0_8Text leftPadding">
-                            <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}<span ng-if="itemData.utilizedStat.length > 0">&nbsp;({{itemData.utilizedStat}})</span>
+                            <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}
+                            <span ng-if="itemData.utilizedStats.length > 0" >
+                                &nbsp;(<span ng-repeat="stat in itemData.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
+                            </span>
                         </div>
                      </div>
                      <div layout="column">
@@ -88,10 +94,10 @@
                     </div>
                  </div>
                  <div ng-if="filters.expandItemInfo">
-                    <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStat.length > 0" class="rem0_8Text">
+                    <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStats.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
-                            <div ng-if="itemData.utilizedStat.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                            <div ng-if="itemData.utilizedStats.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>{{stat}}</span>
                                 <span>{{statVal}}</span>
                             </div>
@@ -118,7 +124,7 @@
                         <div ng-if="item.value > -1" layout="row" class="rem0_9Text bottomMargin">
                             Sells for <span ng-if="data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>{{item.value}}<span ng-if="!data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>.
                         </div>
-                        <div ng-repeat="text in itemData.textFields" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
+                        <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
                             {{text}}
                         </div>
                      </div>
