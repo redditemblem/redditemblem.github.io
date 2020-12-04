@@ -1,5 +1,5 @@
 <loadingscreen ng-if="!loadComplete" error="errorContext"></loadingscreen>
-<div ng-if="loadComplete" layout="row" layout-fill>
+<div ng-if="loadComplete" layout="row" layout-fill style="overflow: hidden;">
     <!--Button toolbar-->
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div>
@@ -75,13 +75,13 @@
             </div>
             <!--Expanded unit info-->
             <div layout="column" ng-if="unitInfoExpanded">
-                <div layout="row" ng-repeat="text in search.selected.textFields track by $index" class="rem0_9Text bottomMargin">
+                <div ng-if="search.selected.textFields.length > 0" ng-repeat="text in search.selected.textFields track by $index" layout="row" class="rem0_9Text bottomMargin">
                     {{text}}
                 </div>
                 <div ng-if="search.selected.player.length > 0" layout="row" class="rem0_9Text bottomMargin">
                     <b>Player</b>: {{search.selected.player}}
                 </div>
-                <div ng-repeat="class in search.selected.classes track by class" layout="column" class="bottomMargin">
+                <div ng-if="search.selected.classes.length > 0" ng-repeat="class in search.selected.classes track by class" layout="column" class="bottomMargin">
                     <div layout="row" class="rem0_9Text">
                         <b>Class</b>: {{class}}
                     </div>
@@ -137,7 +137,7 @@
             <!-- Combat stats -->
             <modifiedstatlist data="search.selected.combatStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- System stats -->
-            <modifiedstatlist ng-if="Object.keys(search.selected.systemStats).length > 0" data="search.selected.systemStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist data="search.selected.systemStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Regular stats -->
             <modifiedstatlist data="search.selected.stats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!--Weapon ranks-->
@@ -273,8 +273,7 @@
     </div>
 
     <!-- Map -->
-    <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex
-                ng-style="{'min-width': data.map.mapImageWidth + 'px', 'min-height': data.map.mapImageHeight + 'px'}">
+    <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
         <div class="mapBackground"
              ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.mapImageWidth + 'px', 'height': data.map.mapImageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
              <!--Draw tiles-->
