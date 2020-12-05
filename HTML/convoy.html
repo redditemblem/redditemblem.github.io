@@ -122,7 +122,7 @@
                      <div ng-if="itemData.textFields.length > 0" layout="column">
                         <md-divider></md-divider>
                         <div ng-if="item.value > -1" layout="row" class="rem0_9Text bottomMargin">
-                            Sells for <span ng-if="data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>{{item.value}}<span ng-if="!data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>.
+                            Sells for&nbsp;<currency amount="item.value" format="data.currency"></currency>.
                         </div>
                         <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
                             {{text}}

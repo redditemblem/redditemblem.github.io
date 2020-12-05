@@ -43,7 +43,8 @@
                 <div layout="row" layout-align="space-between center">
                     <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
                     <div layout="row">
-                        <i ng-if="unit.coordinate.x < 1 || unit.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.isBackOfPair" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
+                        <i ng-if="(unit.coordinate.x < 1 || unit.coordinate.y < 1) && !unit.isBackOfPair" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
                 </div>
@@ -113,9 +114,7 @@
                 <!--Currency-->
                 <div ng-if="search.selected.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Money</span>
-                    <span>
-                        <span ng-if="data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>{{search.selected.heldCurrency}}<span ng-if="!data.system.currency.isSymbolLeftAligned"><span ng-if="data.system.currency.includeSpace">&nbsp;</span>{{data.system.currency.currencySymbol}}</span>
-                    </span>
+                    <currency amount="search.selected.heldCurrency" format="data.system.currency"></currency>
                 </div>
             </div>
             <!--Tags-->
@@ -126,7 +125,12 @@
                     </i>
                 </div>
                 <div layout="row" layout-wrap>
-                    <div ng-repeat="tag in search.selected.tags track by tag" class="md-chip-custom">{{tag}}</div>
+                    <div ng-repeat="tag in search.selected.tags track by tag"
+                         ng-init="tagData = data.system.tags[tag]"
+                         class="md-chip-custom">
+                         <img ng-if="tagData.spriteURL.length > 0" ng-src="{{tagData.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
+                         {{tag}}
+                    </div>
                 </div>
             </div>
             <!-- Stats -->
@@ -201,8 +205,13 @@
             </div>
             <md-divider></md-divider>
             <!-- Occupying Unit -->
-            <div ng-if="selectedTile.occupyingUnitName.length > 0" layout="row" class="bottomMargin">
-                <span class="boldText">Occupying Unit:</span>&nbsp;{{selectedTile.occupyingUnitName}}
+            <div ng-if="selectedTile.occupyingUnitName.length > 0" layout="column">
+                <span layout="row" class="bottomMargin">
+                    <span class="boldText">Unit:</span>&nbsp;{{selectedTile.occupyingUnitName}}
+                </span>
+                <span ng-if="getUnitByName(selectedTile.occupyingUnitName).pairedUnit.length > 0" layout="row" class="bottomMargin">
+                    <span class="boldText">Paired Unit:</span>&nbsp;{{getUnitByName(selectedTile.occupyingUnitName).pairedUnit}}
+                </span>
             </div>
             <!-- Terrain Type -->
             <div layout="column" class="bottomMargin">
@@ -283,7 +292,7 @@
                 <div ng-repeat="tile in row track by $index" 
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
-                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}}"
+                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}} {{tile.occupyingUnitName.length > 0 ? '['+tile.occupyingUnitName+']' : ''}}"
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
@@ -308,23 +317,20 @@
                          layout="row"
                          layout-align="center end"
                     >
-                        <img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved}" />
-                        <div ng-if="unit.statusConditions.length > 0" id="statusConditionIcon" class="unitStatusCondition">
-                            <img ng-src="IMG/status_heart.png" />
-                        </div>
-                        <div id="unitNumber" class="unitNumber">
-                            <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
-                                 ng-src="IMG/num_{{digit}}.png"
-                                 style="width: 5px; height: 7px;" />
-                        </div>
-                        <div id="healthBarBorder" class="healthBarBorder">
-                            <div id="healthBarFillBackground" class="healthBarFill" style="background-color: gray;"></div>
-                            <div id="healthBarFillColor"
-                                 class="healthBarFill"
-                                 ng-style="{'width': unit.hp.percentage + '%'}"
-                                 ng-class="{'hpOverfillColor': unit.hp.percentage > 100, 'hp100PercentColor': unit.hp.percentage <= 100 && unit.hp.percentage > 50, 'hp50PercentColor': unit.hp.percentage <= 50 && unit.hp.percentage > 25, 'hp25PercentColor': unit.hp.percentage <= 25}"
-                            ></div>
-                        </div>
+                        <unit ng-if="unit.pairedUnit.length > 0"
+                              unit="getUnitByName(unit.pairedUnit)"
+                              tileconsts="data.map.constants"
+                              layout="row"
+                              layout-align="center end"
+                              class="spriteContainer pairSpriteBack"
+                        ></unit>
+                        <unit unit="unit"
+                              tileconsts="data.map.constants"
+                              layout="row"
+                              layout-align="center end"
+                              class="spriteContainer"
+                              ng-class="{'pairSpriteFront': unit.pairedUnit.length > 0}"
+                        ></unit>
                     </div>
                     
                 </div>

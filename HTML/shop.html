@@ -117,12 +117,8 @@
                                 <span>&nbsp;Available</span>
                             </div>
                             <div layout="row" layout-align="end center" class="rem0_9Text">
-                                <span ng-if="item.price != item.salePrice" class="boldText">
-                                    <span ng-if="data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>{{item.salePrice}}<span ng-if="!data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>&nbsp;
-                                </span>
-                                <span ng-class="{'salePriceText': item.price != item.salePrice}">
-                                    <span ng-if="data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>{{item.price}}<span ng-if="!data.currency.isSymbolLeftAligned"><span ng-if="data.currency.includeSpace">&nbsp;</span>{{data.currency.currencySymbol}}</span>
-                                </span>
+                                <currency amount="item.salePrice" format="data.currency" ng-if="item.price != item.salePrice" class="boldText" style="margin-right: 4px;"></currency>
+                                <currency amount="item.price" format="data.currency" ng-class="{'salePriceText': item.price != item.salePrice}"></currency>
                             </div>
                         </div>
                     </div>

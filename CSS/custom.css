@@ -29,6 +29,17 @@
     pointer-events: none;
 }
 
+.pairSpriteFront{
+    left: calc(15% + 1px);
+    top: calc(15% + 1px);
+}
+
+.pairSpriteBack{
+    filter: brightness(60%);
+    left: calc(-15% + 1px);
+    top: calc(-15% + 1px);
+}
+
 .unitSpriteImage{
     margin-bottom: 1px;
 }
