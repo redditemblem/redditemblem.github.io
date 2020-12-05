@@ -35,7 +35,6 @@
 }
 
 .pairSpriteBack{
-    filter: brightness(60%);
     left: calc(-15% + 1px);
     top: calc(-15% + 1px);
 }
@@ -52,7 +51,6 @@
 
 .healthBarBorder{
     position: absolute;
-    width: calc(100% - 4px);
     height: 1px;
     border-style: solid;
     border-color: black;

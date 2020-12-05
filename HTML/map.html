@@ -127,9 +127,11 @@
                 <div layout="row" layout-wrap>
                     <div ng-repeat="tag in search.selected.tags track by tag"
                          ng-init="tagData = data.system.tags[tag]"
-                         class="md-chip-custom">
-                         <img ng-if="tagData.spriteURL.length > 0" ng-src="{{tagData.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
-                         {{tag}}
+                         class="md-chip-custom"
+                         layout="row"
+                         layout-align="left center">
+                            <img ng-if="tagData.spriteURL.length > 0" ng-src="{{tagData.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
+                            {{tag}}
                     </div>
                 </div>
             </div>
@@ -139,11 +141,11 @@
                 Stats
             </div>
             <!-- Combat stats -->
-            <modifiedstatlist data="search.selected.combatStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.combatStats)" data="search.selected.combatStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- System stats -->
-            <modifiedstatlist data="search.selected.systemStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.systemStats)" data="search.selected.systemStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Regular stats -->
-            <modifiedstatlist data="search.selected.stats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats)" data="search.selected.stats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!--Weapon ranks-->
             <div layout="row">
                 <div layout="row" style="margin-right: 8px; padding-top: 5px;">
@@ -170,7 +172,7 @@
             </div>
             <md-divider></md-divider>
             <!-- Inventory -->
-            <div class="rem1_2Text boldText" layout="row">
+            <div ng-if="search.selected.inventory.length > 1" class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
@@ -209,8 +211,8 @@
                 <span layout="row" class="bottomMargin">
                     <span class="boldText">Unit:</span>&nbsp;{{selectedTile.occupyingUnitName}}
                 </span>
-                <span ng-if="getUnitByName(selectedTile.occupyingUnitName).pairedUnit.length > 0" layout="row" class="bottomMargin">
-                    <span class="boldText">Paired Unit:</span>&nbsp;{{getUnitByName(selectedTile.occupyingUnitName).pairedUnit}}
+                <span ng-if="selectedTile.pairedUnitName.length > 0" layout="row" class="bottomMargin">
+                    <span class="boldText">Paired Unit:</span>&nbsp;{{selectedTile.pairedUnitName}}
                 </span>
             </div>
             <!-- Terrain Type -->
@@ -292,7 +294,7 @@
                 <div ng-repeat="tile in row track by $index" 
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
-                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}} {{tile.occupyingUnitName.length > 0 ? '['+tile.occupyingUnitName+']' : ''}}"
+                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}} {{tile.occupyingUnitName.length > 0 ? '['+tile.occupyingUnitName+(tile.pairedUnitName.length > 0 ? '/'+tile.pairedUnitName : '')+']' : ''}}"
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"

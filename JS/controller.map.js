@@ -46,14 +46,25 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     $scope.toggleInvExpanded = function(){ $scope.invExpanded = !$scope.invExpanded; };
     $scope.toggleSkillsExpanded = function(){ $scope.skillsExpanded = !$scope.skillsExpanded; };
 
-    //-------------------------------------------------------------
+    $scope.dictHasKeys = function(dictionary){
+        return Object.keys(dictionary).length > 0;
+    };
 
+    // TILE FUNCTIONS -------------------------------------------------
+    
     $scope.mapTile_OnMouseover = function(tile){
         $scope.selectedTile = tile;
         if(tile.occupyingUnitName.length > 0){
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
             if(imgSprite.classList.contains("grayscale")) imgSprite.classList.add("brightGrayscale");
-            else imgSprite.classList.add("bright");
+            else imgSprite.classList.add("bright"); 
+        }
+
+        if(tile.pairedUnitName.length > 0){
+            var imgSprite = document.getElementById(tile.pairedUnitName + "_sprite");
+            if(imgSprite.classList.contains("dimGrayscale")) imgSprite.classList.add("grayscale");
+            imgSprite.classList.remove("dim");
+            imgSprite.classList.remove("dimGrayscale");
         }
     };
 
@@ -62,6 +73,13 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
             var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
             imgSprite.classList.remove("brightGrayscale");
             imgSprite.classList.remove("bright");
+        }
+
+        if(tile.pairedUnitName.length > 0){
+            var imgSprite = document.getElementById(tile.pairedUnitName + "_sprite");
+            if(imgSprite.classList.contains("grayscale")) imgSprite.classList.add("dimGrayscale");
+            else imgSprite.classList.add("dim");
+            imgSprite.classList.remove("grayscale");
         }
     };
 

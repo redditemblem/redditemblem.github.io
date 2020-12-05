@@ -1,4 +1,4 @@
-<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved}" />
+<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved && !unit.isBackOfPair, 'dimGrayscale': unit.hasMoved && unit.isBackOfPair, 'dim': !unit.hasMoved && unit.isBackOfPair}" />
 <div ng-if="unit.statusConditions.length > 0" id="statusConditionIcon" class="unitStatusCondition">
     <img ng-src="IMG/status_heart.png" />
 </div>
@@ -7,7 +7,8 @@
             ng-src="IMG/num_{{digit}}.png"
             ng-style="{'width': (tileconsts.tileSize < 70 ? '5px' : '10px'), 'height': (tileconsts.tileSize < 70 ? '7px' : '14px')}" />
 </div>
-<div id="healthBarBorder" class="healthBarBorder">
+<div id="healthBarBorder" class="healthBarBorder"
+     ng-style="{'width': (((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)-4)+'px'}">
     <div id="healthBarFillBackground" class="healthBarFill" style="width: 100%; background-color: gray;"></div>
     <div id="healthBarFillColor"
             class="healthBarFill"
