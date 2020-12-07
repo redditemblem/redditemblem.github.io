@@ -4,10 +4,10 @@
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div>
             <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false;">
-                <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-bars fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Unit Info</md-tooltip></i>
             </md-button>
             <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTile}" ng-click="displayTile = !displayTile; displayUnits = false;">
-                <i class="fa fa-square-o fa-lg" aria-hidden="true"></i>
+                <i class="fa fa-square-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Tile Info</md-tooltip></i>
             </md-button>
         </div>
         <div>
