@@ -48,10 +48,16 @@
 
 .boldText{ font-weight: bold; }
 .strikethroughText{ text-decoration: line-through; }
-.salePriceText
-{
+.salePriceText{
     color: crimson;
     text-decoration: line-through;
+}
+.hyperlinkText{
+    color: #5CB4EF;
+    text-decoration: underline;
+    cursor: pointer;
+    outline: none;
+    border: 0;
 }
 
 .bright{ 

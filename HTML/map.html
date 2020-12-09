@@ -43,7 +43,7 @@
                 <div layout="row" layout-align="space-between center">
                     <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
                     <div layout="row">
-                        <i ng-if="unit.isBackOfPair" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
+                        <i ng-if="unit.pairedUnit.length > 0" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
                         <i ng-if="(unit.coordinate.x < 1 || unit.coordinate.y < 1) && !unit.isBackOfPair" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
@@ -116,6 +116,11 @@
                     <span>Money</span>
                     <currency amount="search.selected.heldCurrency" format="data.system.currency"></currency>
                 </div>
+            </div>
+            <!--Pair-Up Info-->
+            <div ng-if="search.selected.pairedUnit.length > 0" layout="row" layout-align="left center" class="rem0_9Text">
+                <i class="fa fa-user-plus" aria-hidden="true" style="margin-right: 8px;"><md-tooltip md-direction="top">Unit Pair-Up</md-tooltip></i>
+                Paired with&nbsp;<span ng-click="search.selected = getUnitByName(search.selected.pairedUnit)" class="hyperlinkText">{{search.selected.pairedUnit}}</span>&nbsp;({{search.selected.isBackOfPair ? 'back' : 'front'}})
             </div>
             <!--Tags-->
             <div layout="row" ng-if="search.selected.tags.length > 0">
