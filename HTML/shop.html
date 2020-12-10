@@ -22,7 +22,7 @@
                 &nbsp;Shop
             </div>
             <div layout="row">
-                <md-input-container>
+                <md-input-container flex>
                     <label>Sort By</label>
                     <md-select ng-model="filters.selectedSort" ng-model-options="{trackBy: '$value.displayName'}" ng-change="sortItems()" class="md-no-underline">
                         <md-option ng-repeat="option in data.parameters.sorts" ng-value="{{option}}">{{option.displayName}}</md-option>

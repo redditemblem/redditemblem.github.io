@@ -71,3 +71,10 @@
     height: 7px;
     width: 7px;
 }
+
+.unitTagSprites{
+    position: absolute;
+    top: -6px;
+    right: 1px;
+    height: 12px;
+}

@@ -22,16 +22,27 @@
                 &nbsp;Convoy
             </div>
             <div layout="row">
-                <md-input-container>
+                <md-input-container flex style="margin-bottom: 10px;">
                     <label>Sort By</label>
                     <md-select ng-model="filters.selectedSort" ng-model-options="{trackBy: '$value.displayName'}" ng-change="sortItems()" class="md-no-underline">
                         <md-option ng-repeat="option in data.parameters.sorts" ng-value="{{option}}">{{option.displayName}}</md-option>
                     </md-select>
                 </md-input-container>
             </div>
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Show Items Owned By</label>
+                    <md-select ng-model="filters.showOwner" class="md-no-underline">
+                        <md-option ng-value="owner" ng-repeat="owner in data.parameters.owners">
+                            {{owner}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
             <div layout="column">
                 <md-checkbox ng-model="filters.expandItemInfo" 
-                             aria-label="Show Expanded Data">
+                             aria-label="Show Expanded Data"
+                             style="margin-top: 0px;">
                              Show Expanded Item Data
                 </md-checkbox>
             </div>
@@ -69,7 +80,7 @@
     <md-content id="convoyItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.convoyItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all)"
+                 ng-show="(filters.showOwner == 'All' || item.owner == filters.showOwner) && filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all)"
                  class="fade">
                  <div layout="row" layout-align="space-between center">
                     <div layout="column">

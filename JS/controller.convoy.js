@@ -1,7 +1,7 @@
 app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
     
     $scope.data = {};
-    $scope.filters = { "showCategory" : {}, "showStat" : {} };
+    $scope.filters = { "showOwner": "All", "showCategory" : {}, "showStat" : {} };
     $scope.loadComplete = false;
     
     //Call API to fetch JSON on load

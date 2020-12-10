@@ -4,7 +4,8 @@ app.directive('unit', function() {
         templateUrl: 'HTML/Directives/unit.html',
         scope: {
             unit: "=unit",
-            tileconsts: "=tileconsts"
+            tileconsts: "=tileconsts",
+            tagsysdata: "=tagsysdata"
         }
     };
  });

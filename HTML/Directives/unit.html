@@ -1,11 +1,20 @@
 <img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved && !unit.isBackOfPair, 'dimGrayscale': unit.hasMoved && unit.isBackOfPair, 'dim': !unit.hasMoved && unit.isBackOfPair}" />
 <div ng-if="unit.statusConditions.length > 0" id="statusConditionIcon" class="unitStatusCondition">
-    <img ng-src="IMG/status_heart.png" />
+    <img ng-src="IMG/status_heart.png" ng-class="{'dim': unit.isBackOfPair}"/>
+</div>
+<div ng-if="unit.tags.length > 0" class="unitTagSprites">
+     <img ng-repeat="tag in unit.tags track by $index"
+          ng-init="tagData = tagsysdata[tag]"
+          ng-src="{{tagData.spriteURL}}" 
+          ng-show="tagData.showOnUnit"
+          style="max-height: 12px; max-width: 12px;"
+          ng-class="{'dim': unit.isBackOfPair}"/>
 </div>
 <div id="unitNumber" class="unitNumber">
     <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
             ng-src="IMG/num_{{digit}}.png"
-            ng-style="{'width': (tileconsts.tileSize < 70 ? '5px' : '10px'), 'height': (tileconsts.tileSize < 70 ? '7px' : '14px')}" />
+            ng-style="{'width': (tileconsts.tileSize < 70 ? '5px' : '10px'), 'height': (tileconsts.tileSize < 70 ? '7px' : '14px')}" 
+            ng-class="{'dim': unit.isBackOfPair}"/>
 </div>
 <div id="healthBarBorder" class="healthBarBorder"
      ng-style="{'width': (((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)-4)+'px'}">
