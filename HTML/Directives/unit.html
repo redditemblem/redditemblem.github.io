@@ -1,27 +1,35 @@
-<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" ng-class="{'grayscale': unit.hasMoved && !unit.isBackOfPair, 'dimGrayscale': unit.hasMoved && unit.isBackOfPair, 'dim': !unit.hasMoved && unit.isBackOfPair}" />
-<div ng-if="unit.statusConditions.length > 0" id="statusConditionIcon" class="unitStatusCondition">
-    <img ng-src="IMG/status_heart.png" ng-class="{'dim': unit.isBackOfPair}"/>
-</div>
-<div ng-if="unit.tags.length > 0" class="unitTagSprites">
-     <img ng-repeat="tag in unit.tags track by $index"
-          ng-init="tagData = tagsysdata[tag]"
-          ng-src="{{tagData.spriteURL}}" 
-          ng-show="tagData.showOnUnit"
-          style="max-height: 12px; max-width: 12px;"
+<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" 
+     ng-class="{'grayscale': unit.hasMoved && !unit.isBackOfPair, 'dimGrayscale': unit.hasMoved && unit.isBackOfPair, 'dim': !unit.hasMoved && unit.isBackOfPair}" />
+<div class="absolute"
+     ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px'}">
+    <!--Status condition icon-->
+     <img ng-if="unit.statusConditions.length > 0"
+          ng-src="IMG/status_heart.png"
+          class="unitStatusCondition"
           ng-class="{'dim': unit.isBackOfPair}"/>
-</div>
-<div id="unitNumber" class="unitNumber">
-    <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
-            ng-src="IMG/num_{{digit}}.png"
-            ng-style="{'width': (tileconsts.tileSize < 70 ? '5px' : '10px'), 'height': (tileconsts.tileSize < 70 ? '7px' : '14px')}" 
-            ng-class="{'dim': unit.isBackOfPair}"/>
-</div>
-<div id="healthBarBorder" class="healthBarBorder"
-     ng-style="{'width': (((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)-4)+'px'}">
-    <div id="healthBarFillBackground" class="healthBarFill" style="width: 100%; background-color: gray;"></div>
-    <div id="healthBarFillColor"
-            class="healthBarFill"
-            ng-style="{'width': unit.hp.percentage + '%'}"
-            ng-class="{'hpOverfillColor': unit.hp.percentage > 100, 'hp100PercentColor': unit.hp.percentage <= 100 && unit.hp.percentage > 50, 'hp50PercentColor': unit.hp.percentage <= 50 && unit.hp.percentage > 25, 'hp25PercentColor': unit.hp.percentage <= 25}"
-    ></div>
+    <!--Tag icons-->
+     <div ng-if="unit.tags.length > 0" class="unitTagSprites" layout="row" layout-align="right top">
+            <img ng-repeat="tag in unit.tags track by $index"
+                ng-init="tagData = tagsysdata[tag]"
+                ng-src="{{tagData.spriteURL}}" 
+                ng-show="tagData.showOnUnit"
+                style="max-height: 12px; max-width: 12px;"
+                ng-class="{'dim': unit.isBackOfPair}"/>
+    </div>
+    <!--Unit number-->
+    <div class="unitNumber" layout="row" layout-align="right end">
+        <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
+                ng-src="IMG/num_{{digit}}.png"
+                ng-style="{'width': (tileconsts.tileSize < 70 ? '5px' : '10px'), 'height': (tileconsts.tileSize < 70 ? '7px' : '14px')}" 
+                ng-class="{'dim': unit.isBackOfPair}"/>
+    </div>
+    <!--Health bar-->
+    <div class="healthBarBorder">
+        <div id="healthBarFillBackground" class="healthBarFill" style="width: 100%; background-color: gray;"></div>
+        <div id="healthBarFillColor"
+                class="healthBarFill"
+                ng-style="{'width': unit.hp.percentage + '%'}"
+                ng-class="{'hpOverfillColor': unit.hp.percentage > 100, 'hp100PercentColor': unit.hp.percentage <= 100 && unit.hp.percentage > 50, 'hp50PercentColor': unit.hp.percentage <= 50 && unit.hp.percentage > 25, 'hp25PercentColor': unit.hp.percentage <= 25}"
+        ></div>
+    </div>
 </div>

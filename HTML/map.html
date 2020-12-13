@@ -1,6 +1,6 @@
 <loadingscreen ng-if="!loadComplete" error="errorContext"></loadingscreen>
 <div ng-if="loadComplete" layout="row" layout-fill style="overflow: hidden;">
-    <!--Button toolbar-->
+    <!--Toolbar-->
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div>
             <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false;">
@@ -82,14 +82,27 @@
                 <div ng-if="search.selected.player.length > 0" layout="row" class="rem0_9Text bottomMargin">
                     <b>Player</b>: {{search.selected.player}}
                 </div>
-                <div ng-if="search.selected.classes.length > 0" ng-repeat="class in search.selected.classes track by class" layout="column" class="bottomMargin">
+                <!--Movement Type-->
+                <div ng-if="search.selected.movementType.length > 0" layout="row" class="rem0_9Text bottomMargin">
+                    <b>Movement Type</b>: {{search.selected.movementType}}
+                </div>
+                <!--Classes-->
+                <div ng-if="search.selected.classes.length > 0" 
+                     ng-repeat="class in search.selected.classes track by class"
+                     ng-init="classData = data.system.classes[class]"
+                     layout="column" 
+                     class="bottomMargin">
+                    <div ng-if="$first" layout="row" class="rem0_9Text bottomMargin">
+                        <b>Movement Type</b>: {{classData.movementType}}
+                    </div>
                     <div layout="row" class="rem0_9Text">
                         <b>Class</b>: {{class}}
                     </div>
-                    <div layout="row" ng-repeat="text in data.system.classes[class].textFields track by $index" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
+                    <div layout="row" ng-repeat="text in classData.textFields track by $index" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
                         {{text}}
                     </div>
                 </div>
+                <!--Affiliation-->
                 <div layout="column">
                     <div layout="row" class="rem0_9Text">
                         <b>Affiliation</b>: {{search.selected.affiliation}}
@@ -119,13 +132,13 @@
             </div>
             <!--Pair-Up Info-->
             <div ng-if="search.selected.pairedUnit.length > 0" layout="row" layout-align="left center" class="rem0_9Text">
-                <i class="fa fa-user-plus" aria-hidden="true" style="margin-right: 8px;"><md-tooltip md-direction="top">Unit Pair-Up</md-tooltip></i>
+                <i class="fa fa-user-plus fa-fw" aria-hidden="true" style="margin-right: 4px;"><md-tooltip md-direction="top">Unit Pair-Up</md-tooltip></i>
                 Paired with&nbsp;<span ng-click="search.selected = getUnitByName(search.selected.pairedUnit)" class="hyperlinkText">{{search.selected.pairedUnit}}</span>&nbsp;({{search.selected.isBackOfPair ? 'back' : 'front'}})
             </div>
             <!--Tags-->
             <div layout="row" ng-if="search.selected.tags.length > 0">
-                <div layout="column" style="margin-right: 8px; padding-top: 5px;">
-                    <i class="fa fa-tags" aria-hidden="true">
+                <div layout="column" style="margin-right: 4px; padding-top: 5px;">
+                    <i class="fa fa-tags fa-fw" aria-hidden="true">
                         <md-tooltip md-direction="top">Tags</md-tooltip>
                     </i>
                 </div>
@@ -138,6 +151,17 @@
                             <img ng-if="tagData.spriteURL.length > 0" ng-src="{{tagData.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
                             {{tag}}
                     </div>
+                </div>
+            </div>
+            <!--Behavior-->
+            <div ng-if="search.selected.behavior.length > 0" layout="row" class="rem0_9Text">
+                <div layout="column" style="margin-right: 4px;">
+                    <i class="fa fa-cogs fa-fw" aria-hidden="true">
+                        <md-tooltip md-direction="top">Unit Behavior</md-tooltip>
+                    </i>
+                </div>
+                <div layout="row">
+                    {{search.selected.behavior}}
                 </div>
             </div>
             <!-- Stats -->
@@ -153,8 +177,8 @@
             <modifiedstatlist ng-if="dictHasKeys(search.selected.stats)" data="search.selected.stats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!--Weapon ranks-->
             <div layout="row">
-                <div layout="row" style="margin-right: 8px; padding-top: 5px;">
-                    <i class="fa fa-tasks" aria-hidden="true">
+                <div layout="row" style="margin-right: 4px; padding-top: 5px;">
+                    <i class="fa fa-tasks fa-fw" aria-hidden="true">
                         <md-tooltip md-direction="top">Weapon Ranks</md-tooltip>
                     </i>
                 </div>
@@ -164,8 +188,8 @@
             </div>
             <!-- Statuses -->
             <div ng-if="search.selected.statusConditions.length > 0" layout="row">
-                <div layout="row" style="margin-right: 8px; padding-top: 5px;">
-                    <i class="fa fa-medkit" aria-hidden="true">
+                <div layout="row" style="margin-right: 4px; padding-top: 5px;">
+                    <i class="fa fa-medkit fa-fw" aria-hidden="true">
                         <md-tooltip md-direction="top">Status Conditions</md-tooltip>
                     </i>
                 </div>
@@ -203,7 +227,7 @@
     </div>
     <!-- Tile display -->
     <div id="divTileDisplay" ng-show="displayTile" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
-        <md-content ng-if="selectedTile"class="horizontalPadding">
+        <md-content ng-if="selectedTile" class="horizontalPadding">
             <div layout="row" layout-align="left center" class="rem1_4Text boldText bottomMargin">
                 <!--Tile preview-->
                 <div ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'background-position': 'left -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.x-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'overflow': hidden}"></div>
@@ -212,12 +236,12 @@
             </div>
             <md-divider></md-divider>
             <!-- Occupying Unit -->
-            <div ng-if="selectedTile.occupyingUnitName.length > 0" layout="column">
-                <span layout="row" class="bottomMargin">
-                    <span class="boldText">Unit:</span>&nbsp;{{selectedTile.occupyingUnitName}}
-                </span>
-                <span ng-if="selectedTile.pairedUnitName.length > 0" layout="row" class="bottomMargin">
-                    <span class="boldText">Paired Unit:</span>&nbsp;{{selectedTile.pairedUnitName}}
+            <div layout="row" class="bottomMargin">
+                <b>Unit</b>:&nbsp;
+                <span ng-if="selectedTile.occupyingUnitName.length == 0" class="opacity50"><i>None</i></span>
+                <span ng-if="selectedTile.occupyingUnitName.length > 0">
+                    {{selectedTile.occupyingUnitName}}
+                    <span ng-if="selectedTile.pairedUnitName.length > 0"> / {{selectedTile.pairedUnitName}}</span>
                 </span>
             </div>
             <!-- Terrain Type -->
@@ -247,10 +271,21 @@
                         </span>
                     </div>
                 </div>
+                <div layout="row" class="rem0_9Text horizontalPadding">
+                    <b>Movement Costs</b>
+                </div>
+                <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
+                    <div ng-repeat="(moveType, cost) in data.system.terrainTypes[selectedTile.terrainType].movementCosts" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>{{moveType}}</span>
+                        <span ng-if="cost >= 99"><i class="fa fa-ban" aria-hidden="true"></i></span>
+                        <span ng-if="cost < 99">{{cost}}</span>
+                    </div>
+                </div>
                 <div layout="row" ng-repeat="text in data.system.terrainTypes[selectedTile.terrainType].textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
                     {{text}}
                 </div>
             </div>
+            <md-divider></md-divider>
             <!-- Terrain Effects -->
             <div ng-repeat="effect in selectedTile.terrainEffects"
                  ng-init="effectData = data.system.terrainEffects[effect.name]"
