@@ -92,8 +92,9 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     };
 
     $scope.toggleUnitPinnedStatus = function(unit){
-        $scope.search.selected = unit;
         if(!unit.pinned){
+            $scope.search.selected = unit; //set the unit in the search
+
             unit.pinned = true;
             UpdateVisibleRanges(unit, 1);
         }
