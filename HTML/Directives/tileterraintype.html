@@ -1,0 +1,51 @@
+<div layout="row">
+    <b>Terrain Type</b>: {{sysdata.name}}
+</div>
+<div layout="row" layout-wrap class="rem0_9Text bottomMargin">
+    <div ng-if="sysdata.hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+        <span>HP</span>
+        <span>
+            <span ng-if="sysdata.hpModifier >= 0">+</span>{{sysdata.hpModifier}}%
+        </span>
+    </div>
+    <!-- Combat Stat Modifiers -->
+    <div ng-repeat="(stat, val) in sysdata.combatStatModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+        <span>{{stat}}</span>
+        <span>
+            <span ng-if="val >= 0">+</span>{{val}}
+        </span>
+    </div>
+    <!-- Stat Modifiers -->
+    <div ng-repeat="(stat, val) in sysdata.statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+        <span>{{stat}}</span>
+        <span>
+            <span ng-if="val >= 0">+</span>{{val}}
+        </span>
+    </div>
+</div>
+<div layout="row" class="rem0_9Text horizontalPadding bottomMargin">
+    <b>Warp</b>:&nbsp;
+    <i ng-if="sysdata.warpType == 0 || !tile.inWarpGroup" class="opacity50">None</i>
+    <span ng-if="sysdata.warpType == 1 && tile.inWarpGroup">Entrance</span>
+    <span ng-if="sysdata.warpType == 2 && tile.inWarpGroup">Exit</span>
+    <span ng-if="sysdata.warpType == 3 && tile.inWarpGroup">Entrance/Exit</span>
+</div>
+<div layout="row" class="rem0_9Text horizontalPadding">
+    <b>Movement Costs</b>
+</div>
+<div layout="row" layout-wrap class="rem0_9Text bottomMargin">
+    <div ng-repeat="(moveType, cost) in sysdata.movementCosts" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+        <span>{{moveType}}</span>
+        <span ng-if="cost >= 99"><i class="fa fa-ban" aria-hidden="true"></i></span>
+        <span ng-if="cost < 99">{{cost}}</span>
+    </div>
+    <div ng-if="(sysdata.warpType == 1 || sysdata.warpType == 3) && tile.inWarpGroup"
+         layout="row" layout-align="space-between" flex="50" class="horizontalPadding"
+    >
+        <span>Use Warp</span>
+        <span>{{sysdata.warpCost}}</span>
+    </div>
+</div>
+<div layout="row" ng-repeat="text in sysdata.textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
+    {{text}}
+</div>

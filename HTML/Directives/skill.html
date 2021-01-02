@@ -3,7 +3,7 @@
         <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
         <span>{{skill}}</span>
     </div>
-    <md-divider></md-divider>
+    <md-divider ng-if="sysdata.textFields.length > 0"></md-divider>
     <div ng-repeat="text in sysdata.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
         {{text}}
     </div>

@@ -245,59 +245,7 @@
                 </span>
             </div>
             <!-- Terrain Type -->
-            <div layout="column" class="bottomMargin">
-                <div layout="row">
-                    <b>Terrain Type</b>: {{selectedTile.terrainType}}
-                </div>
-                <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
-                    <div ng-if="data.system.terrainTypes[selectedTile.terrainType].hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
-                        <span>HP</span>
-                        <span>
-                            <span ng-if="data.system.terrainTypes[selectedTile.terrainType].hpModifier >= 0">+</span>{{effectData.hpModifier}}%
-                        </span>
-                    </div>
-                    <!-- Combat Stat Modifiers -->
-                    <div ng-repeat="(stat, val) in data.system.terrainTypes[selectedTile.terrainType].combatStatModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
-                        <span>{{stat}}</span>
-                        <span>
-                            <span ng-if="val >= 0">+</span>{{val}}
-                        </span>
-                    </div>
-                    <!-- Stat Modifiers -->
-                    <div ng-repeat="(stat, val) in data.system.terrainTypes[selectedTile.terrainType].statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
-                        <span>{{stat}}</span>
-                        <span>
-                            <span ng-if="val >= 0">+</span>{{val}}
-                        </span>
-                    </div>
-                </div>
-                <div layout="row" class="rem0_9Text horizontalPadding bottomMargin">
-                    <b>Warp</b>:&nbsp;
-                    <i ng-if="data.system.terrainTypes[selectedTile.terrainType].warpType == 0" class="opacity50">None</i>
-                    <span ng-if="data.system.terrainTypes[selectedTile.terrainType].warpType == 1">Entrance</span>
-                    <span ng-if="data.system.terrainTypes[selectedTile.terrainType].warpType == 2">Exit</span>
-                    <span ng-if="data.system.terrainTypes[selectedTile.terrainType].warpType == 3">Entrance/Exit</span>
-                </div>
-                <div layout="row" class="rem0_9Text horizontalPadding">
-                    <b>Movement Costs</b>
-                </div>
-                <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
-                    <div ng-repeat="(moveType, cost) in data.system.terrainTypes[selectedTile.terrainType].movementCosts" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
-                        <span>{{moveType}}</span>
-                        <span ng-if="cost >= 99"><i class="fa fa-ban" aria-hidden="true"></i></span>
-                        <span ng-if="cost < 99">{{cost}}</span>
-                    </div>
-                    <div ng-if="data.system.terrainTypes[selectedTile.terrainType].warpType == 1 || data.system.terrainTypes[selectedTile.terrainType].warpType == 3"
-                         layout="row" layout-align="space-between" flex="50" class="horizontalPadding"
-                    >
-                        <span>Use Warp</span>
-                        <span>{{data.system.terrainTypes[selectedTile.terrainType].warpCost}}</span>
-                    </div>
-                </div>
-                <div layout="row" ng-repeat="text in data.system.terrainTypes[selectedTile.terrainType].textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
-                    {{text}}
-                </div>
-            </div>
+            <tileterraintype tile="selectedTile" sysdata="data.system.terrainTypes[selectedTile.terrainType]" layout="column" class="bottomMargin"></tileterraintype>
             <md-divider></md-divider>
             <!-- Terrain Effects -->
             <div ng-repeat="effect in selectedTile.terrainEffects"
@@ -339,7 +287,7 @@
     <!-- Map -->
     <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
         <div class="mapBackground"
-             ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.mapImageWidth + 'px', 'height': data.map.mapImageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
+             ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.imageWidth + 'px', 'height': data.map.imageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
              <!--Draw tiles-->
              <div ng-repeat="row in data.map.tiles track by $index"
                  class="mapRow"
