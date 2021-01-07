@@ -56,7 +56,7 @@
             <div layout="row" layout-align="space-between">
                 <div layout="column">
                     <div layout="row">
-                        <img ng-src="{{search.selected.spriteURL}}" style="max-width: 100px; max-height: 100px;"/>
+                        <img ng-src="{{search.selected.portraitURL.length > 0 ? search.selected.portraitURL : search.selected.spriteURL}}" style="max-width: 150px; max-height: 150px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
