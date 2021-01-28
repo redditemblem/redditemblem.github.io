@@ -2,6 +2,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     
     $scope.data = {};
     $scope.search = {};
+    $scope.turnData = {};
+
     $scope.loadComplete = false;
     $scope.unitInfoExpanded = false;
     $scope.statsExpanded = false;
@@ -27,6 +29,18 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
         }     
     });
 
+    $scope.displayTurns = true;
+    //$scope.fetchTurnData = function(){
+        $http({
+            method: "GET",
+            url: "https://localhost:44380/api/map/" + $routeParams.teamName + "/turns"
+        }).then(function successCallback(response) {
+            $scope.turnData = response.data;
+        },function errorCallback(response){
+            //TO DO   
+        });
+    //};
+
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     //Links
@@ -35,16 +49,16 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     $scope.navigateConvoy = function(){ $location.path($routeParams.teamName + "/convoy"); };
     $scope.navigateShop = function(){ $location.path($routeParams.teamName + "/shop"); };
 
+    $scope.toggleStatsExpanded = function(){ $scope.statsExpanded = !$scope.statsExpanded; };
+    $scope.toggleInvExpanded = function(){ $scope.invExpanded = !$scope.invExpanded; };
+    $scope.toggleSkillsExpanded = function(){ $scope.skillsExpanded = !$scope.skillsExpanded; };
+
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;
         if((unit.coordinate.x < 1 || unit.coordinate.y < 1) && !unit.isBackOfPair) sort += 1;
         return sort;
     };
-
-    $scope.toggleStatsExpanded = function(){ $scope.statsExpanded = !$scope.statsExpanded; };
-    $scope.toggleInvExpanded = function(){ $scope.invExpanded = !$scope.invExpanded; };
-    $scope.toggleSkillsExpanded = function(){ $scope.skillsExpanded = !$scope.skillsExpanded; };
 
     $scope.dictHasKeys = function(dictionary){
         return Object.keys(dictionary).length > 0;

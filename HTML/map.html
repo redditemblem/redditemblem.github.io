@@ -3,11 +3,14 @@
     <!--Toolbar-->
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div>
-            <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false;">
+            <md-button id="btnShowUnits" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTiles = false; displayTurns = false;">
                 <i class="fa fa-bars fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Unit Info</md-tooltip></i>
             </md-button>
-            <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTile}" ng-click="displayTile = !displayTile; displayUnits = false;">
+            <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTiles}" ng-click="displayTiles = !displayTiles; displayUnits = false; displayTurns = false;">
                 <i class="fa fa-square-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Tile Info</md-tooltip></i>
+            </md-button>
+            <md-button id="btnShowTurnInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTurns}" ng-click="displayTurns = !displayTurns; displayUnits = false; displayTiles = false;">
+                <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Turns</md-tooltip></i>
             </md-button>
         </div>
         <div>
@@ -226,7 +229,7 @@
         </md-content>
     </div>
     <!-- Tile display -->
-    <div id="divTileDisplay" ng-show="displayTile" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
+    <div id="divTileDisplay" ng-show="displayTiles" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
         <md-content ng-if="selectedTile" class="horizontalPadding">
             <div layout="row" layout-align="left center" class="rem1_4Text boldText bottomMargin">
                 <!--Tile preview-->
@@ -281,6 +284,24 @@
                     {{text}}
                 </div>
             </div>
+        </md-content>
+    </div>
+    <!--Turns display-->
+    <div id="divTurnDisplay" ng-show="displayTurns" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
+        <md-content class="horizontalPadding">
+            <md-button ng-click="fetchTurnData()">Fetch Data</md-button>
+            <md-button ng-click="displayTurnSubmit = !displayTurnSubmit">Submit Turn</md-button>
+            <div layout="column">
+                <submittedturn ng-repeat="turn in turnData.submittedTurns track by turn.turnID"
+                               ng-if="turn.amendedByTurnID == -1"
+                               turn="turn">
+                </submittedturn>
+            </div>
+        </md-content>
+    </div>
+    <div id="divSubmitTurn" ng-show="displayTurnSubmit" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
+        <md-content class="horizontalPadding">
+            Turn submit display
         </md-content>
     </div>
 

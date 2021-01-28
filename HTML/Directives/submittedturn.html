@@ -1,0 +1,46 @@
+<md-card ng-click="expanded = !expanded"
+         class="md-card-hover clickable verticalPadding horizontalPadding">
+    <div layout="row">
+        <div layout="column" layout-align="start center" style="padding-right: 8px;">
+            <i class="fa fa-caret-up fa-fw" aria-hidden="true"></i>
+            <span>{{turn.turnOrder}}</span>
+            <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+        </div>
+        <div layout="column" flex>
+            <div layout="row" class="rem1_4Text boldText">
+                {{turn.unitName}}
+            </div>
+            <div layout="row" class="rem0_9Text">
+                Submitted by {{turn.playerName}}
+            </div>
+            <md-divider></md-divider>
+            <!--Conditionals-->
+            <div ng-if="turn.beforeConditional.length > 0" layout="column" class="bottomMargin">
+                <span class="rem0_9Text">Move Before</span>
+                <span class="rem0_8Text leftPadding">{{turn.beforeConditional}}</span>
+            </div>
+            <div ng-if="turn.afterConditional.length > 0" layout="column">
+                <span class="rem0_9Text">Move After</span>
+                <span class="rem0_8Text leftPadding">{{turn.afterConditional}}</span>
+            </div>
+            <md-divider></md-divider>
+            <!--Turn details-->
+            <div layout="column" class="bottomMargin">
+                <span class="rem0_9Text">Action</span>
+                <span class="rem0_8Text leftPadding">{{turn.action}}</span>
+            </div>
+            <div ng-if="turn.notes.length > 0" layout="column">
+                <span class="rem0_9Text">Notes</span>
+                <span class="rem0_8Text leftPadding">{{turn.notes}}</span>
+            </div>
+            <!--Character-->
+            <md-divider></md-divider>
+            <div ng-if="turn.inCharacter.length > 0" 
+                 layout="row" 
+                 class="rem0_8Text" 
+                 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                {{turn.inCharacter}}
+            </div>
+        </div>
+    </div>
+</md-card>
