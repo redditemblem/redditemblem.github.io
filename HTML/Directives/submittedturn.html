@@ -1,45 +1,93 @@
-<md-card ng-click="expanded = !expanded"
-         class="md-card-hover clickable verticalPadding horizontalPadding">
+<md-card class="verticalPadding horizontalPadding">
     <div layout="row">
         <div layout="column" layout-align="start center" style="padding-right: 8px;">
-            <i class="fa fa-caret-up fa-fw" aria-hidden="true"></i>
+            <i class="fa fa-caret-up fa-fw clickable" aria-hidden="true" ng-class="{'opacity50': turn.turnOrder == 1}" ng-click="turn.turnOrder > 1 && moveTurnUp()"></i>
             <span>{{turn.turnOrder}}</span>
-            <i class="fa fa-caret-down fa-fw" aria-hidden="true"></i>
+            <i class="fa fa-caret-down fa-fw clickable" aria-hidden="true" ng-class="{'opacity50': islast}" ng-click="!islast && moveTurnDown()"></i>
         </div>
         <div layout="column" flex>
-            <div layout="row" class="rem1_4Text boldText">
-                {{turn.unitName}}
-            </div>
-            <div layout="row" class="rem0_9Text">
-                Submitted by {{turn.playerName}}
+            <div layout="row" layout-align="space-between start">
+                <div layout="column">
+                    <span class="rem1_4Text boldText">{{turn.unitName}}</span>
+                    <span class="rem0_9Text">Submitted by {{turn.playerName}}</span>
+                </div>
+                <div layout="column">
+                    <md-button class="md-icon-button">
+                        <i class="fa fa-wrench" aria-hidden="true"><md-tooltip md-direction="left">Update Turn</md-tooltip></i>
+                    </md-button>
+                </div>
             </div>
             <md-divider></md-divider>
             <!--Conditionals-->
-            <div ng-if="turn.beforeConditional.length > 0" layout="column" class="bottomMargin">
-                <span class="rem0_9Text">Move Before</span>
+            <div ng-if="turn.beforeConditional.length > 0" layout="column" ng-class="{'bottomMargin': turn.afterConditional.length > 0}">
+                <span class="rem0_9Text boldText">Move Before</span>
                 <span class="rem0_8Text leftPadding">{{turn.beforeConditional}}</span>
             </div>
             <div ng-if="turn.afterConditional.length > 0" layout="column">
-                <span class="rem0_9Text">Move After</span>
+                <span class="rem0_9Text boldText">Move After</span>
                 <span class="rem0_8Text leftPadding">{{turn.afterConditional}}</span>
             </div>
-            <md-divider></md-divider>
+            <md-divider ng-if="turn.beforeConditional.length > 0 || turn.afterConditional.length > 0"></md-divider>
             <!--Turn details-->
-            <div layout="column" class="bottomMargin">
-                <span class="rem0_9Text">Action</span>
+            <div layout="column" ng-class="{'bottomMargin': turn.notes.length > 0}">
+                <span class="rem0_9Text boldText">Action</span>
                 <span class="rem0_8Text leftPadding">{{turn.action}}</span>
             </div>
             <div ng-if="turn.notes.length > 0" layout="column">
-                <span class="rem0_9Text">Notes</span>
+                <span class="rem0_9Text boldText">Notes</span>
                 <span class="rem0_8Text leftPadding">{{turn.notes}}</span>
             </div>
             <!--Character-->
-            <md-divider></md-divider>
+            <md-divider ng-if="turn.inCharacter.length > 0"></md-divider>
             <div ng-if="turn.inCharacter.length > 0" 
                  layout="row" 
-                 class="rem0_8Text" 
-                 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                 class="rem0_8Text bottomMargin" 
+                 style="max-height: 3.4em; overflow: hidden;">
                 {{turn.inCharacter}}
+            </div>
+        </div>
+    </div>
+    <md-divider ng-if="turn.amendedTurns.length > 0"></md-divider>
+    <!--Turn history-->
+    <div ng-if="turn.amendedTurns.length > 0" layout="row">
+        <div layout="column" layout-align="start center" style="padding-right: 8px;">
+            <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !showTurnHistory}" ng-click="toggleTurnHistory()" aria-hidden="true"></i>
+        </div>
+        <div layout="column">
+            <div ng-if="!showTurnHistory" layout="row">
+                Turn History
+            </div>
+            <div ng-repeat="amended in turn.amendedTurns" 
+                 ng-if="showTurnHistory"
+                 layout="row"
+                 class="opacity50"
+                 ng-class="{'tripleBottomMargin': !$last}"
+                 style="padding-left: 4px;">
+                <div layout="column" flex style="border-left: 1px solid gray; padding-left: 8px;">
+                    <div layout="row" class="rem0_8Text">
+                        Submitted by {{amended.playerName}}
+                    </div>
+                    <md-divider></md-divider>
+                    <!--Conditionals-->
+                    <div ng-if="amended.beforeConditional.length > 0" layout="column" ng-class="{'bottomMargin': amended.afterConditional.length > 0}">
+                        <span class="rem0_9Text boldText">Move Before</span>
+                        <span class="rem0_8Text leftPadding">{{amended.beforeConditional}}</span>
+                    </div>
+                    <div ng-if="amended.afterConditional.length > 0" layout="column">
+                        <span class="rem0_9Text boldText">Move After</span>
+                        <span class="rem0_8Text leftPadding">{{amended.afterConditional}}</span>
+                    </div>
+                    <md-divider ng-if="amended.beforeConditional.length > 0 || amended.afterConditional.length > 0"></md-divider>
+                    <!--Turn details-->
+                    <div layout="column" ng-class="{'bottomMargin': amended.notes.length > 0}">
+                        <span class="rem0_9Text boldText">Action</span>
+                        <span class="rem0_8Text leftPadding">{{amended.action}}</span>
+                    </div>
+                    <div ng-if="amended.notes.length > 0" layout="column">
+                        <span class="rem0_9Text boldText">Notes</span>
+                        <span class="rem0_8Text leftPadding">{{amended.notes}}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

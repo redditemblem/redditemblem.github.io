@@ -19,6 +19,7 @@
 .topMargin{ margin-top: 8px; }
 .halfBottomMargin{ margin-bottom: 4px; }
 .bottomMargin{ margin-bottom: 8px; }
+.tripleBottomMargin{ margin-bottom: 24px; }
 
 .toolbarColor{ background-color: #2196F3;}
 .toolbarButtonColor{ color: #FFC107; }
@@ -40,6 +41,7 @@
 
 .opacity50{ opacity: 0.5; }
 
+.rem0_7Text{ font-size: .7rem; }
 .rem0_8Text{ font-size: .8rem; }
 .rem0_9Text{ font-size: .9rem; }
 .rem1_2Text{ font-size: 1.2rem; }

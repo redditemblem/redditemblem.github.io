@@ -289,19 +289,45 @@
     <!--Turns display-->
     <div id="divTurnDisplay" ng-show="displayTurns" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
         <md-content class="horizontalPadding">
-            <md-button ng-click="fetchTurnData()">Fetch Data</md-button>
-            <md-button ng-click="displayTurnSubmit = !displayTurnSubmit">Submit Turn</md-button>
+            <div layout="row" layout-align="space-between center">
+                <md-button ng-click="fetchTurnData()"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i> Refresh</md-button>
+                <md-button ng-click="displayTurnSubmit = !displayTurnSubmit"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> Add Turn</md-button>
+            </div>
             <div layout="column">
-                <submittedturn ng-repeat="turn in turnData.submittedTurns track by turn.turnID"
-                               ng-if="turn.amendedByTurnID == -1"
-                               turn="turn">
+                <submittedturn ng-repeat="turn in turnData.submittedTurns | orderBy: 'turnOrder'"
+                               turn="turn"
+                               islast="$last">
                 </submittedturn>
             </div>
         </md-content>
     </div>
-    <div id="divSubmitTurn" ng-show="displayTurnSubmit" layout="column" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
-        <md-content class="horizontalPadding">
-            Turn submit display
+    <div id="divSubmitTurn" ng-show="displayTurnSubmit" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
+        <md-content class="horizontalPadding" layout="column" layout-align="space-between" flex>
+            <div layout="row" flex>
+                <div layout="column" flex>
+                    <div layout="row" class="rem1_4Text boldText">
+                        Add a Turn
+                    </div>
+                    <md-input-container flex>
+                        <label>Unit</label>
+                        <md-select ng-model="newTurn.unitName" class="md-no-underline" required >
+                            <md-option ng-value="unit.name" ng-repeat="unit in data.units">{{unit.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>Player Name</label>
+                        <input type="text" name="quest" ng-model="newTurn.playerName" required />
+                    </md-input-container>
+                    <md-checkbox ng-model="newTurn.isCover" 
+                                 aria-label="Turn Cover?"
+                                 style="margin-top: 0px;">
+                                 Turn Cover?
+                    </md-checkbox>
+                </div>
+            </div>
+            <div layout="row" flex layout-align="end end">
+                <md-button class="md-raised md-accent">Submit Turn</md-button>
+            </div>
         </md-content>
     </div>
 
