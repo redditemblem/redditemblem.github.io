@@ -12,24 +12,6 @@ app.directive('submittedturn', function() {
             $scope.toggleTurnHistory = function(){
                 $scope.showTurnHistory = !$scope.showTurnHistory;
             };
-
-            $scope.moveTurnUp = function(){
-                var target = $scope.$parent.turnData.submittedTurns.find((t) => { return t["turnOrder"] === $scope.turn.turnOrder - 1 });
-                if(target != null)
-                {
-                    $scope.turn.turnOrder -= 1;
-                    target.turnOrder += 1;
-                }
-            };
-
-            $scope.moveTurnDown = function(){
-                var target = $scope.$parent.turnData.submittedTurns.find((t) => { return t["turnOrder"] === $scope.turn.turnOrder + 1 });
-                if(target != null)
-                {
-                    $scope.turn.turnOrder += 1;
-                    target.turnOrder -= 1;
-                }
-            };
         }
     };
  });

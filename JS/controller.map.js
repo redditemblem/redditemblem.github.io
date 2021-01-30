@@ -1,15 +1,18 @@
 app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routeParams', function ($scope, $http, $location, $window, $routeParams) {
     
     $scope.data = {};
-    $scope.search = {};
     $scope.turnData = {};
 
-    $scope.loadComplete = false;
+    $scope.mapLoadComplete = false;
+    $scope.turnLoadComplete = false;
+
+    $scope.search = {};
+    $scope.selectedTile = null;
+
     $scope.unitInfoExpanded = false;
     $scope.statsExpanded = false;
     $scope.invExpanded = true;
     $scope.skillsExpanded = true;
-    $scope.selectedTile = null;
     
     //Call API to fetch JSON on load
     $http({
@@ -18,7 +21,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     }).then(function successCallback(response) {
         $scope.data = response.data;
         $scope.selectedTile = $scope.data.map.tiles[0][0];
-        $scope.loadComplete = true;
+        $scope.mapLoadComplete = true;
     },function errorCallback(response){
         if(response.data == null)
             //Set manual error context
@@ -29,17 +32,28 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
         }     
     });
 
-    $scope.displayTurns = true;
-    //$scope.fetchTurnData = function(){
+    //TO DO REMOVE THESE!
+    //$scope.displayTurns = true;
+    $scope.displayTurnSubmit = true;
+
+    $scope.fetchTurnData = function(){
+        $scope.turnLoadComplete = false;
         $http({
             method: "GET",
             url: "https://localhost:44380/api/map/" + $routeParams.teamName + "/turns"
         }).then(function successCallback(response) {
             $scope.turnData = response.data;
+            $scope.turnLoadComplete = true;
         },function errorCallback(response){
-            //TO DO   
+            if(response.data == null)
+                //Set manual error context
+                $scope.errorContext = { 'message': 'The API endpoint could not be reached.' };
+            else{
+                $scope.errorContext = response.data;
+                $scope.errorContext.status = response.status;
+            }
         });
-    //};
+    };
 
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
@@ -63,6 +77,18 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     $scope.dictHasKeys = function(dictionary){
         return Object.keys(dictionary).length > 0;
     };
+
+    $scope.openTurnInfo = function(){
+        $scope.displayUnits = false;
+        $scope.displayTiles = false;
+        $scope.displayTurns = true;
+
+        //If we haven't loaded the turns yet and there are no errors, try to load them
+        if($scope.turnData.submittedTurns == undefined && $scope.errorContext == undefined)
+            $scope.fetchTurnData();
+    };
+
+    //$scope.openTurnInfo();
 
     // TILE FUNCTIONS -------------------------------------------------
     

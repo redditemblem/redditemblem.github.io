@@ -61,6 +61,10 @@ i:focus{
     border: 0;
 }
 
+md-input-container{
+    margin: 16px 0px 0px 0px;
+}
+
 md-divider{
     margin-top: 8px;
     padding: 0px 0px 8px 0px !important;

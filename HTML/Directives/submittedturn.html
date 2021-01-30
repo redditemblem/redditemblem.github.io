@@ -1,9 +1,8 @@
 <md-card class="verticalPadding horizontalPadding">
     <div layout="row">
         <div layout="column" layout-align="start center" style="padding-right: 8px;">
-            <i class="fa fa-caret-up fa-fw clickable" aria-hidden="true" ng-class="{'opacity50': turn.turnOrder == 1}" ng-click="turn.turnOrder > 1 && moveTurnUp()"></i>
+            <span class="rem0_7Text">Order</span>
             <span>{{turn.turnOrder}}</span>
-            <i class="fa fa-caret-down fa-fw clickable" aria-hidden="true" ng-class="{'opacity50': islast}" ng-click="!islast && moveTurnDown()"></i>
         </div>
         <div layout="column" flex>
             <div layout="row" layout-align="space-between start">
