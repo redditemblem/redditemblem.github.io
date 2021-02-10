@@ -2,6 +2,16 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     
     $scope.data = {};
     $scope.turnData = {};
+    $scope.newTurn = {
+        unitName: "Alder",
+        playerName: "IronPegasus",
+        turnOrder: "7",
+        isCover: true,
+        beforeConditional: "Before text",
+        afterConditional: "After text",
+        action: "Action text",
+        inCharacter: "Character text"
+    };
 
     $scope.mapLoadComplete = false;
     $scope.turnLoadComplete = false;
@@ -55,6 +65,22 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
         });
     };
 
+    $scope.createNewTurn = function(){
+        $scope.turnLoadComplete = false;
+        $http({
+            method: "POST",
+            url: "https://localhost:44380/api/map/" + $routeParams.teamName + "/turns/create",
+            data: $scope.newTurn
+        }).then(function successCallback(response) {
+            $scope.turnData = response.data;
+            $scope.newTurn = {};
+            $scope.turnLoadComplete = true;
+        },function errorCallback(response){
+            $scope.turnData = response.data;
+            $scope.turnLoadComplete = true;
+        });
+    };
+
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
     //Links
@@ -88,7 +114,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
             $scope.fetchTurnData();
     };
 
-    //$scope.openTurnInfo();
+    $scope.openTurnInfo();
 
     // TILE FUNCTIONS -------------------------------------------------
     

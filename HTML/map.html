@@ -322,7 +322,7 @@
     </div>
     <div id="divSubmitTurn" ng-show="displayTurnSubmit" class="verticalPadding horizontalPadding slide" style="width: 375px; height: 100%;">
         <div layout="column">
-            <form name="newTurnForm">
+            <form name="newTurnForm" ng-submit="createNewTurn()">
                 <md-content class="horizontalPadding">
                     <div layout="column">
                         <div layout="row" class="rem1_4Text boldText">
@@ -336,7 +336,7 @@
                         </md-input-container>
                         <md-input-container>
                             <label>Player Name</label>
-                            <input type="text" name="quest" ng-model="newTurn.playerName" required />
+                            <input type="text" ng-model="newTurn.playerName" required />
                         </md-input-container>
                         <div layout="row" layout-align="space-around center">
                             <div layout="column" flex="50">
