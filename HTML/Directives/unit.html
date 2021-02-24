@@ -8,11 +8,11 @@
           class="unitStatusCondition"
           ng-class="{'dim': unit.isBackOfPair}"/>
     <!--Tag icons-->
-     <div ng-if="unit.tags.length > 0" class="unitTagSprites" layout="row" layout-align="right top">
-            <img ng-repeat="tag in unit.tags track by $index"
+     <div ng-if="filteredTagList.length > 0" class="unitTagSprites" layout="row" layout-align="right top">
+            <img ng-repeat="tag in filteredTagList track by $index"
                 ng-init="tagData = tagsysdata[tag]"
                 ng-src="{{tagData.spriteURL}}" 
-                ng-show="tagData.showOnUnit"
+                ng-show="tagIterator == $index"
                 style="max-height: 12px; max-width: 12px;"
                 ng-class="{'dim': unit.isBackOfPair}"/>
     </div>

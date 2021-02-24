@@ -1,16 +1,17 @@
 <md-card ng-click="expanded = !expanded"
          class="md-card-hover clickable verticalPadding horizontalPadding"
          ng-style="{'pointer-events': item != null ? 'auto' : 'none'}">
-    <div layout="row" layout-align="space-between center">
+    <div layout="row" layout-align="space-between center" ng-class="{'opacity50': item == null || !item.canEquip}">
         <span>
             <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-            <span ng-class="{'droppableItemColor': item.isDroppable == true, 'opacity50': item == null || !item.canEquip}">
+            <span ng-class="{'droppableItemColor': item.isDroppable == true}">
                 <span ng-if="item != null" style="font-style: bold;" >{{item.name}}</span>
                 <span ng-if="item == null" style="font-style: italic;">Empty</span>
                 <span ng-if="item.uses > 0">({{item.uses}})</span>
             </span>
         </span>
         <span>
+            <i class="fa fa-ban" ng-if="item.isUsePrevented" aria-label="Cannot Use"><md-tooltip md-direction="top">Cannot Use</md-tooltip></i>
             <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
             <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
         </span>
