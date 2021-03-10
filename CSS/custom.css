@@ -66,17 +66,14 @@
     bottom: 5px;
 }
 
-.unitStatusCondition{
+.unitStatusSprites{
     position: absolute;
     top: -1px;
     left: 1px;
-    height: 7px;
-    width: 7px;
 }
 
 .unitTagSprites{
     position: absolute;
     top: -1px;
     right: 1px;
-    height: 12px;
 }
