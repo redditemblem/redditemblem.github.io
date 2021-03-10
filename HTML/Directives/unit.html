@@ -7,7 +7,7 @@
         <img ng-repeat="statusSprite in statusSpriteList track by $index"
             ng-src="{{statusSprite}}" 
             ng-show="statusIterator == $index"
-            style="max-height: 12px; max-width: 12px;"
+            ng-style="{'max-width': (tileconsts.tileSize < 70 ? '12px' : '24px'), 'max-height': (tileconsts.tileSize < 70 ? '12px' : '24px')}"
             ng-class="{'dim': unit.isBackOfPair}"/>
     </div>
     <!--Tag icons-->
@@ -15,7 +15,7 @@
             <img ng-repeat="tagSprite in tagSpriteList track by $index"
                 ng-src="{{tagSprite}}" 
                 ng-show="tagIterator == $index"
-                style="max-height: 12px; max-width: 12px;"
+                ng-style="{'max-width': (tileconsts.tileSize < 70 ? '12px' : '24px'), 'max-height': (tileconsts.tileSize < 70 ? '12px' : '24px')}"
                 ng-class="{'dim': unit.isBackOfPair}"/>
     </div>
     <!--Unit number-->
