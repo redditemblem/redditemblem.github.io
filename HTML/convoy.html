@@ -87,6 +87,12 @@
                         <div layout="row" layout-align="left center">
                             <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
                             <span class="boldText">{{item.name}} <span ng-if="item.uses > 0">({{item.uses}})</span></span>
+                            <span ng-if="itemData.tags.length > 0" style="margin-left: 4px;">
+                                <img ng-repeat="tag in itemData.tags"
+                                     ng-if="data.tags[tag].spriteURL.length > 0"
+                                     ng-src="{{data.tags[tag].spriteURL}}" 
+                                     style="max-height: 24px; max-width: 24px;" />
+                            </span>
                         </div>
                         <div layout="row" class="rem0_8Text leftPadding">
                             <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}

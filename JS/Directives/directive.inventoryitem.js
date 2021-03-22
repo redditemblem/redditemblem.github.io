@@ -4,7 +4,8 @@ app.directive('inventoryitem', function() {
         templateUrl: 'HTML/Directives/inventoryitem.html',
         scope: {
             item: "=item",
-            sysdata: "=sysdata"
+            sysdata: "=sysdata",
+            tagsysdata: "=tagsysdata"
         },
         link: function($scope, element, attrs) {
             $scope.expanded = false; //start collapsed

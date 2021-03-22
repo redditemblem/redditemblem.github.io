@@ -208,7 +208,8 @@
             <div layout="column" ng-if="invExpanded">
                 <inventoryitem ng-repeat="item in search.selected.inventory track by $index"  
                                item="item"
-                               sysdata="data.system.items[item.name]">
+                               sysdata="data.system.items[item.name]"
+                               tagsysdata="data.system.tags">
                 </inventoryitem>
             </div>
             <md-divider></md-divider>

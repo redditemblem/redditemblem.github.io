@@ -9,6 +9,12 @@
                 <span ng-if="item == null" style="font-style: italic;">Empty</span>
                 <span ng-if="item.uses > 0">({{item.uses}})</span>
             </span>
+            <span ng-if="sysdata.tags.length > 0" style="margin-left: 4px;">
+                <img ng-repeat="tag in sysdata.tags"
+                     ng-if="tagsysdata[tag].spriteURL.length > 0"
+                     ng-src="{{tagsysdata[tag].spriteURL}}" 
+                     style="max-height: 24px; max-width: 24px;" />
+            </span>
         </span>
         <span>
             <i class="fa fa-ban" ng-if="item.isUsePrevented" aria-label="Cannot Use"><md-tooltip md-direction="top">Cannot Use</md-tooltip></i>
