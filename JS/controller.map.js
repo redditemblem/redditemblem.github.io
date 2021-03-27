@@ -54,44 +54,72 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     
     $scope.mapTile_OnMouseover = function(tile){
         $scope.selectedTile = tile;
-        if(tile.occupyingUnitName.length > 0){
-            var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
-            if(imgSprite.classList.contains("grayscale")) imgSprite.classList.add("brightGrayscale");
-            else imgSprite.classList.add("bright"); 
-        }
-
-        if(tile.pairedUnitName.length > 0){
-            var imgSprite = document.getElementById(tile.pairedUnitName + "_sprite");
-            if(imgSprite.classList.contains("dimGrayscale")) imgSprite.classList.add("grayscale");
-            imgSprite.classList.remove("dim");
-            imgSprite.classList.remove("dimGrayscale");
-        }
+        if(tile.occupyingUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.occupyingUnitName), true);
+        if(tile.pairedUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.pairedUnitName), true);
     };
 
     $scope.mapTile_OnMouseout = function(tile){
-        if(tile.occupyingUnitName.length > 0){
-            var imgSprite = document.getElementById(tile.occupyingUnitName + "_sprite");
-            imgSprite.classList.remove("brightGrayscale");
-            imgSprite.classList.remove("bright");
-        }
-
-        if(tile.pairedUnitName.length > 0){
-            var imgSprite = document.getElementById(tile.pairedUnitName + "_sprite");
-            if(imgSprite.classList.contains("grayscale")) imgSprite.classList.add("dimGrayscale");
-            else imgSprite.classList.add("dim");
-            imgSprite.classList.remove("grayscale");
-        }
+        if(tile.occupyingUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.occupyingUnitName), false);
+        if(tile.pairedUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.pairedUnitName), false);
     };
 
     $scope.mapTile_OnClick = function(tile){
         $scope.selectedTile = tile;
         if(tile.occupyingUnitName.length > 0){
             var unit = $scope.getUnitByName(tile.occupyingUnitName);
-            $scope.toggleUnitPinnedStatus(unit);
+            toggleUnitPinnedStatus(unit);
+            applyUnitSpriteFilters(unit, true);
         }
     };
 
-    $scope.toggleUnitPinnedStatus = function(unit){
+    $scope.pinButton_OnClick = function(unit){
+        toggleUnitPinnedStatus(unit);
+        applyUnitSpriteFilters(unit, false);
+    }
+
+    const highBrightness = "170"
+    const dimBrightness = "50"
+    const grayscale = "95";
+    const grayscaleModified = "70";
+    const pinnedFilter = "drop-shadow(0px 0px 3px white) drop-shadow(0px 0px 2px white)";
+    
+    function applyUnitSpriteFilters(unit, isMousedOver){
+        var imgSprite = document.getElementById(unit.name + "_sprite");
+        var brightnessValue = "100";
+        var grayscaleValue = "0";
+
+        if(!unit.isBackOfPair){
+            //Front unit
+            if(isMousedOver){
+                brightnessValue = highBrightness;
+                if(unit.hasMoved) grayscaleValue = grayscaleModified;
+            }
+            else{
+                if(unit.hasMoved) grayscaleValue = grayscale;
+            }
+        }
+        else{
+            //Rear unit
+            if(isMousedOver){
+                if(unit.hasMoved) grayscaleValue = grayscaleModified;
+            }
+            else{
+                brightnessValue = dimBrightness;
+                if(unit.hasMoved) grayscaleValue = grayscaleModified;
+            }
+        }
+
+        var filterString = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
+        if(unit.pinned) filterString += " " + pinnedFilter;
+
+        imgSprite.style.filter = filterString;
+    }
+
+    function toggleUnitPinnedStatus(unit){
         if(!unit.pinned){
             $scope.search.selected = unit; //set the unit in the search
 

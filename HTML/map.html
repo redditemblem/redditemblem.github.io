@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div layout="column">
-                    <i ng-click="toggleUnitPinnedStatus(search.selected)" ng-class="{'opacity50': !search.selected.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
+                    <i ng-click="pinButton_OnClick(search.selected)" ng-class="{'opacity50': !search.selected.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
                         <md-tooltip md-direction="left">{{search.selected.pinned ? 'Unpin' : 'Pin'}} unit</md-tooltip>
                     </i>
                 </div>

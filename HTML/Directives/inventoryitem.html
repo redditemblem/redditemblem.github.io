@@ -1,7 +1,7 @@
 <md-card ng-click="expanded = !expanded"
          class="md-card-hover clickable verticalPadding horizontalPadding"
          ng-style="{'pointer-events': item != null ? 'auto' : 'none'}">
-    <div layout="row" layout-align="space-between center" ng-class="{'opacity50': item == null || !item.canEquip}">
+    <div layout="row" layout-align="space-between center" ng-class="{'opacity50': item == null || !item.canEquip || item.isUsePrevented}">
         <span>
             <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
             <span ng-class="{'droppableItemColor': item.isDroppable == true}">
@@ -17,12 +17,12 @@
             </span>
         </span>
         <span>
-            <i class="fa fa-ban" ng-if="item.isUsePrevented" aria-label="Cannot Use"><md-tooltip md-direction="top">Cannot Use</md-tooltip></i>
+            <i class="fa fa-ban" ng-if="item.isUsePrevented" aria-label="Use Prevented"><md-tooltip md-direction="top">Use Prevented</md-tooltip></i>
             <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
             <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
         </span>
     </div>
-    <div layout="row" class="rem0_8Text leftPadding" ng-class="{'opacity50': !item.canEquip}">
+    <div layout="row" class="rem0_8Text leftPadding" ng-class="{'opacity50': !item.canEquip || item.isUsePrevented}">
         <span ng-if="sysdata.weaponRank.length > 0">{{sysdata.weaponRank}}&nbsp;-&nbsp;</span>{{sysdata.category}}
         <span ng-if="sysdata.utilizedStats.length > 0" >
             &nbsp;(<span ng-repeat="stat in sysdata.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)

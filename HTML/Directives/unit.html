@@ -1,5 +1,4 @@
-<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" 
-     ng-class="{'grayscale': unit.hasMoved && !unit.isBackOfPair, 'dimGrayscale': unit.hasMoved && unit.isBackOfPair, 'dim': !unit.hasMoved && unit.isBackOfPair}" />
+<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" />
 <div class="absolute"
      ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px'}">
     <!--Status condition icon-->

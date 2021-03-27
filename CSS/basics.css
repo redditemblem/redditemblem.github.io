@@ -60,24 +60,7 @@
     border: 0;
 }
 
-.bright{ 
-    -webkit-filter: brightness(170%);
-    filter: brightness(170%); 
-}
 .dim{ 
     -webkit-filter: brightness(50%);
     filter: brightness(50%);
-}
-
-.grayscale{
-    -webkit-filter: grayscale(95%);
-    filter: grayscale(95%);
-}
-.dimGrayscale{
-    -webkit-filter: grayscale(70%) brightness(50%);
-    filter: grayscale(70%) brightness(50%);
-}
-.brightGrayscale{
-    -webkit-filter: grayscale(70%) brightness(170%);
-    filter: grayscale(70%) brightness(170%);
 }

@@ -48,6 +48,30 @@ app.directive('unit', ['$interval', function($interval) {
             if(   $scope.statusSpriteList.length > 1
                || $scope.tagSpriteList.length > 1)
                 $interval(iterateSprites, 2000);
+
+            
+            //Copy of controller function, only run on image load to initially style sprite
+            const dimBrightness = "50"
+            const grayscale = "95";
+            const grayscaleModified = "70";
+
+            var imgSprite = element.find('img'); //grabs first image in directive?
+            imgSprite.bind('load', function () {
+                var sprite = document.getElementById($scope.unit.name + "_sprite");
+
+                var brightnessValue = "100";
+                var grayscaleValue = "0";
+        
+                if(!$scope.unit.isBackOfPair){
+                    if($scope.unit.hasMoved) grayscaleValue = grayscale;
+                }
+                else{
+                    brightnessValue = dimBrightness;
+                    if($scope.unit.hasMoved) grayscaleValue = grayscaleModified;
+                }
+
+                sprite.style.filter = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
+            });
         }
     };
  }]);
