@@ -14,14 +14,17 @@
     margin-left: -1px;
 }
 
-.mapTile:hover{
+.mapTileHover{
+    height: 100%;
+    width: 100%;
     -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border-image: url("../IMG/tile_select.png") 3;
-    border-image-outset: -1px;
+    border-image-outset: 1px;
     border-width: 3px;
-    border-style: inset;
-	z-index: 1;
+    border-style: solid;
+    pointer-events: none;
 }
 
 .mapTile:focus{

@@ -58,6 +58,9 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
             applyUnitSpriteFilters($scope.getUnitByName(tile.occupyingUnitName), true);
         if(tile.pairedUnitName.length > 0)
             applyUnitSpriteFilters($scope.getUnitByName(tile.pairedUnitName), true);
+        
+        var divHover = document.getElementById(tile.coordinate.x + "," + tile.coordinate.y + "_hover");
+        divHover.style.display = "block";
     };
 
     $scope.mapTile_OnMouseout = function(tile){
@@ -65,6 +68,9 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
             applyUnitSpriteFilters($scope.getUnitByName(tile.occupyingUnitName), false);
         if(tile.pairedUnitName.length > 0)
             applyUnitSpriteFilters($scope.getUnitByName(tile.pairedUnitName), false);
+
+        var divHover = document.getElementById(tile.coordinate.x + "," + tile.coordinate.y + "_hover");
+        divHover.style.display = "none";
     };
 
     $scope.mapTile_OnClick = function(tile){
