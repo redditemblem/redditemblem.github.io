@@ -50,6 +50,12 @@
                         </span>
                     </span>
                 </div>
+                <div ng-if="sysdata.range.shape != 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>Shp</span>
+                    <span ng-if="sysdata.range.shape == 1">Square</span>
+                    <span ng-if="sysdata.range.shape == 2">Cross</span>
+                    <span ng-if="sysdata.range.shape == 3">Saltire</span>
+                </div>
                 <div ng-if="item.uses > 0 || sysdata.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                     <span>
                         {{item.uses > 0 && sysdata.maxUses == 0 ? "Quantity" : "Uses"}}

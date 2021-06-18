@@ -122,6 +122,12 @@
                                 <span>Rng</span>
                                 <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">-{{itemData.range.maximum}}</span></span>
                             </div>
+                            <div ng-if="itemData.range.shape != 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                                <span>Shp</span>
+                                <span ng-if="itemData.range.shape == 1">Square</span>
+                                <span ng-if="itemData.range.shape == 2">Cross</span>
+                                <span ng-if="itemData.range.shape == 3">Saltire</span>
+                            </div>
                             <div ng-if="item.uses > 0 || itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>
                                     {{item.uses > 0 && itemData.maxUses == 0 ? "Quantity" : "Uses"}}
