@@ -11,18 +11,7 @@
             </md-button>
         </div>
         <div>
-            <md-button id="btnLaunchConvoy" class="md-icon-button" ng-if="data.showConvoyLink" ng-click="navigateConvoy()">
-                <i class="fa fa-archive fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Convoy</md-tooltip></i>
-            </md-button>
-            <md-button id="btnLaunchShop" class="md-icon-button" ng-if="data.showShopLink" ng-click="navigateShop()">
-                <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Shop</md-tooltip></i>
-            </md-button>
-            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
-                <i class="fa fa-reddit fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Chapter Post</md-tooltip></i>
-            </md-button>
-            <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
-                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Return to homepage</md-tooltip></i>
-            </md-button>
+            <linksmenu chapterposturl="data.map.chapterPostURL" showconvoy="data.showConvoyLink" showshop="data.showShopLink" showmap="false" showanalyzer="true" />
         </div>
     </div>
     <!-- Search and unit display -->

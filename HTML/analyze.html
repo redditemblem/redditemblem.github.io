@@ -1,0 +1,123 @@
+<loadingscreen ng-if="!loadComplete" error="errorContext"></loadingscreen>
+<div ng-if="loadComplete" layout="row" layout-fill style="overflow: hidden;">
+    <!--Toolbar-->
+    <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
+        <div></div>
+        <div>
+          <linksmenu chapterposturl="data.map.chapterPostURL" showconvoy="data.showConvoyLink" showshop="data.showShopLink" showmap="true" showanalyzer="false" />
+      </div>
+    </div>
+
+    <div layout="column" style="width: 325px;" layout-padding>
+      <md-content>
+        <div layout="row" class="rem1_4Text boldText bottomMargin">
+          <i class="fa fa-search fa-fw fa-lg" aria-hidden="true"></i>
+          &nbsp;Map Analyzer Tool
+        </div>
+        <div layout="row">
+          <md-input-container flex style="margin-bottom: 10px;">
+              <label>Mode</label>
+              <md-select ng-model="filters.mode" class="md-no-underline" ng-change="mode_OnChange()">
+                <md-option value="movCost">Movement Cost</md-option>
+                <md-option value="terrainType">Terrain Type</md-option>
+                <md-option value="warpGroup">Warp Groups</md-option>
+              </md-select>
+          </md-input-container>
+        </div>
+        <md-divider></md-divider>
+        <div ng-if="filters.mode == 'movCost'" layout="column">
+          <div layout="row" class="rem0_9Text verticalPadding">
+            Movement Cost mode will highlight the tiles traversable by the selected Movement Type and display their movement cost value over the top.
+          </div>
+          <div layout="row">
+            <md-input-container flex >
+                <label>Movement Type</label>
+                <md-select ng-model="filters.selectedMovType" class="md-no-underline">
+                    <md-option ng-repeat="option in movementTypes" ng-value="option">{{option}}</md-option>
+                </md-select>
+            </md-input-container>
+          </div>
+        </div>
+        <div ng-if="filters.mode == 'terrainType'" layout="column">
+          <div layout="row" class="rem0_9Text verticalPadding">
+            Terrain Type mode will highlight all instances of the selected Terrain Type on the map.
+          </div>
+          <div layout="row">
+            <md-input-container flex style="margin-bottom: 10px;">
+                <label>Terrain Type</label>
+                <md-select ng-model="filters.selectedTerrainType" class="md-no-underline">
+                    <md-option ng-repeat="option in terrainTypes" ng-value="option">{{option}}</md-option>
+                </md-select>
+            </md-input-container>
+          </div>
+        </div>
+        <div ng-if="filters.mode == 'warpGroup'" layout="column">
+          <div layout="row" class="rem0_9Text verticalPadding">
+            Warp Groups mode will highlight all of the warp points assigned to the selected Warp Group on the map. For warp points that can be entered, the warp cost value will be displayed over the top.
+          </div>
+          <div layout="column" class="rem0_9Text verticalPadding">
+            <div layout="row">
+              <i class="fa fa-long-arrow-down fa-fw" aria-hidden="true"></i> - Unit can ENTER warp point
+            </div>
+            <div layout="row">
+              <i class="fa fa-long-arrow-up fa-fw" aria-hidden="true"></i> - Unit can EXIT warp point
+            </div>
+          </div>
+          <div layout="row">
+            <md-input-container flex style="margin-bottom: 10px;">
+                <label>Warp Group</label>
+                <md-select ng-model="filters.selectedWarpGroup" class="md-no-underline">
+                    <md-option ng-repeat="option in warpGroups" ng-value="option">{{option}}</md-option>
+                </md-select>
+            </md-input-container>
+          </div>
+        </div>
+      </md-content>
+  </div>
+    
+    <!-- Map -->
+    <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
+        <div class="mapBackground"
+             ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.imageWidth + 'px', 'height': data.map.imageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
+             <!--Draw tiles-->
+             <div ng-repeat="row in data.map.tiles track by $index"
+                 class="mapRow"
+                 ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">
+                <div ng-repeat="tile in row track by $index" 
+                     ng-init="terrainData = data.system.terrainTypes[tile.terrainType]"
+                     class="mapTile"
+                     ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px',}"
+                     ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpGroupNumber == filters.selectedWarpGroup}"
+                >
+                    <div ng-if="filters.selectedMovType.length > 0 && terrainData.movementCosts[filters.selectedMovType] < 99"
+                         class="spriteContainer"
+                         ng-class="{'lowCostShadowedText': terrainData.movementCosts[filters.selectedMovType] <= 1, 'mediumCostShadowedText': terrainData.movementCosts[filters.selectedMovType] == 2, 'highCostShadowedText': terrainData.movementCosts[filters.selectedMovType] >= 3}"
+                         ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px'}"
+                         layout="row"
+                         layout-align="center center"
+                    >
+                      {{terrainData.movementCosts[filters.selectedMovType]}}
+                    </div>
+
+                    <div ng-if="filters.selectedWarpGroup > 0 && tile.warpGroupNumber == filters.selectedWarpGroup"
+                         class="spriteContainer lowCostShadowedText"
+                         ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px'}"
+                         layout="row"
+                         layout-align="center center"
+                    >
+                      <div layout="row">
+                        <div layout="column" layout-align="center end" class="rem0_8Text">
+                          <i class="fa fa-long-arrow-down" ng-show="terrainData.warpType == 1" aria-hidden="true"></i>
+                          <i class="fa fa-long-arrow-up" ng-show="terrainData.warpType == 2" aria-hidden="true"></i>
+                          <i class="fa fa-arrows-v" ng-show="terrainData.warpType == 3" aria-hidden="true"></i>
+                        </div>
+                        <div layout="column" layout-align="center start">
+                          {{terrainData.warpCost > 0 ? terrainData.warpCost : "&nbsp;"}}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-content>
+</div>

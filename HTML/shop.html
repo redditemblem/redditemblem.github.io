@@ -4,15 +4,7 @@
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div></div>
         <div>
-            <md-button id="btnConvoy" class="md-icon-button" ng-if="data.showConvoyLink" ng-click="navigateToConvoy()">
-                <i class="fa fa-archive fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Convoy</md-tooltip></i>
-            </md-button>
-            <md-button id="btnMap" class="md-icon-button" ng-click="navigateToMap()">
-                <i class="fa fa-map-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Map</md-tooltip></i>
-            </md-button>
-            <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
-                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Return to homepage</md-tooltip></i>
-            </md-button>
+            <linksmenu chapterposturl="" showconvoy="data.showConvoyLink" showshop="false" showmap="true" showanalyzer="true" />
         </div>
     </div>
     <div layout="column" style="width: 325px;" layout-padding>
@@ -146,6 +138,7 @@
                                 <span ng-if="itemData.range.shape == 1">Square</span>
                                 <span ng-if="itemData.range.shape == 2">Cross</span>
                                 <span ng-if="itemData.range.shape == 3">Saltire</span>
+                                <span ng-if="itemData.range.shape == 4">Star</span>
                             </div>
                             <div ng-if="itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Uses</span>

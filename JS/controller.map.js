@@ -1,4 +1,4 @@
-app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routeParams', function ($scope, $http, $location, $window, $routeParams) {
+app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     
     $scope.data = {};
     $scope.search = {};
@@ -28,12 +28,6 @@ app.controller('MapCtrl', ['$scope', '$http', '$location', '$window', '$routePar
     });
 
     // TOOLBAR FUNCTIONS ----------------------------------------------
-
-    //Links
-    $scope.launchChapterPostTab = function(){ $window.open($scope.data.map.chapterPostURL); };
-    $scope.navigateHome = function(){ $location.path(''); };
-    $scope.navigateConvoy = function(){ $location.path($routeParams.teamName + "/convoy"); };
-    $scope.navigateShop = function(){ $location.path($routeParams.teamName + "/shop"); };
 
     $scope.unitSort = function(unit){
         var sort = 0;
