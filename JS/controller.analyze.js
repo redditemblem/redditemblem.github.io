@@ -54,6 +54,7 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
     $scope.filters.selectedMovType = "";
     $scope.filters.selectedTerrainType = "";
     $scope.filters.selectedWarpGroup = -1;
+    $scope.filters.selectedSpecialty = "";
   };
 
 }]);

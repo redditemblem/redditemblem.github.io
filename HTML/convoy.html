@@ -77,9 +77,14 @@
                  <div layout="row" layout-align="space-between center">
                     <div layout="column">
                         <div layout="row" layout-align="left center">
-                            <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                            <span class="boldText">{{item.name}} <span ng-if="item.uses > 0">({{item.uses}})</span></span>
-                            <span ng-if="itemData.tags.length > 0" style="margin-left: 4px;">
+                            <span ng-if="itemData.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
+                                <img ng-src="{{itemData.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
+                            </span>
+                            <span layout="row" layout-align="start center" class="boldText">
+                                {{item.name}}
+                                <span ng-if="item.uses > 0">&nbsp;({{item.uses}})</span>
+                            </span>
+                            <span layout="row" layout-align="start center" ng-if="itemData.tags.length > 0" style="margin-left: 4px;">
                                 <img ng-repeat="tag in itemData.tags"
                                      ng-if="data.tags[tag].spriteURL.length > 0"
                                      ng-src="{{data.tags[tag].spriteURL}}" 

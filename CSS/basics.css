@@ -63,6 +63,7 @@
 .lowCostShadowedText{ color: #ffffff; text-shadow: 1px 1px #000000;}
 .mediumCostShadowedText{ color: #FFC107; text-shadow: 1px 1px #000000;}
 .highCostShadowedText{ color: #F13535; text-shadow: 1px 1px #000000;}
+.extremeCostShadowedText{ color: #992DE4; text-shadow: 1px 1px #000000;}
 
 .dim{ 
     -webkit-filter: brightness(50%);
