@@ -21,7 +21,7 @@
                 id="mdAutoComplete"
                 md-selected-item="search.selected"
                 md-search-text="search.query"
-                md-items="unit in data.units | orderBy: [unitSort, 'name'] | filter: search.query"
+                md-items="unit in unitsQuery(search.query) | orderBy: [unitSort, 'name']"
                 md-item-text="unit.name"
                 md-dropdown-items="5"
                 md-min-length="0"
@@ -30,7 +30,7 @@
                 placeholder="Unit Name">
             <md-item-template>
                 <div layout="row" layout-align="space-between center">
-                    <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
+                    <span md-highlight-text="search.query" md-highlight-flags="i">{{unit.name}}</span>
                     <div layout="row">
                         <i ng-if="unit.pairedUnit.length > 0" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
                         <i ng-if="(unit.coordinate.x < 1 || unit.coordinate.y < 1) && !unit.isBackOfPair" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>

@@ -29,6 +29,18 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
 
     // TOOLBAR FUNCTIONS ----------------------------------------------
 
+    $scope.unitsQuery = function(query) {
+        var results = query ? $scope.data.units.filter(buildUnitsQuery(query)) : $scope.data.units;
+        return results;
+    };
+  
+    function buildUnitsQuery(query) {
+        query = query.toLowerCase().trim();
+        return function filterFn(unit) {
+            return (unit.name.toLowerCase().indexOf(query) >= 0);
+        };
+    };
+
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;
