@@ -19,6 +19,7 @@
 .topMargin{ margin-top: 8px; }
 .halfBottomMargin{ margin-bottom: 4px; }
 .bottomMargin{ margin-bottom: 8px; }
+.leftMargin{ margin-left: 8px; }
 
 .toolbarColor{ background-color: #2196F3;}
 .toolbarButtonColor{ color: #FFC107; }

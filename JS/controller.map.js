@@ -44,7 +44,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;
-        if((unit.coordinate.x < 1 || unit.coordinate.y < 1) && !unit.isBackOfPair) sort += 1;
+        if(unit.coordinate.x < 1 || unit.coordinate.y < 1) sort += 1;
         return sort;
     };
 
