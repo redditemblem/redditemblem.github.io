@@ -18,6 +18,10 @@ app.directive('linksmenu', ['$location', '$window', '$routeParams', function($lo
 
         $scope.navigateToMap = function(){ $location.path($routeParams.teamName + "/map"); };
         $scope.navigateToAnalyzer = function(){ $location.path($routeParams.teamName + "/map/analyze"); };
+
+        $scope.downloadMap = function(){
+          $window.open("https://localhost:44393/api/map/generateimage/" + $routeParams.teamName);
+        };
       }
   };
 }]);
