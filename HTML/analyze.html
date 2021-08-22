@@ -83,6 +83,7 @@
               <md-select ng-model="filters.selectedSpecialty" class="md-no-underline">
                 <md-option value="cannotStopOn">Cannot Stop On?</md-option>
                 <md-option value="blocksItems">Blocks Items?</md-option>
+                <md-option value="restrictAff">Restrict Affiliations</md-option>
               </md-select>
           </md-input-container>
           </div>
@@ -102,7 +103,7 @@
                      ng-init="terrainData = data.system.terrainTypes[tile.terrainType]"
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px',}"
-                     ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpGroupNumber == filters.selectedWarpGroup || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn)}"
+                     ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpGroupNumber == filters.selectedWarpGroup || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn) || (filters.selectedSpecialty == 'restrictAff' && terrainData.canRestrictAffiliations)}"
                 >
                     <div ng-if="filters.selectedMovType.length > 0 && terrainData.movementCosts[filters.selectedMovType] < 99"
                          class="spriteContainer"
