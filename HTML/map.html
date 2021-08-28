@@ -49,7 +49,7 @@
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
-                            <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
                         </div>
                         <div layout="column">
                             <span class="rem1_4Text boldText">{{search.selected.name}}</span>
@@ -155,7 +155,7 @@
             </div>
             <!-- Stats -->
             <div class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="toggleStatsExpanded()" aria-hidden="true"></i>
+                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="toggleStatsExpanded()" aria-hidden="true"></i>
                 Stats
             </div>
             <!-- Combat stats -->
@@ -191,7 +191,7 @@
             <md-divider></md-divider>
             <!-- Inventory -->
             <div ng-if="search.selected.inventory.length > 1" class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
+                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
             <div layout="column" ng-if="invExpanded">
@@ -204,7 +204,7 @@
             <md-divider></md-divider>
             <!--Skills-->
             <div ng-if="search.selected.skills.length > 0" class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
+                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
                 Skills
             </div>
             <div layout="column" ng-if="skillsExpanded">
@@ -291,14 +291,14 @@
                      ng-click="mapTile_OnClick(tile)"
                      ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
-                    <!-- Draw terrain effect -->
+                    <!-- Draw below terrain effects -->
                     <div ng-repeat="effect in tile.terrainEffects track by effect.name"
-                         ng-if="effect.isAnchor"
                          ng-init="effectData = data.system.terrainEffects[effect.name]"
+                         ng-if="effect.isAnchor"
                          class="spriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px'}"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'z-index': tile.coordinate.y + (effectData.layer * 10)}"
                          layout="row"
-                         layout-align="center end">
+                         layout-align="center center">
                          <img ng-src="{{effectData.spriteURL}}" />
                     </div>
 
