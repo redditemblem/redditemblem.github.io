@@ -4,6 +4,7 @@ app.config(['$routeProvider', '$mdThemingProvider', function ($routeProvider, $m
 		.when("/", {templateUrl: "HTML/homepage.html", controller: "HomepageCtrl"})
 		.when("/info", {templateUrl: "HTML/info.html", controller: "InfoCtrl"})
 		.when("/:teamName/map", {templateUrl: "HTML/map.html", controller: "MapCtrl"})
+		.when("/:teamName/map/analyze", {templateUrl: "HTML/analyze.html", controller: "AnalyzeCtrl"})
 		.when('/:teamName/convoy', {templateUrl: "HTML/convoy.html", controller: "ConvoyCtrl"})
 		.when('/:teamName/shop', {templateUrl: "HTML/shop.html", controller: "ShopCtrl"})
 		.otherwise({ redirectTo: "/" });

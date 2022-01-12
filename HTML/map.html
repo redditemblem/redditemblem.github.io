@@ -14,18 +14,7 @@
             </md-button>
         </div>
         <div>
-            <md-button id="btnLaunchConvoy" class="md-icon-button" ng-if="data.showConvoyLink" ng-click="navigateConvoy()">
-                <i class="fa fa-archive fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Convoy</md-tooltip></i>
-            </md-button>
-            <md-button id="btnLaunchShop" class="md-icon-button" ng-if="data.showShopLink" ng-click="navigateShop()">
-                <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Shop</md-tooltip></i>
-            </md-button>
-            <md-button id="btnLaunchChapterPost" class="md-icon-button" ng-if="data.map.chapterPostURL.length > 0" ng-click="launchChapterPostTab()">
-                <i class="fa fa-reddit fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Chapter Post</md-tooltip></i>
-            </md-button>
-            <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
-                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Return to homepage</md-tooltip></i>
-            </md-button>
+            <linksmenu chapterposturl="data.map.chapterPostURL" showconvoy="data.showConvoyLink" showshop="data.showShopLink" showmap="false" showanalyzer="true" />
         </div>
     </div>
     <!-- Search and unit display -->
@@ -35,7 +24,7 @@
                 id="mdAutoComplete"
                 md-selected-item="search.selected"
                 md-search-text="search.query"
-                md-items="unit in data.units | orderBy: [unitSort, 'name'] | filter: search.query"
+                md-items="unit in unitsQuery(search.query) | orderBy: [unitSort, 'name']"
                 md-item-text="unit.name"
                 md-dropdown-items="5"
                 md-min-length="0"
@@ -44,10 +33,10 @@
                 placeholder="Unit Name">
             <md-item-template>
                 <div layout="row" layout-align="space-between center">
-                    <span md-highlight-text="search.query" md-highlight-flags="^i">{{unit.name}}</span>
+                    <span md-highlight-text="search.query" md-highlight-flags="i">{{unit.name}}</span>
                     <div layout="row">
                         <i ng-if="unit.pairedUnit.length > 0" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
-                        <i ng-if="(unit.coordinate.x < 1 || unit.coordinate.y < 1) && !unit.isBackOfPair" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.coordinate.x < 1 || unit.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
                 </div>
@@ -58,12 +47,12 @@
             <!-- Sprite, name, & pin icon -->
             <div layout="row" layout-align="space-between">
                 <div layout="column">
-                    <div layout="row">
-                        <img ng-src="{{search.selected.portraitURL.length > 0 ? search.selected.portraitURL : search.selected.spriteURL}}" style="max-width: 150px; max-height: 150px;"/>
+                    <div layout="row" class="halfBottomMargin">
+                        <img ng-src="{{search.selected.portraitURL.length > 0 ? search.selected.portraitURL : search.selected.spriteURL}}" style="max-width: 200px; max-height: 200px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
-                            <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
+                            <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
                         </div>
                         <div layout="column">
                             <span class="rem1_4Text boldText">{{search.selected.name}}</span>
@@ -72,7 +61,7 @@
                     </div>
                 </div>
                 <div layout="column">
-                    <i ng-click="toggleUnitPinnedStatus(search.selected)" ng-class="{'opacity50': !search.selected.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
+                    <i ng-click="pinButton_OnClick(search.selected)" ng-class="{'opacity50': !search.selected.pinned}" class="fa fa-thumb-tack fa-lg fa-rotate-45 clickable" aria-hidden="true">
                         <md-tooltip md-direction="left">{{search.selected.pinned ? 'Unpin' : 'Pin'}} unit</md-tooltip>
                     </i>
                 </div>
@@ -169,7 +158,7 @@
             </div>
             <!-- Stats -->
             <div class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="toggleStatsExpanded()" aria-hidden="true"></i>
+                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !statsExpanded}" ng-click="toggleStatsExpanded()" aria-hidden="true"></i>
                 Stats
             </div>
             <!-- Combat stats -->
@@ -205,19 +194,20 @@
             <md-divider></md-divider>
             <!-- Inventory -->
             <div ng-if="search.selected.inventory.length > 1" class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
+                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
             <div layout="column" ng-if="invExpanded">
                 <inventoryitem ng-repeat="item in search.selected.inventory track by $index"  
                                item="item"
-                               sysdata="data.system.items[item.name]">
+                               sysdata="data.system.items[item.name]"
+                               tagsysdata="data.system.tags">
                 </inventoryitem>
             </div>
             <md-divider></md-divider>
             <!--Skills-->
             <div ng-if="search.selected.skills.length > 0" class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-angle-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
+                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
                 Skills
             </div>
             <div layout="column" ng-if="skillsExpanded">
@@ -399,14 +389,14 @@
                      ng-click="mapTile_OnClick(tile)"
                      ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
-                    <!-- Draw terrain effect -->
+                    <!-- Draw below terrain effects -->
                     <div ng-repeat="effect in tile.terrainEffects track by effect.name"
-                         ng-if="effect.isAnchor"
                          ng-init="effectData = data.system.terrainEffects[effect.name]"
+                         ng-if="effect.isAnchor"
                          class="spriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px'}"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'z-index': tile.coordinate.y + (effectData.layer * 10)}"
                          layout="row"
-                         layout-align="center end">
+                         layout-align="center center">
                          <img ng-src="{{effectData.spriteURL}}" />
                     </div>
 
@@ -421,6 +411,7 @@
                         <unit ng-if="unit.pairedUnit.length > 0"
                               unit="getUnitByName(unit.pairedUnit)"
                               tileconsts="data.map.constants"
+                              statussysdata="data.system.statusConditions"
                               tagsysdata="data.system.tags"
                               layout="row"
                               layout-align="center end"
@@ -428,6 +419,7 @@
                         ></unit>
                         <unit unit="unit"
                               tileconsts="data.map.constants"
+                              statussysdata="data.system.statusConditions"
                               tagsysdata="data.system.tags"
                               layout="row"
                               layout-align="center end"
@@ -435,6 +427,10 @@
                               ng-class="{'pairSpriteFront': unit.pairedUnit.length > 0}"
                         ></unit>
                     </div>
+
+                    <div id="{{tile.coordinate.x}},{{tile.coordinate.y}}_hover" 
+                         class="mapTileHover" 
+                         style="display:none"></div>
                     
                 </div>
             </div>

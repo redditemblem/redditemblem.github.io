@@ -14,9 +14,9 @@ app.controller('HomepageCtrl', ['$scope', '$http', '$location', '$cookies', '$md
     });
 
     $scope.navigateToInfo = function(){ $location.path("/info"); };
-    $scope.navigateToMap = function(teamName){ $location.path(teamName.replace(' ', '') + '/map'); };
-    $scope.navigateToConvoy = function(teamName){ $location.path(teamName.replace(' ', '') + '/convoy'); };
-    $scope.navigateToShop = function(teamName){ $location.path(teamName.replace(' ', '') + '/shop'); };
+    $scope.navigateToMap = function(teamName){ $location.path(teamName.replaceAll(' ', '') + '/map'); };
+    $scope.navigateToConvoy = function(teamName){ $location.path(teamName.replaceAll(' ', '') + '/convoy'); };
+    $scope.navigateToShop = function(teamName){ $location.path(teamName.replaceAll(' ', '') + '/shop'); };
 
     $scope.getAppTheme = function(){
         return $mdTheming.defaultTheme();

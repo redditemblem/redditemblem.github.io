@@ -1,4 +1,4 @@
-app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+app.controller('ConvoyCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     
     $scope.data = {};
     $scope.filters = { "showOwner": "All", "showCategory" : {}, "showStat" : {} };
@@ -32,12 +32,6 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$location', '$routeParams', fu
             $scope.errorContext.status = response.status;
         }     
     });
-
-    // TOOLBAR FUNCTIONS ----------------------------------------------
-
-    $scope.navigateHome = function(){ $location.path(''); };
-    $scope.navigateToShop = function(){ $location.path($routeParams.teamName + "/shop"); };
-    $scope.navigateToMap = function(){ $location.path($routeParams.teamName + "/map"); };
 
     //ITEM FILTERING --------------------------------------------------
 

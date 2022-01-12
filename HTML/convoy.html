@@ -4,15 +4,7 @@
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div></div>
         <div>
-            <md-button id="btnShop" class="md-icon-button" ng-if="data.showShopLink" ng-click="navigateToShop()">
-                <i class="fa fa-shopping-basket fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Shop</md-tooltip></i>
-            </md-button>
-            <md-button id="btnMap" class="md-icon-button" ng-click="navigateToMap()">
-                <i class="fa fa-map-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Map</md-tooltip></i>
-            </md-button>
-            <md-button id="btnBack" class="md-icon-button" ng-click="navigateHome()">
-                <i class="fa fa-arrow-left fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Return to homepage</md-tooltip></i>
-            </md-button>
+            <linksmenu chapterposturl="" showconvoy="false" showshop="data.showShopLink" showmap="true" showanalyzer="true" />
         </div>
     </div>
     <div layout="column" style="width: 325px;" layout-padding>
@@ -85,8 +77,19 @@
                  <div layout="row" layout-align="space-between center">
                     <div layout="column">
                         <div layout="row" layout-align="left center">
-                            <img ng-if="itemData.spriteURL.length > 0" ng-src="{{itemData.spriteURL}}" style="margin-right: 8px; max-height: 24px; max-width: 24px;"/>
-                            <span class="boldText">{{item.name}} <span ng-if="item.uses > 0">({{item.uses}})</span></span>
+                            <span ng-if="itemData.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
+                                <img ng-src="{{itemData.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
+                            </span>
+                            <span layout="row" layout-align="start center" class="boldText">
+                                {{item.name}}
+                                <span ng-if="item.uses > 0">&nbsp;({{item.uses}})</span>
+                            </span>
+                            <span layout="row" layout-align="start center" ng-if="itemData.tags.length > 0" style="margin-left: 4px;">
+                                <img ng-repeat="tag in itemData.tags"
+                                     ng-if="data.tags[tag].spriteURL.length > 0"
+                                     ng-src="{{data.tags[tag].spriteURL}}" 
+                                     style="max-height: 24px; max-width: 24px;" />
+                            </span>
                         </div>
                         <div layout="row" class="rem0_8Text leftPadding">
                             <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}
@@ -115,6 +118,13 @@
                             <div ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Rng</span>
                                 <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">-{{itemData.range.maximum}}</span></span>
+                            </div>
+                            <div ng-if="itemData.range.shape != 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                                <span>Shp</span>
+                                <span ng-if="itemData.range.shape == 1">Square</span>
+                                <span ng-if="itemData.range.shape == 2">Cross</span>
+                                <span ng-if="itemData.range.shape == 3">Saltire</span>
+                                <span ng-if="itemData.range.shape == 4">Star</span>
                             </div>
                             <div ng-if="item.uses > 0 || itemData.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>

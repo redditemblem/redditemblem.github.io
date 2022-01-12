@@ -1,4 +1,4 @@
-app.controller('ShopCtrl', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+app.controller('ShopCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     
     $scope.data = {};
     $scope.filters = { "showCategory" : {}, "showStat" : {} };
@@ -33,12 +33,6 @@ app.controller('ShopCtrl', ['$scope', '$http', '$location', '$routeParams', func
         }     
     });
     
-    // TOOLBAR FUNCTIONS ----------------------------------------------
-
-    $scope.navigateHome = function(){ $location.path(''); };
-    $scope.navigateToConvoy = function(){ $location.path($routeParams.teamName + "/convoy"); };
-    $scope.navigateToMap = function(){ $location.path($routeParams.teamName + "/map"); };
-
     //ITEM FILTERING --------------------------------------------------
 
     $scope.sortItems = function(){

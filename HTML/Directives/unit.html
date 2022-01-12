@@ -1,19 +1,20 @@
-<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" 
-     ng-class="{'grayscale': unit.hasMoved && !unit.isBackOfPair, 'dimGrayscale': unit.hasMoved && unit.isBackOfPair, 'dim': !unit.hasMoved && unit.isBackOfPair}" />
+<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" />
 <div class="absolute"
      ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px'}">
     <!--Status condition icon-->
-     <img ng-if="unit.statusConditions.length > 0"
-          ng-src="IMG/status_heart.png"
-          class="unitStatusCondition"
-          ng-class="{'dim': unit.isBackOfPair}"/>
+    <div ng-if="statusSpriteList.length > 0" class="unitStatusSprites" layout="row" layout-align="right top">
+        <img ng-repeat="statusSprite in statusSpriteList track by $index"
+            ng-src="{{statusSprite}}" 
+            ng-show="statusIterator == $index"
+            ng-style="{'max-width': (tileconsts.tileSize < 70 ? '12px' : '24px'), 'max-height': (tileconsts.tileSize < 70 ? '12px' : '24px')}"
+            ng-class="{'dim': unit.isBackOfPair}"/>
+    </div>
     <!--Tag icons-->
-     <div ng-if="unit.tags.length > 0" class="unitTagSprites" layout="row" layout-align="right top">
-            <img ng-repeat="tag in unit.tags track by $index"
-                ng-init="tagData = tagsysdata[tag]"
-                ng-src="{{tagData.spriteURL}}" 
-                ng-show="tagData.showOnUnit"
-                style="max-height: 12px; max-width: 12px;"
+     <div ng-if="tagSpriteList.length > 0" class="unitTagSprites" layout="row" layout-align="right top">
+            <img ng-repeat="tagSprite in tagSpriteList track by $index"
+                ng-src="{{tagSprite}}" 
+                ng-show="tagIterator == $index"
+                ng-style="{'max-width': (tileconsts.tileSize < 70 ? '12px' : '24px'), 'max-height': (tileconsts.tileSize < 70 ? '12px' : '24px')}"
                 ng-class="{'dim': unit.isBackOfPair}"/>
     </div>
     <!--Unit number-->

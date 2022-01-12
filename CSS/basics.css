@@ -17,9 +17,11 @@
     padding-right: 8px;
 }
 .topMargin{ margin-top: 8px; }
+.quarterBottomMargin{ margin-bottom: 2px; }
 .halfBottomMargin{ margin-bottom: 4px; }
 .bottomMargin{ margin-bottom: 8px; }
 .tripleBottomMargin{ margin-bottom: 24px; }
+.leftMargin{ margin-left: 8px; }
 
 .toolbarColor{ background-color: #2196F3;}
 .toolbarButtonColor{ color: #FFC107; }
@@ -38,6 +40,7 @@
 .inRangeMovColor{ background: rgba(92, 180, 239, 0.5); }
 .inRangeAtkColor{ background: rgba(241, 53, 53, 0.5); }
 .inRangeStaffColor{ background: rgba(157, 255, 0, 0.5); }
+.highlightedColor{ background: rgba(255, 255, 255, 0.5); }
 
 .opacity50{ opacity: 0.5; }
 
@@ -61,25 +64,12 @@
     outline: none;
     border: 0;
 }
+.lowCostShadowedText{ color: #ffffff; text-shadow: 1px 1px #000000;}
+.mediumCostShadowedText{ color: #FFC107; text-shadow: 1px 1px #000000;}
+.highCostShadowedText{ color: #F13535; text-shadow: 1px 1px #000000;}
+.extremeCostShadowedText{ color: #992DE4; text-shadow: 1px 1px #000000;}
 
-.bright{ 
-    -webkit-filter: brightness(170%);
-    filter: brightness(170%); 
-}
 .dim{ 
     -webkit-filter: brightness(50%);
     filter: brightness(50%);
-}
-
-.grayscale{
-    -webkit-filter: grayscale(95%);
-    filter: grayscale(95%);
-}
-.dimGrayscale{
-    -webkit-filter: grayscale(70%) brightness(50%);
-    filter: grayscale(70%) brightness(50%);
-}
-.brightGrayscale{
-    -webkit-filter: grayscale(70%) brightness(170%);
-    filter: grayscale(70%) brightness(170%);
 }

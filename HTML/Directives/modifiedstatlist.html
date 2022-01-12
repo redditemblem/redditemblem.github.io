@@ -1,5 +1,5 @@
 <div ng-repeat="(stat, statObj) in statList track by stat" layout="column" flex="50" class="horizontalPadding">
-    <div layout="row" layout-align="space-between">
+    <div layout="row" layout-align="space-between" ng-class="{'boldText': expanded}">
         <span>{{stat}}</span>
         <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
             <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i>
@@ -8,11 +8,11 @@
         </span>
     </div>
     <div layout="column" ng-if="expanded" class="rem0_8Text leftPadding halfBottomMargin">
-        <div layout="row" layout-align="space-between">
+        <div layout="row" layout-align="space-between" class="quarterBottomMargin">
             <span>Base</span><span>{{statObj.baseValue}}</span>
         </div>
-        <div ng-repeat="(mod, modVal) in statObj.modifiers track by mod" layout="row" layout-align="space-between">
-            <span>{{mod}}</span><span>{{modVal}}</span>
+        <div ng-repeat="(mod, modVal) in statObj.modifiers track by mod" layout="row" layout-align="space-between" class="quarterBottomMargin">
+            <span>{{mod}}</span><span class="leftMargin">{{modVal}}</span>
         </div>
     </div>
 </div>
