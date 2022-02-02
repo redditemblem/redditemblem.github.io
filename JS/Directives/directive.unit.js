@@ -70,7 +70,10 @@ app.directive('unit', ['$interval', function($interval) {
                     if($scope.unit.hasMoved) grayscaleValue = grayscaleModified;
                 }
 
-                sprite.style.filter = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
+                var filterString = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
+                if($scope.unit.unitAura.length > 0)
+                    filterString += `drop-shadow(0px 0px 3px ${$scope.unit.unitAura}) drop-shadow(0px 0px 2px ${$scope.unit.unitAura})`;
+                sprite.style.filter = filterString;
             });
         }
     };

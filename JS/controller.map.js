@@ -97,8 +97,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     const dimBrightness = "50"
     const grayscale = "95";
     const grayscaleModified = "70";
-    const pinnedFilter = "drop-shadow(0px 0px 3px white) drop-shadow(0px 0px 2px white)";
-    
+    const pinnedFilter = " drop-shadow(0px 0px 4px white) drop-shadow(0px 0px 3px white)";
+
     function applyUnitSpriteFilters(unit, isMousedOver){
         var imgSprite = document.getElementById(unit.name + "_sprite");
         var brightnessValue = "100";
@@ -125,8 +125,11 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
             }
         }
 
+        //Construct filter string
         var filterString = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
-        if(unit.pinned) filterString += " " + pinnedFilter;
+        if(unit.unitAura.length > 0)
+            filterString += ` drop-shadow(0px 0px 3px ${unit.unitAura}) drop-shadow(0px 0px 2px ${unit.unitAura})`;
+        if(unit.pinned) filterString += pinnedFilter;
 
         imgSprite.style.filter = filterString;
     }

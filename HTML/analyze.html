@@ -127,8 +127,8 @@
                           <i class="fa fa-long-arrow-up" ng-show="terrainData.warpType == 2" aria-hidden="true"></i>
                           <i class="fa fa-arrows-v" ng-show="terrainData.warpType == 3" aria-hidden="true"></i>
                         </div>
-                        <div layout="column" layout-align="center start">
-                          {{terrainData.warpCost > 0 ? terrainData.warpCost : "&nbsp;"}}
+                        <div layout="column" layout-align="center start" style="padding-left: 2px;">
+                          {{terrainData.warpCost > -1 ? terrainData.warpCost : "&nbsp;"}}
                         </div>
                       </div>
                     </div>
