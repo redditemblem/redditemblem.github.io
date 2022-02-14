@@ -68,9 +68,12 @@
             <md-input-container flex style="margin-bottom: 10px;">
                 <label>Warp Group</label>
                 <md-select ng-model="filters.selectedWarpGroup" class="md-no-underline">
-                    <md-option ng-repeat="option in warpGroups" ng-value="option">{{option}}</md-option>
+                    <md-option ng-repeat="option in warpGroups" ng-value="option">{{option.groupNum}}</md-option>
                 </md-select>
             </md-input-container>
+          </div>
+          <div layout="row" ng-if="filters.selectedWarpGroup.coordinates.length > 0" class="rem0_9Text">
+            <span><b>Warp Group Coordinates:</b> {{filters.selectedWarpGroup.coordinates}}</span>
           </div>
         </div>
         <div ng-if="filters.mode == 'specialty'" layout="column">
@@ -103,7 +106,7 @@
                      ng-init="terrainData = data.system.terrainTypes[tile.terrainType]"
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px',}"
-                     ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpGroupNumber == filters.selectedWarpGroup || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn) || (filters.selectedSpecialty == 'restrictAff' && terrainData.canRestrictAffiliations)}"
+                     ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpData.warpGroupNumber == filters.selectedWarpGroup.groupNum || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn) || (filters.selectedSpecialty == 'restrictAff' && terrainData.canRestrictAffiliations)}"
                 >
                     <div ng-if="filters.selectedMovType.length > 0 && terrainData.movementCosts[filters.selectedMovType] < 99"
                          class="spriteContainer"
@@ -115,7 +118,7 @@
                       {{terrainData.movementCosts[filters.selectedMovType]}}
                     </div>
 
-                    <div ng-if="filters.selectedWarpGroup > 0 && tile.warpGroupNumber == filters.selectedWarpGroup"
+                    <div ng-if="tile.warpData.warpGroupNumber == filters.selectedWarpGroup.groupNum"
                          class="spriteContainer lowCostShadowedText"
                          ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px'}"
                          layout="row"
@@ -128,7 +131,7 @@
                           <i class="fa fa-arrows-v" ng-show="terrainData.warpType == 3" aria-hidden="true"></i>
                         </div>
                         <div layout="column" layout-align="center start" style="padding-left: 2px;">
-                          {{terrainData.warpCost > -1 ? terrainData.warpCost : "&nbsp;"}}
+                          {{terrainData.warpCost > -1 ? terrainData.warpCost : "--"}}
                         </div>
                       </div>
                     </div>

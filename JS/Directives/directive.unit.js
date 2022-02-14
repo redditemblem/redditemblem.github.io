@@ -62,17 +62,17 @@ app.directive('unit', ['$interval', function($interval) {
                 var brightnessValue = "100";
                 var grayscaleValue = "0";
         
-                if(!$scope.unit.isBackOfPair){
-                    if($scope.unit.hasMoved) grayscaleValue = grayscale;
+                if(!$scope.unit.location.isBackOfPair){
+                    if($scope.unit.sprite.hasMoved) grayscaleValue = grayscale;
                 }
                 else{
                     brightnessValue = dimBrightness;
-                    if($scope.unit.hasMoved) grayscaleValue = grayscaleModified;
+                    if($scope.unit.sprite.hasMoved) grayscaleValue = grayscaleModified;
                 }
 
                 var filterString = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
-                if($scope.unit.unitAura.length > 0)
-                    filterString += `drop-shadow(0px 0px 3px ${$scope.unit.unitAura}) drop-shadow(0px 0px 2px ${$scope.unit.unitAura})`;
+                if($scope.unit.sprite.aura.length > 0)
+                    filterString += `drop-shadow(0px 0px 3px ${$scope.unit.sprite.aura}) drop-shadow(0px 0px 2px ${$scope.unit.sprite.aura})`;
                 sprite.style.filter = filterString;
             });
         }

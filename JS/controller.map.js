@@ -44,7 +44,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;
-        if(unit.coordinate.x < 1 || unit.coordinate.y < 1) sort += 1;
+        if(unit.location.coordinate.x < 1 || unit.location.coordinate.y < 1) sort += 1;
         return sort;
     };
 
@@ -60,20 +60,20 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     
     $scope.mapTile_OnMouseover = function(tile){
         $scope.selectedTile = tile;
-        if(tile.occupyingUnitName.length > 0)
-            applyUnitSpriteFilters($scope.getUnitByName(tile.occupyingUnitName), true);
-        if(tile.pairedUnitName.length > 0)
-            applyUnitSpriteFilters($scope.getUnitByName(tile.pairedUnitName), true);
+        if(tile.unitData.occupyingUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.occupyingUnitName), true);
+        if(tile.unitData.pairedUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.pairedUnitName), true);
         
         var divHover = document.getElementById(tile.coordinate.x + "," + tile.coordinate.y + "_hover");
         divHover.style.display = "block";
     };
 
     $scope.mapTile_OnMouseout = function(tile){
-        if(tile.occupyingUnitName.length > 0)
-            applyUnitSpriteFilters($scope.getUnitByName(tile.occupyingUnitName), false);
-        if(tile.pairedUnitName.length > 0)
-            applyUnitSpriteFilters($scope.getUnitByName(tile.pairedUnitName), false);
+        if(tile.unitData.occupyingUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.occupyingUnitName), false);
+        if(tile.unitData.pairedUnitName.length > 0)
+            applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.pairedUnitName), false);
 
         var divHover = document.getElementById(tile.coordinate.x + "," + tile.coordinate.y + "_hover");
         divHover.style.display = "none";
@@ -81,8 +81,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
 
     $scope.mapTile_OnClick = function(tile){
         $scope.selectedTile = tile;
-        if(tile.occupyingUnitName.length > 0){
-            var unit = $scope.getUnitByName(tile.occupyingUnitName);
+        if(tile.unitData.occupyingUnitName.length > 0){
+            var unit = $scope.getUnitByName(tile.unitData.occupyingUnitName);
             toggleUnitPinnedStatus(unit);
             applyUnitSpriteFilters(unit, true);
         }
@@ -104,31 +104,31 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
         var brightnessValue = "100";
         var grayscaleValue = "0";
 
-        if(!unit.isBackOfPair){
+        if(!unit.location.isBackOfPair){
             //Front unit
             if(isMousedOver){
                 brightnessValue = highBrightness;
-                if(unit.hasMoved) grayscaleValue = grayscaleModified;
+                if(unit.sprite.hasMoved) grayscaleValue = grayscaleModified;
             }
             else{
-                if(unit.hasMoved) grayscaleValue = grayscale;
+                if(unit.sprite.hasMoved) grayscaleValue = grayscale;
             }
         }
         else{
             //Rear unit
             if(isMousedOver){
-                if(unit.hasMoved) grayscaleValue = grayscaleModified;
+                if(unit.sprite.hasMoved) grayscaleValue = grayscaleModified;
             }
             else{
                 brightnessValue = dimBrightness;
-                if(unit.hasMoved) grayscaleValue = grayscaleModified;
+                if(unit.sprite.hasMoved) grayscaleValue = grayscaleModified;
             }
         }
 
         //Construct filter string
         var filterString = `brightness(${brightnessValue}%) grayscale(${grayscaleValue}%)`;
-        if(unit.unitAura.length > 0)
-            filterString += ` drop-shadow(0px 0px 3px ${unit.unitAura}) drop-shadow(0px 0px 2px ${unit.unitAura})`;
+        if(unit.sprite.aura.length > 0)
+            filterString += ` drop-shadow(0px 0px 3px ${unit.sprite.aura}) drop-shadow(0px 0px 2px ${unit.sprite.aura})`;
         if(unit.pinned) filterString += pinnedFilter;
 
         imgSprite.style.filter = filterString;
@@ -149,23 +149,23 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
 
     function UpdateVisibleRanges(unit, updateVal){
         //Movement
-        for(var i = 0; i < unit.movementRange.length; i++)
+        for(var i = 0; i < unit.ranges.movement.length; i++)
         {
-            var coord = unit.movementRange[i];
+            var coord = unit.ranges.movement[i];
             $scope.data.map.tiles[coord.y - 1][coord.x - 1].movCount += updateVal;
         } 
         
         //Attack
-        for(var i = 0; i < unit.attackRange.length; i++)
+        for(var i = 0; i < unit.ranges.attack.length; i++)
         {
-            var coord = unit.attackRange[i];
+            var coord = unit.ranges.attack[i];
             $scope.data.map.tiles[coord.y - 1][coord.x - 1].atkCount += updateVal;
         } 
 
         //Utility
-        for(var i = 0; i < unit.utilityRange.length; i++)
+        for(var i = 0; i < unit.ranges.utility.length; i++)
         {
-            var coord = unit.utilityRange[i];
+            var coord = unit.ranges.utility[i];
             $scope.data.map.tiles[coord.y - 1][coord.x - 1].utilCount += updateVal;
         } 
     }

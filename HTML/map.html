@@ -32,8 +32,8 @@
                 <div layout="row" layout-align="space-between center">
                     <span md-highlight-text="search.query" md-highlight-flags="i">{{unit.name}}</span>
                     <div layout="row">
-                        <i ng-if="unit.pairedUnit.length > 0" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
-                        <i ng-if="unit.coordinate.x < 1 || unit.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.location.pairedUnit.length > 0" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
+                        <i ng-if="unit.location.coordinate.x < 1 || unit.location.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
             <div layout="row" layout-align="space-between">
                 <div layout="column">
                     <div layout="row" class="halfBottomMargin">
-                        <img ng-src="{{search.selected.portraitURL.length > 0 ? search.selected.portraitURL : search.selected.spriteURL}}" style="max-width: 200px; max-height: 200px;"/>
+                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" style="max-width: 200px; max-height: 200px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
@@ -53,7 +53,7 @@
                         </div>
                         <div layout="column">
                             <span class="rem1_4Text boldText">{{search.selected.name}}</span>
-                            <span class="rem0_9Text leftPadding">Lvl. {{search.selected.level}} {{search.selected.classes[0]}}</span>
+                            <span class="rem0_9Text leftPadding">Lvl. {{search.selected.stats.level}} {{search.selected.classes[0]}}</span>
                         </div>
                     </div>
                 </div>
@@ -106,23 +106,23 @@
                 <!--HP-->
                 <div layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>HP</span>
-                    <span>{{search.selected.hp.current}} / {{search.selected.hp.maximum}}</span>
+                    <span>{{search.selected.stats.hp.current}} / {{search.selected.stats.hp.maximum}}</span>
                 </div>
                 <!--Exp-->
-                <div ng-if="search.selected.experience > -1" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                <div ng-if="search.selected.stats.experience > -1" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Exp</span>
-                    <span>{{search.selected.experience}}</span>
+                    <span>{{search.selected.stats.experience}}</span>
                 </div>
                 <!--Currency-->
-                <div ng-if="search.selected.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                <div ng-if="search.selected.stats.heldCurrency > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Money</span>
-                    <currency amount="search.selected.heldCurrency" format="data.system.currency"></currency>
+                    <currency amount="search.selected.stats.heldCurrency" format="data.system.currency"></currency>
                 </div>
             </div>
             <!--Pair-Up Info-->
-            <div ng-if="search.selected.pairedUnit.length > 0" layout="row" layout-align="left center" class="rem0_9Text">
+            <div ng-if="search.selected.location.pairedUnit.length > 0" layout="row" layout-align="left center" class="rem0_9Text">
                 <i class="fa fa-user-plus fa-fw" aria-hidden="true" style="margin-right: 4px;"><md-tooltip md-direction="top">Unit Pair-Up</md-tooltip></i>
-                Paired with&nbsp;<span ng-click="search.selected = getUnitByName(search.selected.pairedUnit)" class="hyperlinkText">{{search.selected.pairedUnit}}</span>&nbsp;({{search.selected.isBackOfPair ? 'back' : 'front'}})
+                Paired with&nbsp;<span ng-click="search.selected = getUnitByName(search.selected.location.pairedUnit)" class="hyperlinkText">{{search.selected.location.pairedUnit}}</span>&nbsp;({{search.selected.location.isBackOfPair ? 'back' : 'front'}})
             </div>
             <!--Tags-->
             <div layout="row" ng-if="search.selected.tags.length > 0">
@@ -159,11 +159,11 @@
                 Stats
             </div>
             <!-- Combat stats -->
-            <modifiedstatlist ng-if="dictHasKeys(search.selected.combatStats)" data="search.selected.combatStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.combat)" data="search.selected.stats.combat" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- System stats -->
-            <modifiedstatlist ng-if="dictHasKeys(search.selected.systemStats)" data="search.selected.systemStats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.system)" data="search.selected.stats.system" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Regular stats -->
-            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats)" data="search.selected.stats" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.general)" data="search.selected.stats.general" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!--Weapon ranks-->
             <div layout="row">
                 <div layout="row" style="margin-right: 4px; padding-top: 5px;">
@@ -228,10 +228,10 @@
             <!-- Occupying Unit -->
             <div layout="row" class="bottomMargin">
                 <b>Unit</b>:&nbsp;
-                <span ng-if="selectedTile.occupyingUnitName.length == 0" class="opacity50"><i>None</i></span>
-                <span ng-if="selectedTile.occupyingUnitName.length > 0">
-                    {{selectedTile.occupyingUnitName}}
-                    <span ng-if="selectedTile.pairedUnitName.length > 0"> / {{selectedTile.pairedUnitName}}</span>
+                <span ng-if="selectedTile.unitData.occupyingUnitName.length == 0" class="opacity50"><i>None</i></span>
+                <span ng-if="selectedTile.unitData.occupyingUnitName.length > 0">
+                    {{selectedTile.unitData.occupyingUnitName}}
+                    <span ng-if="selectedTile.unitData.location.pairedUnitName.length > 0"> / {{selectedTile.unitData.location.pairedUnitName}}</span>
                 </span>
             </div>
             <!-- Terrain Type -->
@@ -285,11 +285,11 @@
                 <div ng-repeat="tile in row track by $index" 
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
-                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}} {{tile.occupyingUnitName.length > 0 ? '['+tile.occupyingUnitName+(tile.pairedUnitName.length > 0 ? '/'+tile.pairedUnitName : '')+']' : ''}}"
+                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}} {{tile.unitData.occupyingUnitName.length > 0 ? '['+tile.unitData.occupyingUnitName+(tile.unitData.location.pairedUnitName.length > 0 ? '/'+tile.unitData.location.pairedUnitName : '')+']' : ''}}"
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
-                     ng-class="{'clickable': tile.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
+                     ng-class="{'clickable': tile.unitData.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
                     <!-- Draw below terrain effects -->
                     <div ng-repeat="effect in tile.terrainEffects track by effect.name"
@@ -303,15 +303,15 @@
                     </div>
 
                     <!--Draw unit-->
-                    <div ng-if="tile.isUnitAnchor"
-                         ng-init="unit = getUnitByName(tile.occupyingUnitName)"
+                    <div ng-if="tile.unitData.isUnitAnchor"
+                         ng-init="unit = getUnitByName(tile.unitData.occupyingUnitName)"
                          class="spriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.unitSize)+'px', 'z-index': tile.coordinate.y + unit.unitSize}"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.location.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.location.unitSize)+'px', 'z-index': tile.coordinate.y + unit.location.unitSize}"
                          layout="row"
                          layout-align="center end"
                     >
-                        <unit ng-if="unit.pairedUnit.length > 0"
-                              unit="getUnitByName(unit.pairedUnit)"
+                        <unit ng-if="unit.location.pairedUnit.length > 0"
+                              unit="getUnitByName(unit.location.pairedUnit)"
                               tileconsts="data.map.constants"
                               statussysdata="data.system.statusConditions"
                               tagsysdata="data.system.tags"
@@ -326,7 +326,7 @@
                               layout="row"
                               layout-align="center end"
                               class="spriteContainer"
-                              ng-class="{'pairSpriteFront': unit.pairedUnit.length > 0}"
+                              ng-class="{'pairSpriteFront': unit.location.pairedUnit.length > 0}"
                         ></unit>
                     </div>
 

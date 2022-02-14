@@ -28,9 +28,12 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
       //Warp groups
       for(var row in $scope.data.map.tiles){
         for(var tile in $scope.data.map.tiles[row]){
-          var groupNum = $scope.data.map.tiles[row][tile].warpGroupNumber;
-          if(groupNum > 0 && !$scope.warpGroups.includes(groupNum))
-            $scope.warpGroups.push(groupNum);
+          var groupNum = $scope.data.map.tiles[row][tile].warpData.warpGroupNumber;
+          if(groupNum > 0 && !$scope.warpGroups.some((g) => g.groupNum == groupNum))
+            $scope.warpGroups.push({
+              "groupNum": groupNum, 
+              "coordinates": $scope.data.map.tiles[row][tile].warpData.warpGroupCoordinates
+            });
         }
       }
       $scope.warpGroups.sort();

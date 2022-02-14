@@ -23,12 +23,17 @@
         </span>
     </div>
 </div>
-<div layout="row" class="rem0_9Text horizontalPadding bottomMargin">
-    <b>Warp</b>:&nbsp;
-    <i ng-if="sysdata.warpType == 0 || !tile.inWarpGroup" class="opacity50">None</i>
-    <span ng-if="sysdata.warpType == 1 && tile.inWarpGroup">Entrance</span>
-    <span ng-if="sysdata.warpType == 2 && tile.inWarpGroup">Exit</span>
-    <span ng-if="sysdata.warpType == 3 && tile.inWarpGroup">Entrance/Exit</span>
+<div layout="column" class="horizontalPadding bottomMargin">
+    <div layout="row" class="rem0_9Text">
+        <b>Warp</b>:&nbsp;
+        <i ng-if="sysdata.warpType == 0 || !tile.warpData.inWarpGroup" class="opacity50">None</i>
+        <span ng-if="sysdata.warpType == 1 && tile.warpData.inWarpGroup">Entrance</span>
+        <span ng-if="sysdata.warpType == 2 && tile.warpData.inWarpGroup">Exit</span>
+        <span ng-if="sysdata.warpType == 3 && tile.warpData.inWarpGroup">Entrance/Exit</span>
+    </div>
+    <div layout="row" ng-if="tile.warpData.warpGroupCoordinates.length > 0" class="rem0_8Text leftPadding">
+        Connected Tiles: {{tile.warpData.warpGroupCoordinates}}
+    </div>
 </div>
 <div layout="row" class="rem0_9Text horizontalPadding">
     <b>Movement Costs</b>
@@ -39,7 +44,7 @@
         <span ng-if="cost >= 99"><i class="fa fa-ban" aria-hidden="true"></i></span>
         <span ng-if="cost < 99">{{cost}}</span>
     </div>
-    <div ng-if="(sysdata.warpType == 1 || sysdata.warpType == 3) && tile.inWarpGroup"
+    <div ng-if="(sysdata.warpType == 1 || sysdata.warpType == 3) && tile.warpData.inWarpGroup"
          layout="row" layout-align="space-between" flex="50" class="horizontalPadding"
     >
         <span>Use Warp</span>

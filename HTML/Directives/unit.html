@@ -1,13 +1,13 @@
-<img id="{{unit.name}}_sprite" ng-src="{{unit.spriteURL}}" class="unitSpriteImage" />
+<img id="{{unit.name}}_sprite" ng-src="{{unit.sprite.spriteURL}}" class="unitSpriteImage" />
 <div class="absolute"
-     ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.unitSize)+'px'}">
+     ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize)+'px'}">
     <!--Status condition icon-->
     <div ng-if="statusSpriteList.length > 0" class="unitStatusSprites" layout="row" layout-align="right top">
         <img ng-repeat="statusSprite in statusSpriteList track by $index"
             ng-src="{{statusSprite}}" 
             ng-show="statusIterator == $index"
             ng-style="{'max-width': (tileconsts.tileSize < 70 ? '12px' : '24px'), 'max-height': (tileconsts.tileSize < 70 ? '12px' : '24px')}"
-            ng-class="{'dim': unit.isBackOfPair}"/>
+            ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Tag icons-->
      <div ng-if="tagSpriteList.length > 0" class="unitTagSprites" layout="row" layout-align="right top">
@@ -15,22 +15,22 @@
                 ng-src="{{tagSprite}}" 
                 ng-show="tagIterator == $index"
                 ng-style="{'max-width': (tileconsts.tileSize < 70 ? '12px' : '24px'), 'max-height': (tileconsts.tileSize < 70 ? '12px' : '24px')}"
-                ng-class="{'dim': unit.isBackOfPair}"/>
+                ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Unit number-->
     <div class="unitNumber" layout="row" layout-align="right end">
         <img ng-repeat="digit in unit.unitNumber.split('') track by $index"
                 ng-src="IMG/num_{{digit}}.png"
                 ng-style="{'width': (tileconsts.tileSize < 70 ? '5px' : '10px'), 'height': (tileconsts.tileSize < 70 ? '7px' : '14px')}" 
-                ng-class="{'dim': unit.isBackOfPair}"/>
+                ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Health bar-->
     <div class="healthBarBorder">
         <div id="healthBarFillBackground" class="healthBarFill" style="width: 100%; background-color: gray;"></div>
         <div id="healthBarFillColor"
                 class="healthBarFill"
-                ng-style="{'width': unit.hp.percentage + '%'}"
-                ng-class="{'hpOverfillColor': unit.hp.percentage > 100, 'hp100PercentColor': unit.hp.percentage <= 100 && unit.hp.percentage > 50, 'hp50PercentColor': unit.hp.percentage <= 50 && unit.hp.percentage > 25, 'hp25PercentColor': unit.hp.percentage <= 25}"
+                ng-style="{'width': unit.stats.hp.percentage + '%'}"
+                ng-class="{'hpOverfillColor': unit.stats.hp.percentage > 100, 'hp100PercentColor': unit.stats.hp.percentage <= 100 && unit.stats.hp.percentage > 50, 'hp50PercentColor': unit.stats.hp.percentage <= 50 && unit.stats.hp.percentage > 25, 'hp25PercentColor': unit.stats.hp.percentage <= 25}"
         ></div>
     </div>
 </div>
