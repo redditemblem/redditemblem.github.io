@@ -8,6 +8,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     $scope.invExpanded = true;
     $scope.skillsExpanded = true;
     $scope.selectedTile = null;
+    $scope.numOfPinnedUnits = 0;
     
     //Call API to fetch JSON on load
     $http({
@@ -39,6 +40,12 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
         return function filterFn(unit) {
             return (unit.name.toLowerCase().indexOf(query) >= 0);
         };
+    };
+
+    $scope.getPinnedUnitsList = function(){
+        return $scope.data.units.filter(
+            function filterFn(unit){ return unit.pinned == true; }
+        );
     };
 
     $scope.unitSort = function(unit){
@@ -140,10 +147,12 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
 
             unit.pinned = true;
             UpdateVisibleRanges(unit, 1);
+            $scope.numOfPinnedUnits += 1;
         }
         else{
             unit.pinned = false;
             UpdateVisibleRanges(unit, -1);
+            $scope.numOfPinnedUnits -= 1;
         }
     };
 

@@ -39,6 +39,24 @@
                 </div>
             </md-item-template>
         </md-autocomplete>
+        <div layout="column" ng-if="numOfPinnedUnits > 0">
+            <div layout="row" class="topMargin halfBottomMargin leftPadding rem0_9Text opacity50">
+                Pinned Units
+            </div>
+            <div layout="row" layout-wrap>
+                <div ng-repeat="unit in getPinnedUnitsList() | orderBy: 'name'" class="md-chip-custom-jumbo" style="width: 45%;">
+                    <div layout="row" layout-align="space-between center" class="clickable">
+                        <div ng-click="search.selected = unit" layout="column" flex style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{unit.name}}">
+                            {{unit.name}}
+                        </div>
+                        <div ng-click="pinButton_OnClick(unit)" layout="column" layout-align="center end" flex="25" title="Click to unpin unit">
+                            <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            <md-divider style="margin-top: 4px;"></md-divider>
+        </div>
         <!--Unit display-->
         <md-content ng-if="search.selected" layout-padding>
             <!-- Sprite, name, & pin icon -->

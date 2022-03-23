@@ -48,8 +48,18 @@ i:focus{
     margin-right: 4px;
     margin-bottom: 4px;
     padding: 4px;
+    border-radius: 3px;
     background-color: gray;
     font-size: 0.8rem;
+}
+
+.md-chip-custom-jumbo{
+    margin-right: 4px;
+    margin-bottom: 4px;
+    padding: 6px 4px 6px 8px;
+    border-radius: 3px;
+    background-color: gray;
+    font-size: 0.9rem;
 }
 
 .md-card-hover:focus {
