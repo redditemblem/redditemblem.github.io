@@ -25,12 +25,5 @@
                 ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Health bar-->
-    <div class="healthBarBorder">
-        <div id="healthBarFillBackground" class="healthBarFill" style="width: 100%; background-color: gray;"></div>
-        <div id="healthBarFillColor"
-                class="healthBarFill"
-                ng-style="{'width': unit.stats.hp.percentage + '%'}"
-                ng-class="{'hpOverfillColor': unit.stats.hp.percentage > 100, 'hp100PercentColor': unit.stats.hp.percentage <= 100 && unit.stats.hp.percentage > 50, 'hp50PercentColor': unit.stats.hp.percentage <= 50 && unit.stats.hp.percentage > 25, 'hp25PercentColor': unit.stats.hp.percentage <= 25}"
-        ></div>
-    </div>
+    <canvas id="{{unit.name}}_hpBar" class="healthBar"></canvas>
 </div>
