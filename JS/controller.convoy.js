@@ -85,4 +85,12 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$routeParams', function ($scop
             allSelected = (allSelected && $scope.filters.showStat[$scope.data.parameters.utilizedStats[key]]);
         $scope.filters.showStat.all = allSelected;
     };
+
+    $scope.showExpandedItemData_OnChange = function(){
+        if($scope.filters.expandItemInfo == true)
+            return;
+        
+        for(var item in $scope.data.convoyItems)
+            $scope.data.convoyItems[item].expanded = false;
+    };
 }]);

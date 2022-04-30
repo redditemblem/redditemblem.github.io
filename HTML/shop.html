@@ -22,7 +22,8 @@
                 </md-input-container>
             </div>
             <div layout="column">
-                <md-checkbox ng-model="filters.expandItemInfo" 
+                <md-checkbox ng-model="filters.expandItemInfo"
+                             ng-change="showExpandedItemData_OnChange()" 
                              aria-label="Show Expanded Data">
                              Show Expanded Item Data
                 </md-checkbox>
@@ -81,7 +82,8 @@
         <md-card ng-repeat="item in data.shopItems"
                  ng-init="itemData = data.items[item.name]"
                  ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0))"
-                 class="fade">
+                 ng-click="item.expanded = !item.expanded"
+                 class="fade clickable">
                  <div layout="row" layout-align="space-between center">
                     <div layout="column">
                         <div layout="row" layout-align="left center">
@@ -126,7 +128,7 @@
                         </div>
                     </div>
                  </div>
-                 <div ng-if="filters.expandItemInfo">
+                 <div ng-if="filters.expandItemInfo || item.expanded">
                     <div ng-if="itemData.range.minimum > 0 || itemData.maxUses > 0 || itemData.utilizedStats.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
@@ -134,9 +136,9 @@
                                 <span>{{stat}}</span>
                                 <span>{{statVal}}</span>
                             </div>
-                            <div ng-if="itemData.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                            <div ng-if="itemData.range.minimum > 0 || itemData.range.minimumRequiresCalculation" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Rng</span>
-                                <span>{{itemData.range.minimum}}<span ng-if="itemData.range.minimum != itemData.range.maximum">-{{itemData.range.maximum}}</span></span>
+                                <span>{{itemData.range.minimum > 0 ? itemData.range.minimum : "?"}}<span ng-if="itemData.range.minimum != itemData.range.maximum || itemData.range.maximumRequiresCalculation">-{{itemData.range.maximum > 0 ? itemData.range.maximum : "?"}}</span></span>
                             </div>
                             <div ng-if="itemData.range.shape != 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Shp</span>
