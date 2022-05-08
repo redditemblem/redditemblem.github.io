@@ -38,7 +38,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     function buildUnitsQuery(query) {
         query = query.toLowerCase().trim();
         return function filterFn(unit) {
-            return (unit.name.toLowerCase().indexOf(query) >= 0);
+            return (unit.name.toLowerCase().indexOf(query) >= 0 || unit.normalizedName.toLowerCase().indexOf(query) >= 0);
         };
     };
 
@@ -108,6 +108,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
 
     function applyUnitSpriteFilters(unit, isMousedOver){
         var imgSprite = document.getElementById(unit.name + "_sprite");
+        if(imgSprite == null) return;
+        
         var brightnessValue = "100";
         var grayscaleValue = "0";
 

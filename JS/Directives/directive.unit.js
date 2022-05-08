@@ -29,13 +29,16 @@ app.directive('unit', ['$interval', function($interval) {
                 $scope.statusSpriteList.push("IMG/status_heart.png");
 
             //Build tag list
-            for(var index in $scope.unit.tags){
-                var tag = $scope.unit.tags[index];
-                var tagData = $scope.tagsysdata[tag];
-                if(tagData.showOnUnit && tagData.spriteURL.length > 0)
-                    $scope.tagSpriteList.push(tagData.spriteURL);
+            if(Object.keys($scope.tagsysdata).length > 0)
+            {
+                for(var index in $scope.unit.tags){
+                    var tag = $scope.unit.tags[index];
+                    var tagData = $scope.tagsysdata[tag];
+                    if(tagData.showOnUnit && tagData.spriteURL.length > 0)
+                        $scope.tagSpriteList.push(tagData.spriteURL);
+                }
             }
-            
+
             function iterateSprites(){
                 if($scope.statusIterator == $scope.statusSpriteList.length-1) $scope.statusIterator = 0;
                 else $scope.statusIterator += 1;

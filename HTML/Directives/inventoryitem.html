@@ -30,7 +30,7 @@
          <div layout="row" layout-align="end start">
             <i class="fa fa-ban" ng-if="item.isUsePrevented" aria-label="Use Prevented" style="margin-left: 4px;"><md-tooltip md-direction="top">Use Prevented</md-tooltip></i>
             <i class="fa fa-gift" ng-if="item.isDroppable" aria-label="Droppable" style="margin-left: 4px;"><md-tooltip md-direction="top">Droppable</md-tooltip></i>
-            <i class="fa fa-star" ng-if="item.isEquipped" aria-label="Equipped" style="margin-left: 4px;"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
+            <i class="fa fa-star" ng-if="item.isPrimaryEquipped || item.isSecondaryEquipped" aria-label="Equipped" style="margin-left: 4px;"><md-tooltip md-direction="top">Equipped</md-tooltip></i>
         </div>
      </div>
     <div ng-if="expanded">
