@@ -220,6 +220,16 @@
                 </inventoryitem>
             </div>
             <md-divider></md-divider>
+            <!--Battalion-->
+            <div ng-if="search.selected.battalion">
+                <div  class="rem1_2Text boldText" layout="row">
+                    Battalion
+                </div>
+                <div layout="column">
+                    <battalion battalion="search.selected.battalion" battalionsysdata="data.system.battalions[search.selected.battalion.name]" gambitsysdata="data.system.gambits[search.selected.battalion.gambitName]"></battalion>
+                </div>
+                <md-divider></md-divider>
+            </div>
             <!--Skills-->
             <div ng-if="search.selected.skills.length > 0" class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>

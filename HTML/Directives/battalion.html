@@ -1,0 +1,89 @@
+<md-card ng-click="expanded = !expanded"
+         class="md-card-hover clickable verticalPadding horizontalPadding"
+         layout="column">
+    <div layout="row" layout-align="space-between start">
+        <div layout="column">
+            <div layout="row" layout-align="left center">
+                <span ng-if="battalionsysdata.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
+                    <img ng-src="{{battalionsysdata.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
+                </span>
+                <span layout="row" layout-align="start center">
+                    <span>{{battalion.name}}</span>
+                    <span>&nbsp;({{battalion.endurance}})</span>
+                </span>
+            </div>
+            <div layout="row" class="rem0_8Text leftPadding">
+                <span ng-if="battalionsysdata.rank.length > 0">{{battalionsysdata.rank}}&nbsp;-&nbsp;</span>Battalion
+            </div>
+         </div>
+    </div>
+    <div ng-if="expanded" class="bottomMargin">
+        <md-divider></md-divider>
+        <div layout="row" layout-wrap class="rem0_8Text">
+            <div ng-repeat="(stat, statVal) in battalionsysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <span>{{stat}}</span>
+                <span>{{statVal}}</span>
+            </div>
+            <div layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <span>Endr</span>
+                <span>{{battalion.endurance}} / {{battalionsysdata.maxEndurance}}</span>
+            </div>
+        </div>
+        <div ng-if="battalionsysdata.textFields.length > 0">
+            <md-divider></md-divider>
+            <div ng-repeat="text in battalionsysdata.textFields track by $index" 
+                 class="rem0_9Text" 
+                 ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+        </div>
+    </div>
+    <md-card class="verticalPadding horizontalPadding">
+        <div layout="row" layout-align="space-between start">
+            <div layout="column">
+                <div layout="row" layout-align="left center">
+                    <span ng-if="gambitsysdata.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
+                        <img ng-src="{{gambitsysdata.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
+                    </span>
+                    <span layout="row" layout-align="start center">
+                        <span>{{battalion.gambitName}}</span>
+                        <span>&nbsp;({{battalion.gambitUses}})</span>
+                    </span>
+                </div>
+                <div layout="row" class="rem0_8Text leftPadding">
+                    <span>Gambit</span>
+                    <span ng-if="gambitsysdata.utilizedStats.length > 0" >
+                        &nbsp;(<span ng-repeat="stat in gambitsysdata.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
+                    </span>
+                </div>
+             </div>
+        </div>
+        <div ng-if="expanded">
+            <md-divider></md-divider>
+            <div layout="row" layout-wrap class="rem0_8Text">
+                <div ng-repeat="(stat, statVal) in gambitsysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>{{stat}}</span>
+                    <span>{{statVal}}</span>
+                </div>
+                <div layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>Rng</span>
+                    <span>
+                        <span>{{gambitsysdata.range.minimum}}</span>
+                        <span ng-if="gambitsysdata.range.minimum != gambitsysdata.range.maximum">
+                            <span>-</span>
+                            <span>{{gambitsysdata.range.maximum}}</span>
+                        </span>
+                    </span>
+                </div>
+                <div layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                    <span>Uses</span>
+                    <span>{{battalion.gambitUses}} / {{gambitsysdata.maxUses}}</span>
+                </div>
+            </div>
+        </div>
+        <div ng-if="gambitsysdata.textFields.length > 0">
+            <md-divider></md-divider>
+            <div ng-repeat="text in gambitsysdata.textFields track by $index" 
+                    class="rem0_9Text" 
+                    ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+        </div>
+    </md-card>
+</md-card>
