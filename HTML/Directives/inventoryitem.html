@@ -1,16 +1,14 @@
 <md-card ng-click="expanded = !expanded"
          class="md-card-hover clickable verticalPadding horizontalPadding"
-         ng-style="{'pointer-events': item != null ? 'auto' : 'none'}"
          layout="column">
-    <div layout="row" layout-align="space-between start" ng-class="{'opacity50': item == null || !item.canEquip || item.isUsePrevented}">
+    <div layout="row" layout-align="space-between start" ng-class="{'opacity50': !item.canEquip || item.isUsePrevented}">
         <div layout="column">
             <div layout="row" layout-align="left center">
                 <span ng-if="sysdata.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
                     <img ng-src="{{sysdata.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
                 </span>
                 <span layout="row" layout-align="start center" ng-class="{'droppableItemColor': item.isDroppable == true}">
-                    <span ng-if="item != null">{{item.name}}</span>
-                    <span ng-if="item == null" style="font-style: italic;">Empty</span>
+                    <span>{{item.name}}</span>
                     <span ng-if="item.uses > 0">&nbsp;({{item.uses}})</span>
                 </span>
                 <span layout="row" layout-align="start center" ng-if="sysdata.tags.length > 0" style="margin-left: 4px;">

@@ -208,16 +208,27 @@
             </div>
             <md-divider></md-divider>
             <!-- Inventory -->
-            <div ng-if="search.selected.inventory.length > 1" class="rem1_2Text boldText" layout="row">
+            <div class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
                 Inventory
             </div>
             <div layout="column" ng-if="invExpanded">
-                <inventoryitem ng-repeat="item in search.selected.inventory track by $index"  
+                <inventoryitem ng-repeat="item in search.selected.inventory.items track by $index"  
                                item="item"
                                sysdata="data.system.items[item.name]"
                                tagsysdata="data.system.tags">
                 </inventoryitem>
+                <md-card ng-if="search.selected.inventory.emptySlotCount > 0"
+                         class="md-card-hover verticalPadding horizontalPadding"
+                         layout="column">
+                         <div layout="row" layout-align="space-between start" class="opacity50">
+                            <div layout="column">
+                                <div layout="row" layout-align="left center">
+                                    <i layout="row" layout-align="start center">Empty x{{search.selected.inventory.emptySlotCount}}</i>
+                                </div>
+                             </div>
+                         </div>
+                </md-card>
             </div>
             <md-divider></md-divider>
             <!--Battalion-->
