@@ -8,9 +8,12 @@
                 &nbsp;({{status.remainingTurns}}<span ng-if="sysdata.turns > 0">/{{sysdata.turns}}</span> turns)
             </span>
         </span>
-        <i ng-if="sysdata.type == 1" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="left">Positive</md-tooltip></i>
-        <i ng-if="sysdata.type == 2" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="left">Negative</md-tooltip></i>
-        <i ng-if="sysdata.type == 3" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="left">Neutral</md-tooltip></i>
+        <div layout="row" layout-align="end start">
+            <i ng-if="sysdata.type == 1" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="top">Positive</md-tooltip></i>
+            <i ng-if="sysdata.type == 2" class="fa fa-minus-circle" aria-hidden="true"><md-tooltip md-direction="top">Negative</md-tooltip></i>
+            <i ng-if="sysdata.type == 3" class="fa fa-circle" aria-hidden="true"><md-tooltip md-direction="top">Neutral</md-tooltip></i>
+            <i ng-if="sysdata.isEffectConfigured" class="fa fa-cog" aria-label="Effect Configured" style="margin-left: 4px;"><md-tooltip md-direction="top">Effect Configured</md-tooltip></i>    
+        </div>
     </div>
     <div ng-repeat="text in sysdata.textFields track by $index" layout="row" ng-class="{'halfBottomMargin': !$last}">
     {{text}}

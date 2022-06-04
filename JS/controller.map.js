@@ -72,7 +72,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
         if(tile.unitData.pairedUnitName.length > 0)
             applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.pairedUnitName), true);
         
-        var divHover = document.getElementById(tile.coordinate.x + "," + tile.coordinate.y + "_hover");
+        var divHover = document.getElementById(`${tile.coordinate.x},${tile.coordinate.y}_hover`);
         divHover.style.display = "block";
     };
 
@@ -82,7 +82,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
         if(tile.unitData.pairedUnitName.length > 0)
             applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.pairedUnitName), false);
 
-        var divHover = document.getElementById(tile.coordinate.x + "," + tile.coordinate.y + "_hover");
+        var divHover = document.getElementById(`${tile.coordinate.x},${tile.coordinate.y}_hover`);
         divHover.style.display = "none";
     };
 
@@ -107,7 +107,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     const pinnedFilter = " drop-shadow(0px 0px 4px white) drop-shadow(0px 0px 3px white)";
 
     function applyUnitSpriteFilters(unit, isMousedOver){
-        var imgSprite = document.getElementById(unit.name + "_sprite");
+        var imgSprite = document.getElementById(`${unit.name}_sprite`);
         if(imgSprite == null) return;
         
         var brightnessValue = "100";
