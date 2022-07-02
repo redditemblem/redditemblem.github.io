@@ -93,6 +93,14 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
             toggleUnitPinnedStatus(unit);
             applyUnitSpriteFilters(unit, true);
         }
+        
+        for(var i = 0; i < tile.tileObjectInstanceIDs.length > 0; i++){
+            var tileObj = $scope.data.map.tileObjectInstances[tile.tileObjectInstanceIDs[i]];
+            
+            //Only allow tile objects with ranges to be pinned
+            if(tileObj.attackRange.length > 0)
+                toggleTileObjectPinnedStatus(tileObj);
+        }
     };
 
     $scope.pinButton_OnClick = function(unit){
