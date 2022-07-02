@@ -33,7 +33,7 @@
                     <span md-highlight-text="search.query" md-highlight-flags="i">{{unit.name}}</span>
                     <div layout="row">
                         <i ng-if="unit.location.pairedUnit.length > 0" class="fa fa-user-plus fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Paired</md-tooltip></i>
-                        <i ng-if="unit.location.coordinate.x < 1 || unit.location.coordinate.y < 1" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
+                        <i ng-if="unit.location.coordinate.asText.length == 0" class="fa fa-eye-slash fa-lg fa-fw" aria-hidden="true"><md-tooltip md-direction="top">Hidden</md-tooltip></i>
                         <i ng-if="unit.pinned" class="fa fa-thumb-tack fa-lg fa-fw fa-rotate-45" aria-hidden="true"><md-tooltip md-direction="top">Pinned</md-tooltip></i>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <div layout="row" layout-align="space-between">
                 <div layout="column">
                     <div layout="row" class="halfBottomMargin">
-                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" style="max-width: 200px; max-height: 200px;"/>
+                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" ng-class="{'smooth' : search.selected.sprite.portraitURL.length > 0}" style="max-width: 200px; max-height: 200px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
@@ -261,7 +261,7 @@
                 <!--Tile preview-->
                 <div ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'background-position': 'left -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.x-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'overflow': hidden}"></div>
                 <!--Coords-->
-                <span class="leftPadding">Tile ({{selectedTile.coordinate.x}},{{selectedTile.coordinate.y}})</span>
+                <span class="leftPadding">Tile {{selectedTile.coordinate.asText}}</span>
             </div>
             <md-divider></md-divider>
             <!-- Occupying Unit -->
@@ -276,37 +276,42 @@
             <!-- Terrain Type -->
             <tileterraintype tile="selectedTile" sysdata="data.system.terrainTypes[selectedTile.terrainType]" layout="column" class="bottomMargin"></tileterraintype>
             <md-divider></md-divider>
-            <!-- Terrain Effects -->
-            <div ng-repeat="effect in selectedTile.terrainEffects"
-                 ng-init="effectData = data.system.terrainEffects[effect.name]"
+            <!-- Tile Objects -->
+            <div ng-repeat="tileObjInstID in selectedTile.tileObjectInstanceIDs"
+                 ng-init="tileObj = {inst: data.map.tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.tileObjectInstances[tileObjInstID].name]}"
                  layout="column"
                  class="bottomMargin">
                 <div layout="row">
-                    <span class="boldText">Terrain Effect:</span>&nbsp;{{effectData.name}}
+                    <span class="boldText">{{tileObj.inst.name}}</span>
                 </div>
                 <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
-                    <div ng-if="effectData.hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                    <div ng-if="tileObj.data.hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>HP</span>
                         <span>
-                            <span ng-if="effectData.hpModifier >= 0">+</span>{{effectData.hpModifier}}%
+                            <span ng-if="tileObj.data.hpModifier >= 0">+</span>{{tileObj.data.hpModifier}}%
                         </span>
                     </div>
                     <!-- Combat Stat Modifiers -->
-                    <div ng-repeat="(stat, val) in effectData.combatStatModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                    <div ng-repeat="(stat, val) in tileObj.data.combatStatModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>{{stat}}</span>
                         <span>
                             <span ng-if="val >= 0">+</span>{{val}}
                         </span>
                     </div>
                     <!-- Stat Modifiers -->
-                    <div ng-repeat="(stat, val) in effectData.statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                    <div ng-repeat="(stat, val) in tileObj.data.statModifiers" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>{{stat}}</span>
                         <span>
                             <span ng-if="val >= 0">+</span>{{val}}
                         </span>
                     </div>
+                    <!--Range-->
+                    <div ng-if="tileObj.data.range.minimum > 0 || tileObj.data.range.maximum > 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                        <span>Rng</span>
+                        <span>{{tileObj.data.range.minimum}}<span ng-if="tileObj.data.range.minimum != tileObj.data.range.maximum">&nbsp;-&nbsp;{{tileObj.data.range.maximum}}</span></span>
+                    </div>
                 </div>
-                <div layout="row" ng-repeat="text in effectData.textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
+                <div layout="row" ng-repeat="text in tileObj.data.textFields" class="rem0_9Text leftPadding" ng-class="{'bottomMargin': !$last}">
                     {{text}}
                 </div>
             </div>
@@ -321,24 +326,25 @@
              <div ng-repeat="row in data.map.tiles track by $index"
                  class="mapRow"
                  ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">
-                <div ng-repeat="tile in row track by $index" 
+                <div ng-repeat="tile in row track by $index"
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
-                     title="({{tile.coordinate.x}},{{tile.coordinate.y}}) {{tile.terrainType}} {{tile.unitData.occupyingUnitName.length > 0 ? '['+tile.unitData.occupyingUnitName+(tile.unitData.location.pairedUnitName.length > 0 ? '/'+tile.unitData.location.pairedUnitName : '')+']' : ''}}"
+                     title="({{tile.coordinate.asText}}) {{tile.terrainType}} {{tile.unitData.occupyingUnitName.length > 0 ? '['+tile.unitData.occupyingUnitName+(tile.unitData.location.pairedUnitName.length > 0 ? '/'+tile.unitData.location.pairedUnitName : '')+']' : ''}}"
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
                      ng-click="mapTile_OnClick(tile)"
-                     ng-class="{'clickable': tile.unitData.occupyingUnitName.length > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
+                     ng-class="{'clickable': tile.unitData.occupyingUnitName.length > 0 || tile.tileObjectInstanceIDs.length > 0, 'inRangeTileObj': tile.tileObjCount > 0, 'inRangeMovColor': tile.movCount > 0, 'inRangeAtkColor': tile.atkCount > 0 && tile.movCount == 0, 'inRangeStaffColor': tile.utilCount > 0 && tile.atkCount == 0 && tile.movCount == 0}"
                 >
-                    <!-- Draw below terrain effects -->
-                    <div ng-repeat="effect in tile.terrainEffects track by effect.name"
-                         ng-init="effectData = data.system.terrainEffects[effect.name]"
-                         ng-if="effect.isAnchor"
+                    <!-- Draw tile objects -->
+                    <div ng-repeat="tileObjInstID in tile.tileObjectInstanceIDs"
+                         ng-init="tileObj = {inst: data.map.tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.tileObjectInstances[tileObjInstID].name]}"
+                         ng-show="tileObj.inst.anchorCoordinate == tile.coordinate.asText"
                          class="spriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * effectData.size)+'px', 'z-index': tile.coordinate.y + (effectData.layer * 10)}"
+                         ng-class="{'pinnedTileObjectShadow': tileObj.inst.pinned}"
+                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * tileObj.data.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * tileObj.data.size)+'px', 'z-index': tile.coordinate.y + (tileObj.data.layer * 10)}"
                          layout="row"
                          layout-align="center center">
-                         <img ng-src="{{effectData.spriteURL}}" />
+                         <img ng-src="{{tileObj.data.spriteURL}}" />
                     </div>
 
                     <!--Draw unit-->
@@ -369,7 +375,7 @@
                         ></unit>
                     </div>
 
-                    <div id="{{tile.coordinate.x}},{{tile.coordinate.y}}_hover" 
+                    <div id="{{tile.coordinate.asText}}_hover" 
                          class="mapTileHover" 
                          style="display:none"></div>
                     

@@ -31,6 +31,12 @@ canvas{
     user-select: none;
 }
 
+img.smooth{
+    image-rendering: optimizeQuality;
+    image-rendering: auto;
+    -ms-interpolation-mode: inherit;
+}
+
 i{
     -webkit-touch-callout: none;
     -webkit-user-select: none;

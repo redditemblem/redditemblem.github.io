@@ -35,9 +35,17 @@
 .inRangeMovColor{ background: rgba(92, 180, 239, 0.5); }
 .inRangeAtkColor{ background: rgba(241, 53, 53, 0.5); }
 .inRangeStaffColor{ background: rgba(157, 255, 0, 0.5); }
+.inRangeTileObj{
+    -webkit-box-shadow:inset 0px 0px 3px 2px rgb(240, 240, 240);
+    -moz-box-shadow:inset 0px 0px 3px 2px rgb(255, 255, 255);
+    box-shadow:inset 0px 0px 3px 2px rgb(255, 255, 255);
+}
 .highlightedColor{ background: rgba(255, 255, 255, 0.5); }
 
 .opacity50{ opacity: 0.5; }
+.pinnedTileObjectShadow{
+    filter: drop-shadow(0px 0px 4px white) drop-shadow(0px 0px 3px white);
+}
 
 .rem0_8Text{ font-size: .8rem; }
 .rem0_9Text{ font-size: .9rem; }

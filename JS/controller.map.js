@@ -51,7 +51,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;
-        if(unit.location.coordinate.x < 1 || unit.location.coordinate.y < 1) sort += 1;
+        if(unit.location.coordinate.asText.length == 0) sort += 1;
         return sort;
     };
 
@@ -71,8 +71,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
             applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.occupyingUnitName), true);
         if(tile.unitData.pairedUnitName.length > 0)
             applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.pairedUnitName), true);
-        
-        var divHover = document.getElementById(`${tile.coordinate.x},${tile.coordinate.y}_hover`);
+
+        var divHover = document.getElementById(`${tile.coordinate.asText}_hover`);
         divHover.style.display = "block";
     };
 
@@ -82,7 +82,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
         if(tile.unitData.pairedUnitName.length > 0)
             applyUnitSpriteFilters($scope.getUnitByName(tile.unitData.pairedUnitName), false);
 
-        var divHover = document.getElementById(`${tile.coordinate.x},${tile.coordinate.y}_hover`);
+        var divHover = document.getElementById(`${tile.coordinate.asText}_hover`);
         divHover.style.display = "none";
     };
 
@@ -148,17 +148,17 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
             $scope.search.selected = unit; //set the unit in the search
 
             unit.pinned = true;
-            UpdateVisibleRanges(unit, 1);
+            updateVisibleUnitRanges(unit, 1);
             $scope.numOfPinnedUnits += 1;
         }
         else{
             unit.pinned = false;
-            UpdateVisibleRanges(unit, -1);
+            updateVisibleUnitRanges(unit, -1);
             $scope.numOfPinnedUnits -= 1;
         }
     };
 
-    function UpdateVisibleRanges(unit, updateVal){
+    function updateVisibleUnitRanges(unit, updateVal){
         //Movement
         for(var i = 0; i < unit.ranges.movement.length; i++)
         {
@@ -180,6 +180,24 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
             $scope.data.map.tiles[coord.y - 1][coord.x - 1].utilCount += updateVal;
         } 
     }
+
+    function toggleTileObjectPinnedStatus(tileObj){
+        if(!tileObj.pinned){
+            tileObj.pinned = true;
+            updateVisibleTileObjectRanges(tileObj, 1);
+        }
+        else{
+            tileObj.pinned = false;
+            updateVisibleTileObjectRanges(tileObj, -1);
+        }
+    };
+
+    function updateVisibleTileObjectRanges(tileObj, updateVal){
+        for(var i = 0; i < tileObj.attackRange.length; i++){
+            var coord = tileObj.attackRange[i];
+            $scope.data.map.tiles[coord.y - 1][coord.x - 1].tileObjCount += updateVal;
+        }
+    };
 
     $scope.getUnitByName = function(unitName){
         return $scope.data.units.find((u) => { return u["name"] === unitName });
