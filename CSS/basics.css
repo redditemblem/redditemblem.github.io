@@ -29,11 +29,11 @@
 .errorMessageColor{ color: crimson; }
 .warningMessageColor{ color: #FFC107; }
 .buffedStatColor{ color: #5CB4EF; }
-.debuffedStatColor{ color: #F13535; }
+.debuffedStatColor{ color: #d81b62; }
 .droppableItemColor{ color: #3CD66F; }
 
 .inRangeMovColor{ background: rgba(92, 180, 239, 0.5); }
-.inRangeAtkColor{ background: rgba(241, 53, 53, 0.5); }
+.inRangeAtkColor{ background: rgba(216, 27, 98, 0.5); }
 .inRangeStaffColor{ background: rgba(157, 255, 0, 0.5); }
 .inRangeTileObj{
     -webkit-box-shadow:inset 0px 0px 3px 2px rgb(240, 240, 240);
