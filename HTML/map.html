@@ -63,7 +63,7 @@
             <div layout="row" layout-align="space-between">
                 <div layout="column">
                     <div layout="row" class="halfBottomMargin">
-                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" ng-class="{'smooth' : search.selected.sprite.portraitURL.length > 0}" style="max-width: 200px; max-height: 200px;"/>
+                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" ng-class="{'smooth' : search.selected.sprite.portraitURL.length > 0, 'flipHorizontal' : search.selected.sprite.portraitURL.length == 0 && data.system.affiliations[search.selected.affiliation].flipUnitSprites}" style="max-width: 200px; max-height: 200px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
@@ -358,6 +358,7 @@
                         <unit ng-if="unit.location.pairedUnit.length > 0"
                               unit="getUnitByName(unit.location.pairedUnit)"
                               tileconsts="data.map.constants"
+                              affiliationsysdata="data.system.affiliations"
                               statussysdata="data.system.statusConditions"
                               tagsysdata="data.system.tags"
                               layout="row"
@@ -366,6 +367,7 @@
                         ></unit>
                         <unit unit="unit"
                               tileconsts="data.map.constants"
+                              affiliationsysdata="data.system.affiliations"
                               statussysdata="data.system.statusConditions"
                               tagsysdata="data.system.tags"
                               layout="row"

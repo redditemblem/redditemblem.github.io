@@ -1,4 +1,4 @@
-<img id="{{unit.name}}_sprite" ng-src="{{unit.sprite.spriteURL}}" class="unitSpriteImage" />
+<img id="{{unit.name}}_sprite" ng-src="{{unit.sprite.spriteURL}}" class="unitSpriteImage" ng-class="{'flipHorizontal' : affiliationsysdata[unit.affiliation].flipUnitSprites}" />
 <div class="absolute"
      ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize)+'px'}">
     <!--Status condition icon-->

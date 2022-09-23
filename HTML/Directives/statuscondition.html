@@ -1,12 +1,17 @@
 <div class="md-chip-custom"
      style="width: 100%;">
     <div layout="row" layout-align="space-between center" class="boldText">
-        <span layout="row" layout-align="left center">
+        <span ng-if="!status.useFullName" layout="row" layout-align="left center">
             <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
             {{status.name}}
             <span ng-if="status.remainingTurns > 0">
                 &nbsp;({{status.remainingTurns}}<span ng-if="sysdata.turns > 0">/{{sysdata.turns}}</span> turns)
             </span>
+        </span>
+        <!--Team-specific display. Get rid of me!-->
+        <span ng-if="status.useFullName" layout="row" layout-align="left center">
+            <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
+            {{status.fullName}}
         </span>
         <div layout="row" layout-align="end start">
             <i ng-if="sysdata.type == 1" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="top">Positive</md-tooltip></i>

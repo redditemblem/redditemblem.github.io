@@ -75,3 +75,7 @@
     -webkit-filter: brightness(50%);
     filter: brightness(50%);
 }
+.flipHorizontal{
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1); 
+}

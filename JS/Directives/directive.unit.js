@@ -5,6 +5,7 @@ app.directive('unit', ['$interval', function($interval) {
         scope: {
             unit: "=unit",
             tileconsts: "=tileconsts",
+            affiliationsysdata: "=affiliationsysdata",
             statussysdata: "=statussysdata",
             tagsysdata: "=tagsysdata"
         },
