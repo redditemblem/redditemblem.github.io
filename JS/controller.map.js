@@ -1,4 +1,4 @@
-app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', function ($scope, $http, $routeParams, $window) {
     
     $scope.data = {};
     $scope.search = {};
@@ -62,6 +62,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', function ($scope, 
     $scope.dictHasKeys = function(dictionary){
         return Object.keys(dictionary).length > 0;
     };
+
+    $scope.launchCharacterApplication = function(characterAppURL) { $window.open(characterAppURL); };
 
     // TILE FUNCTIONS -------------------------------------------------
     

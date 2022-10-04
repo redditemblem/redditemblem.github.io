@@ -89,6 +89,10 @@
                 <div ng-if="search.selected.player.length > 0" layout="row" class="rem0_9Text bottomMargin">
                     <b>Player</b>: {{search.selected.player}}
                 </div>
+                <div ng-if="search.selected.characterApplicationURL.length > 0" layout="row" class="rem0_9Text bottomMargin">
+                    <b>Character Application</b>:&nbsp;<span ng-click="launchCharacterApplication(search.selected.characterApplicationURL)" class="hyperlinkText">Link <i class="fa fa-external-link" aria-hidden="true"></i></span>
+                </div>
+                
                 <!--Movement Type-->
                 <div ng-if="search.selected.movementType.length > 0" layout="row" class="rem0_9Text bottomMargin">
                     <b>Movement Type</b>: {{search.selected.movementType}}

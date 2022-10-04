@@ -18,14 +18,28 @@
     <md-divider></md-divider>
     <md-menu-item>
       <md-button id="btnLaunchWorkbookTab" ng-click="launchWorkbookTab()">
-        <i class="fa fa-table fa-fw" aria-hidden="true"></i>
-        &nbsp;Google Sheets
+        <div layout="row" layout-align="space-between center">
+          <span>
+            <i class="fa fa-table fa-fw" aria-hidden="true"></i>
+            &nbsp;Google Sheets
+          </span>
+          <span>
+            <i class="fa fa-external-link" aria-hidden="true"></i>
+          </span>
+        </div>
       </md-button>
     </md-menu-item>
     <md-menu-item ng-if="chapterPostURL.length > 0">
       <md-button id="btnLaunchChapterPost" ng-click="launchChapterPostTab()">
-        <i class="fa fa-reddit fa-fw" aria-hidden="true"></i>
-        &nbsp;Chapter Post
+        <div layout="row" layout-align="space-between center">
+          <span>
+            <i class="fa fa-reddit fa-fw" aria-hidden="true"></i>
+            &nbsp;Chapter Post
+          </span>
+          <span>
+            <i class="fa fa-external-link" aria-hidden="true"></i>
+          </span>
+        </div>
       </md-button>
     </md-menu-item>
     <md-menu-item ng-if="showConvoy">

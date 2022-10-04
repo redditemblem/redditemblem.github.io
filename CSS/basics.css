@@ -47,6 +47,7 @@
     filter: drop-shadow(0px 0px 4px white) drop-shadow(0px 0px 3px white);
 }
 
+.rem0_75Text{ font-size: .75rem; }
 .rem0_8Text{ font-size: .8rem; }
 .rem0_9Text{ font-size: .9rem; }
 .rem1_2Text{ font-size: 1.2rem; }

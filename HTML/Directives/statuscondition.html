@@ -1,17 +1,12 @@
 <div class="md-chip-custom"
      style="width: 100%;">
     <div layout="row" layout-align="space-between center" class="boldText">
-        <span ng-if="!status.useFullName" layout="row" layout-align="left center">
+        <span layout="row" layout-align="left center">
             <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
             {{status.name}}
             <span ng-if="status.remainingTurns > 0">
                 &nbsp;({{status.remainingTurns}}<span ng-if="sysdata.turns > 0">/{{sysdata.turns}}</span> turns)
             </span>
-        </span>
-        <!--Team-specific display. Get rid of me!-->
-        <span ng-if="status.useFullName" layout="row" layout-align="left center">
-            <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
-            {{status.fullName}}
         </span>
         <div layout="row" layout-align="end start">
             <i ng-if="sysdata.type == 1" class="fa fa-plus-circle" aria-hidden="true"><md-tooltip md-direction="top">Positive</md-tooltip></i>
@@ -20,7 +15,14 @@
             <i ng-if="sysdata.isEffectConfigured" class="fa fa-cog" aria-label="Effect Configured" style="margin-left: 4px;"><md-tooltip md-direction="top">Effect Configured</md-tooltip></i>    
         </div>
     </div>
+    <!--Additional Stats-->
+    <div layout="row" layout-align="start center" layout-wrap class="leftPadding rem0_75Text halfBottomMargin">
+        <span ng-repeat="(stat, statVal) in status.additionalStats track by stat">
+            <span ng-if="!$first">, </span>{{statVal}} {{stat}}
+        </span>
+    </div>
+    <!--Text Fields-->
     <div ng-repeat="text in sysdata.textFields track by $index" layout="row" ng-class="{'halfBottomMargin': !$last}">
-    {{text}}
+        {{text}}
     </div>
 </div>
