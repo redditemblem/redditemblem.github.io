@@ -89,3 +89,21 @@
         opacity: 0;
     }
 }
+
+.breathe {
+    animation-name: breathe;
+    -webkit-animation-name: breathe;
+    animation-duration: .5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+}
+
+@keyframes breathe {
+    0%{
+        border-image-outset: 0px;
+    }
+    100%{
+        border-image-outset: 2px;
+    }
+}
