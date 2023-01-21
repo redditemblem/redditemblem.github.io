@@ -32,7 +32,7 @@
         </div>
     </div>
     <div ng-if="expanded">
-        <div ng-if="sysdata.range.minimum > 0 || item.uses > 0 || sysdata.maxUses > 0 || sysdata.utilizedStats.length > 0" class="rem0_8Text">
+        <div ng-if="sysdata.range.minimum > 0 || item.uses > 0 || item.maxUses > 0 || sysdata.utilizedStats.length > 0" class="rem0_8Text">
             <md-divider></md-divider>
             <div layout="row" layout-wrap>
                 <div ng-if="sysdata.utilizedStats.length > 0" ng-repeat="(stat, statVal) in sysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
@@ -60,15 +60,18 @@
                     <span ng-if="sysdata.range.shape == 3">Saltire</span>
                     <span ng-if="sysdata.range.shape == 4">Star</span>
                 </div>
-                <div ng-if="item.uses > 0 || sysdata.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <div ng-if="item.uses > 0 || item.maxUses > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                     <span>
-                        {{item.uses > 0 && sysdata.maxUses == 0 ? "Quantity" : "Uses"}}
+                        {{item.uses > 0 && item.maxUses == 0 ? "Quantity" : "Uses"}}
                     </span>
                     <span>
                         <span ng-if="item.uses > 0">{{item.uses}}</span>
-                        <span ng-if="sysdata.maxUses > 0">
+                        <span ng-if="item.maxUses > 0">
                             <span ng-if="item.uses > 0">/</span>
-                            {{sysdata.maxUses}}
+                            <span ng-class="{'buffedStatColor': item.maxUses > sysdata.maxUses}">
+                                {{item.maxUses}}
+                                <i class="fa fa-long-arrow-up" ng-if="item.maxUses > sysdata.maxUses" aria-hidden="true"></i>
+                            </span>
                         </span>
                     </span>
                 </div>
