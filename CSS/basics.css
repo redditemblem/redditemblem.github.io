@@ -6,6 +6,7 @@
 .absolute{  position: absolute; }
 .clickable:hover{ cursor: pointer; }
 
+.topPadding{ padding-top: 8px; }
 .leftPadding{ padding-left: 8px; }
 .rightPadding{ padding-right: 8px; }
 .verticalPadding{

@@ -1,6 +1,7 @@
-<md-card ng-click="expanded = !expanded"
-         class="md-card-hover clickable verticalPadding horizontalPadding"
-         layout="column">
+<md-card ng-click="expandItemDisplay()"
+         class="md-card-hover verticalPadding horizontalPadding"
+         layout="column"
+         ng-class="{'clickable': !lockExpansion}">
     <div layout="row" layout-align="space-between start" ng-class="{'opacity50': !item.canEquip || item.isUsePrevented}">
         <div layout="column">
             <div layout="row" layout-align="left center">
@@ -10,6 +11,12 @@
                 <span layout="row" layout-align="start center" ng-class="{'droppableItemColor': item.isDroppable == true}">
                     <span>{{item.name}}</span>
                     <span ng-if="item.uses > 0">&nbsp;({{item.uses}})</span>
+                </span>
+                <span layout="row" layout-align="start center" ng-if="item.engravings.length > 0" style="margin-left: 4px;">
+                    <img ng-repeat="engraving in item.engravings"
+                         ng-if="engravingsysdata[engraving].spriteURL.length > 0"
+                         ng-src="{{engravingsysdata[engraving].spriteURL}}" 
+                         style="max-height: 24px; max-width: 24px;" />
                 </span>
                 <span layout="row" layout-align="start center" ng-if="sysdata.tags.length > 0" style="margin-left: 4px;">
                     <img ng-repeat="tag in sysdata.tags"
@@ -32,23 +39,25 @@
         </div>
     </div>
     <div ng-if="expanded">
-        <div ng-if="sysdata.range.minimum > 0 || item.uses > 0 || item.maxUses > 0 || sysdata.utilizedStats.length > 0" class="rem0_8Text">
+        <div ng-if="item.uses > 0 || item.maxUses > 0 || item.minRange.finalValue > 0 || sysdata.utilizedStats.length > 0" class="rem0_8Text">
             <md-divider></md-divider>
             <div layout="row" layout-wrap>
-                <div ng-if="sysdata.utilizedStats.length > 0" ng-repeat="(stat, statVal) in sysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <div ng-if="sysdata.utilizedStats.length > 0" ng-repeat="(stat, statObj) in item.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                     <span>{{stat}}</span>
-                    <span>{{statVal}}</span>
+                    <span ng-class="{'buffedStatColor': statObj.baseValue < statObj.finalValue, 'debuffedStatColor': statObj.baseValue > statObj.finalValue}">
+                        {{statObj.finalValue}} <i class="fa fa-long-arrow-down" ng-if="statObj.baseValue > statObj.finalValue" aria-hidden="true"></i><i class="fa fa-long-arrow-up" ng-if="statObj.baseValue < statObj.finalValue" aria-hidden="true"></i> 
+                    </span>
                 </div>
-                <div ng-if="sysdata.range.minimum > 0 || item.calculatedMinRange > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <div ng-if="item.minRange.finalValue > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                     <span>Rng</span>
                     <span>
-                        <span ng-class="{'buffedStatColor': item.minRangeModifier < 0, 'debuffedStatColor': item.minRangeModifier > 0}">
-                            {{sysdata.range.minimum + item.calculatedMinRange + item.minRangeModifier}} <i class="fa fa-long-arrow-down" ng-if="item.minRangeModifier < 0" aria-hidden="true"></i><i class="fa fa-long-arrow-up" ng-if="item.minRangeModifier > 0" aria-hidden="true"></i> 
+                        <span ng-class="{'buffedStatColor': item.minRange.finalValue < item.minRange.baseValue, 'debuffedStatColor': item.minRange.finalValue > item.minRange.baseValue}">
+                            {{item.minRange.finalValue}} <i class="fa fa-long-arrow-down" ng-if="item.minRange.finalValue < item.minRange.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-up" ng-if="item.minRange.finalValue > item.minRange.baseValue" aria-hidden="true"></i> 
                         </span>
-                        <span ng-if="(sysdata.range.minimum + item.calculatedMinRange + item.minRangeModifier) != (sysdata.range.maximum + item.calculatedMaxRange + item.maxRangeModifier) || item.maxRangeModifier != 0">
+                        <span ng-if="item.minRange.finalValue != item.maxRange.finalValue || item.maxRange.finalValue != item.maxRange.baseValue">
                             <span>-</span>
-                            <span ng-class="{'buffedStatColor': item.maxRangeModifier > 0, 'debuffedStatColor': item.maxRangeModifier < 0}">
-                                {{sysdata.range.maximum + item.calculatedMaxRange + item.maxRangeModifier}} <i class="fa fa-long-arrow-up" ng-if="item.maxRangeModifier > 0" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="item.maxRangeModifier < 0" aria-hidden="true"></i> 
+                            <span ng-class="{'buffedStatColor': item.maxRange.finalValue > item.maxRange.baseValue, 'debuffedStatColor': item.maxRange.finalValue < item.maxRange.baseValue}">
+                                {{item.maxRange.finalValue}} <i class="fa fa-long-arrow-up" ng-if="item.maxRange.finalValue > item.maxRange.baseValue" aria-hidden="true"></i><i class="fa fa-long-arrow-down" ng-if="item.maxRange.finalValue < item.maxRange.baseValue" aria-hidden="true"></i> 
                             </span>
                         </span>
                     </span>
@@ -77,8 +86,11 @@
                 </div>
             </div>
         </div>
-        <div ng-if="sysdata.textFields.length > 0">
+        <div ng-if="item.engravings.length > 0 || sysdata.textFields.length > 0">
             <md-divider></md-divider>
+            <div ng-if="item.engravings.length > 0" ng-repeat="engraving in item.engravings track by $index" ng-class="{'bottomMargin': !$last || sysdata.textFields.length > 0}">
+                <engraving sysdata="engravingsysdata[engraving]"></engraving>
+            </div>
             <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
         </div>
     </div>

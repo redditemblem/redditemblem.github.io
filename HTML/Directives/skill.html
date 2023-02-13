@@ -14,8 +14,10 @@
             <i class="fa fa-cog" ng-if="sysdata.isEffectConfigured" aria-label="Effect Configured" style="margin-left: 4px;"><md-tooltip md-direction="top">Effect Configured</md-tooltip></i>
         </div>
     </div>
-    <md-divider ng-if="sysdata.textFields.length > 0"></md-divider>
-    <div ng-repeat="text in sysdata.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
-        {{text}}
+    <div ng-if="expanded && sysdata.textFields.length > 0">
+        <md-divider></md-divider>
+        <div ng-repeat="text in sysdata.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
+            {{text}}
+        </div>
     </div>
 </md-card>

@@ -217,7 +217,8 @@
                 <inventoryitem ng-repeat="item in search.selected.inventory.items track by $index"  
                                item="item"
                                sysdata="data.system.items[item.name]"
-                               tagsysdata="data.system.tags">
+                               tagsysdata="data.system.tags"
+                               engravingsysdata="data.system.engravings">
                 </inventoryitem>
                 <md-card ng-if="search.selected.inventory.emptySlotCount > 0"
                          class="md-card-hover verticalPadding horizontalPadding"
@@ -232,9 +233,24 @@
                 </md-card>
             </div>
             <md-divider></md-divider>
+            <!--Emblem-->
+            <div ng-if="search.selected.emblem">
+                <div class="rem1_2Text boldText" layout="row">
+                    Emblem
+                </div>
+                <div layout="column">
+                    <emblem emblem="search.selected.emblem" 
+                            sysdata="data.system.emblems[search.selected.emblem.name]" 
+                            skillsysdata="data.system.skills"
+                            itemsysdata="data.system.items"
+                            tagsysdata="data.system.tags"
+                            engravingsysdata="data.system.engravings"></emblem>
+                </div>
+                <md-divider></md-divider>
+            </div>
             <!--Battalion-->
             <div ng-if="search.selected.battalion">
-                <div  class="rem1_2Text boldText" layout="row">
+                <div class="rem1_2Text boldText" layout="row">
                     Battalion
                 </div>
                 <div layout="column">
@@ -250,7 +266,8 @@
             <div layout="column" ng-if="skillsExpanded">
                 <skill ng-repeat="skill in search.selected.skills track by $index"
                        skill="skill"
-                       sysdata="data.system.skills[skill]">
+                       sysdata="data.system.skills[skill]"
+                       expanded="true">
                 </skill>
             </div>
         </md-content>

@@ -4,7 +4,8 @@ app.directive('skill', function() {
         templateUrl: 'HTML/Directives/skill.html',
         scope: {
             skill: "=skill",
-            sysdata: "=sysdata"
+            sysdata: "=sysdata",
+            expanded: "=expanded"
         }
     };
  });

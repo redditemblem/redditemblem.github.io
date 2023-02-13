@@ -39,6 +39,17 @@
                              Show Expanded Item Data
                 </md-checkbox>
             </div>
+            <div ng-if="data.parameters.filterConditions.AllowEngravings">
+                <md-divider></md-divider>
+                <!-- Filters -->
+                <div layout="column" style="margin-top: 16px;">
+                    <md-checkbox ng-if="data.parameters.filterConditions.AllowEngravings"
+                                 ng-model="filters.showEngravings"
+                                 aria-label="Engraved">
+                                Engraved
+                    </md-checkbox>
+                </div>
+            </div>
             <md-divider></md-divider>
             <!-- Item Categories --><div layout="row" layout-align="start center" class="rem1_2Text boldText verticalPadding">
                 Category
@@ -73,7 +84,7 @@
     <md-content id="convoyItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.convoyItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="(filters.showOwner == 'All' || item.owner == filters.showOwner) && filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all)"
+                 ng-show="(filters.showOwner == 'All' || item.owner == filters.showOwner) && filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (item.engravings.length > 0 || !filters.showEngravings)"
                  ng-click="item.expanded = !item.expanded"
                  class="fade clickable">
                  <div layout="row" layout-align="space-between center">
@@ -85,6 +96,12 @@
                             <span layout="row" layout-align="start center" class="boldText">
                                 {{item.name}}
                                 <span ng-if="item.uses > 0">&nbsp;({{item.uses}})</span>
+                            </span>
+                            <span layout="row" layout-align="start center" ng-if="item.engravings.length > 0" style="margin-left: 4px;">
+                                <img ng-repeat="engraving in item.engravings"
+                                     ng-if="data.engravings[engraving].spriteURL.length > 0"
+                                     ng-src="{{data.engravings[engraving].spriteURL}}" 
+                                     style="max-height: 24px; max-width: 24px;" />
                             </span>
                             <span layout="row" layout-align="start center" ng-if="itemData.tags.length > 0" style="margin-left: 4px;">
                                 <img ng-repeat="tag in itemData.tags"
@@ -113,9 +130,11 @@
                     <div ng-if="itemData.range.minimum > 0 || item.uses > 0 || itemData.maxUses > 0 || itemData.utilizedStats.length > 0" class="rem0_8Text">
                         <md-divider></md-divider>
                         <div layout="row" layout-wrap>
-                            <div ng-if="itemData.utilizedStats.length > 0" ng-repeat="(stat, statVal) in itemData.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                            <div ng-if="itemData.utilizedStats.length > 0" ng-repeat="(stat, statObj) in item.stats" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>{{stat}}</span>
-                                <span>{{statVal}}</span>
+                                <span ng-class="{'buffedStatColor': statObj.baseValue < statObj.finalValue, 'debuffedStatColor': statObj.baseValue > statObj.finalValue}">
+                                    {{statObj.finalValue}} <i class="fa fa-long-arrow-down" ng-if="statObj.baseValue > statObj.finalValue" aria-hidden="true"></i><i class="fa fa-long-arrow-up" ng-if="statObj.baseValue < statObj.finalValue" aria-hidden="true"></i> 
+                                </span>
                             </div>
                             <div ng-if="itemData.range.minimum > 0 || itemData.range.minimumRequiresCalculation" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
                                 <span>Rng</span>
@@ -142,13 +161,16 @@
                             </div>
                         </div>
                     </div>
-                     <div ng-if="itemData.textFields.length > 0" layout="column">
+                     <div ng-if="item.value > -1 || item.engravings.length > 0 || itemData.textFields.length > 0" layout="column">
                         <md-divider></md-divider>
-                        <div ng-if="item.value > -1" layout="row" class="rem0_9Text bottomMargin">
-                            Sells for&nbsp;<currency amount="item.value" format="data.currency"></currency>.
+                        <div ng-if="item.engravings.length > 0" ng-repeat="engraving in item.engravings track by $index" ng-class="{'bottomMargin': !$last || itemData.textFields.length > 0}">
+                            <engraving sysdata="data.engravings[engraving]"></engraving>
                         </div>
-                        <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">
+                        <div ng-repeat="text in itemData.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last || item.value > -1}" layout="row">
                             {{text}}
+                        </div>
+                        <div ng-if="item.value > -1" layout="row" class="rem0_9Text">
+                            Sells for&nbsp;<currency amount="item.value" format="data.currency"></currency>.
                         </div>
                      </div>
                  </div>

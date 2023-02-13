@@ -1,0 +1,73 @@
+<md-card ng-click="expanded = !expanded"
+         class="md-card-hover clickable verticalPadding horizontalPadding"
+         layout="column">
+    <div layout="row" layout-align="space-between start">
+        <div layout="row">
+            <div ng-if="sysdata.spriteURL.length > 0" layout="column" layout-align="center start" style="height: 32px; width: 32px; margin-right: 4px;">
+                <img ng-src="{{sysdata.spriteURL}}" style="max-height: 32px; max-width: 32px;"/>
+            </div>
+            <div layout="column" layout-align="center start">
+                <div layout="row">
+                    {{emblem.name}}
+                </div>
+                <div ng-if="sysdata.tagline.length > 0" layout="row" class="rem0_8Text leftPadding">
+                    {{sysdata.tagline}}
+                </div>
+            </div>
+        </div>
+        <div layout="row" layout-align="end start">
+            <i class="fa fa-star" ng-if="emblem.isEngaged" aria-label="Engaged" style="margin-left: 4px;"><md-tooltip md-direction="top">Engaged</md-tooltip></i>
+        </div>
+    </div>
+    <div ng-if="emblem.bondLevel > 0 || emblem.engageMeterCount > -1">
+        <md-divider></md-divider>
+        <div layout="row" layout-align="space-between start" class="rem0_8Text">
+            <span>
+                Bond Lvl. {{emblem.bondLevel > 0 ? emblem.bondLevel : "-"}}
+            </span>
+            <span>
+                Engage Meter {{emblem.engageMeterCount > -1 ? emblem.engageMeterCount : "-"}}
+            </span>
+        </div>
+    </div>
+    <div ng-if="emblem.syncSkills.length > 0 || emblem.engageSkills.length > 0">
+        <md-divider></md-divider>
+        <div ng-if="emblem.syncSkills.length > 0">
+            <div ng-if="expanded" class="boldText" layout="row">
+                Sync Skills
+            </div>
+            <skill ng-repeat="skill in emblem.syncSkills track by $index"
+                   skill="skill"
+                   sysdata="skillsysdata[skill]"
+                   expanded="expanded">
+            </skill>
+        </div>
+        <div ng-if="emblem.engageSkills.length > 0" ng-class="{'topPadding': expanded && emblem.syncSkills.length > 0}">
+            <div ng-if="expanded" class="boldText" layout="row">
+                Engage Skills
+            </div>
+            <skill ng-repeat="skill in emblem.engageSkills track by $index"
+                   skill="skill"
+                   sysdata="skillsysdata[skill]"
+                   expanded="expanded">
+            </skill>
+        </div>
+    </div>
+    <div ng-if="emblem.engageWeapons.length > 0">
+        <md-divider></md-divider>
+        <div ng-if="expanded" class="boldText" layout="row">
+            Engage Weapons
+        </div>
+        <inventoryitem ng-repeat="item in emblem.engageWeapons track by $index"  
+                       item="item"
+                       sysdata="itemsysdata[item.name]"
+                       tagsysdata="tagsysdata"
+                       engravingsysdata="engravingsysdata"
+                       expanded="expanded">
+        </inventoryitem>
+    </div>
+    <div ng-if="expanded && sysdata.textFields.length > 0">
+        <md-divider></md-divider>
+        <div ng-repeat="text in sysdata.textFields track by $index" ng-class="{'halfBottomMargin': !$last}" layout="row">{{text}}</div>
+    </div>
+</md-card>
