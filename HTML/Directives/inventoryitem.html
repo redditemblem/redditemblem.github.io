@@ -94,10 +94,13 @@
             <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
         </div>
     </div>
-    <div ng-if="item.maxRangeExceedsCalculationLimit" class="errorMessageColor rem0_8Text">
+    <div ng-if="item.maxRangeExceedsCalculationLimit || item.isNotInInventory" class="rem0_8Text">
         <md-divider></md-divider>
-        <div layout="row" layout-align="start center">
+        <div ng-if="item.maxRangeExceedsCalculationLimit" class="errorMessageColor" layout="row" layout-align="start center" >
             <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i> Item Range Not Visible
+        </div>
+        <div ng-if="item.isNotInInventory" class="warningMessageColor" ng-class="{'halfTopMargin': item.maxRangeExceedsCalculationLimit}" layout="row" layout-align="start center" >
+            <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i> Item Not Found In Inventory
         </div>
     </div>
 </md-card>
