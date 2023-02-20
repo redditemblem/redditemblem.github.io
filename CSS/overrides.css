@@ -90,3 +90,7 @@ md-divider{
     -o-transform:rotate(45deg); 
     transform:rotate(45deg);
 }
+
+md-input-container{
+    margin-bottom: 0px;
+}

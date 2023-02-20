@@ -17,6 +17,10 @@
     padding-left: 8px;
     padding-right: 8px;
 }
+.doubleHorizontalPadding{
+    padding-left: 16px;
+    padding-right: 16px; 
+}
 .topMargin{ margin-top: 8px; }
 .halfTopMargin{ margin-top: 4px; }
 .quarterBottomMargin{ margin-bottom: 2px; }

@@ -9,6 +9,14 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     $scope.skillsExpanded = true;
     $scope.selectedTile = null;
     $scope.numOfPinnedUnits = 0;
+
+    $scope.dice = {
+        'lowerBound': 1,
+        'upperBound': 100,
+        'rollCount': 1,
+        'rollAverages': false
+    };
+    $scope.diceHistory = [];
     
     //Call API to fetch JSON on load
     $http({
@@ -211,5 +219,69 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
 
     $scope.getUnitByName = function(unitName){
         return $scope.data.units.find((u) => { return u["name"] === unitName });
+    };
+
+    // DICE ROLLING FUNCTIONS -------------------------------------------------
+
+    $scope.rollDice = function(){
+        $scope.quickRollDice($scope.dice.lowerBound, 
+                             $scope.dice.upperBound, 
+                             $scope.dice.rollCount,
+                             $scope.dice.rollAverages);
+    };
+
+    $scope.quickRollDice = function(lowerBound, upperBound, rollCount, rollAverages){
+        var rolls;
+        if(!rollAverages) rolls = getRegularRollArray(lowerBound, upperBound, rollCount);
+        else rolls = getAveragedRollArray(lowerBound, upperBound, rollCount);
+
+        if($scope.diceHistory.length >= 20)
+            $scope.diceHistory.pop();
+
+        $scope.diceHistory.unshift({
+            'lowerBound': lowerBound,
+            'upperBound': upperBound,
+            'rollCount': rollCount,
+            'rollStyle': (rollAverages ? 1 : 0),
+            'rolls': rolls
+        });
+    };
+
+    function getRegularRollArray(lowerBound, upperBound, rollCount){
+        var rolls = [];
+        for(var i = 0; i < rollCount; i++)
+            rolls.push(getRandomInt(lowerBound, upperBound));
+        return rolls;
+    };
+
+    function getAveragedRollArray(lowerBound, upperBound, rollCount){
+        var rolls = [];
+        for(var i = 0; i < rollCount; i++){
+            var rollSet = [];
+            var roll1 = getRandomInt(lowerBound, upperBound);
+            var roll2 = getRandomInt(lowerBound, upperBound);
+
+            rollSet.push(roll1);
+            rollSet.push(roll2);
+            rollSet.push((roll1 + roll2) / 2); //average of 2 dice
+            rolls.push(rollSet);
+        }
+        return rolls;
+    };
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
+    };
+    
+    $scope.clearDiceHistory = function(){
+        $scope.diceHistory = [];
+    };
+    
+    $scope.validateDiceRange = function(){
+        var inputDiceUpperBound = document.querySelector('input[name="upperBound"]');
+        if($scope.dice.lowerBound >= $scope.dice.upperBound)
+            inputDiceUpperBound.setCustomValidity("Highest Value must be greater than Lowest Value.");
+        else
+            inputDiceUpperBound.setCustomValidity("");
     };
 }]);

@@ -3,14 +3,18 @@
     <!--Toolbar-->
     <div id="divToolbar" layout="column" layout-align="space-between center" class="verticalPadding toolbarColor" style="width: 55px; height: 100%;">
         <div>
-            <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false;">
+            <md-button id="btnShowSideNav" class="md-icon-button" ng-class="{'toolbarButtonColor': displayUnits}" ng-click="displayUnits = !displayUnits; displayTile = false; displayDice = false;">
                 <i class="fa fa-bars fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Unit Info</md-tooltip></i>
             </md-button>
-            <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTile}" ng-click="displayTile = !displayTile; displayUnits = false;">
+            <md-button id="btnShowTileInfo" class="md-icon-button" ng-class="{'toolbarButtonColor': displayTile}" ng-click="displayTile = !displayTile; displayUnits = false; displayDice = false;">
                 <i class="fa fa-square-o fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Tile Info</md-tooltip></i>
             </md-button>
         </div>
         <div>
+            <md-button id="btnShowDiceRoll" class="md-icon-button" ng-class="{'toolbarButtonColor': displayDice}" ng-click="displayDice = !displayDice; displayUnits = false; displayTile = false;">
+                <span class="material-symbols-rounded">casino</span>
+                <md-tooltip md-direction="right">Dice Roller</md-tooltip>
+            </md-button>
             <linksmenu workbookid="data.workbookID" chapterposturl="data.map.chapterPostURL" showconvoy="data.showConvoyLink" showshop="data.showShopLink" showmap="false" showanalyzer="true" />
         </div>
     </div>
@@ -335,7 +339,88 @@
             </div>
         </md-content>
     </div>
-
+    <!-- Dice roll display -->
+    <div id="divDiceDisplay" ng-show="displayDice" layout="column" class="verticalPadding doubleHorizontalPadding slide" style="width: 375px; height: 100%;">
+        <div layout="row" layout-align="left center" class="rem1_4Text boldText topMargin bottomMargin">
+            <span class="material-symbols-rounded">casino</span>
+            <span class="leftPadding">Dice Roller</span>
+        </div>
+        <md-divider></md-divider>
+        <form name="diceRollParmForm" ng-submit="rollDice()">
+            <div layout="row" layout-align="start center">
+                <md-input-container class="md-block" flex="35">
+                    <label>Lowest Value</label>
+                    <input required type="number" step="number" name="lowerBound" ng-model="dice.lowerBound" min="1" max="999" ng-change="validateDiceRange()" />
+                </md-input-container>
+                <md-input-container class="md-block" flex="35">
+                    <label>Highest Value</label>
+                    <input required type="number" step="number" name="upperBound" ng-model="dice.upperBound" min="2" max="1000" ng-change="validateDiceRange()" />
+                </md-input-container>
+                <md-input-container class="md-block" flex="30">
+                    <label># of Dice</label>
+                    <input required type="number" step="number" name="rollCount" ng-model="dice.rollCount" min="1" max="20" />
+                </md-input-container>
+            </div>
+            <div layout="column">
+                <md-checkbox ng-model="dice.rollAverages"
+                                aria-label="Use Averaged Rolls (True Hit)">
+                                Use Averaged Rolls (True Hit)
+                </md-checkbox>
+                <md-button type="submit" class="md-raised md-primary">
+                    <span layout="row" layout-align="center center">
+                        Roll Dice&nbsp;<span class="material-symbols-rounded">casino</span>
+                    </span>
+                </md-button>
+            </div>
+        </form>
+        <md-divider></md-divider>
+        <div class="rem1_2Text boldText" layout="row">
+            Quick Rolls
+        </div>
+        <div layout="row">
+            <md-button class="md-raised" ng-click="quickRollDice(1,100,1,false)">1 d100</md-button>
+            <md-button class="md-raised" ng-click="quickRollDice(1,100,10,false)">10 d100</md-button>
+            <md-button class="md-raised" ng-click="quickRollDice(1,100,1,true)">1 d100 Avg.</md-button>
+        </div>
+        <md-divider></md-divider>
+        <div class="rem1_2Text boldText topMargin bottomMargin" layout="row" layout-align="space-between center">
+            <span>History</span>
+            <div ng-click="clearDiceHistory()" class="clickable">
+                <i class="fa fa-eraser fa-fw" aria-hidden="true"><md-tooltip md-direction="left">Clear history</md-tooltip></i>
+            </div>
+        </div>
+        <md-content>
+            <div ng-repeat="historyObj in diceHistory">
+                <md-card class="verticalPadding horizontalPadding">
+                    <div layout="row" layout-align="start start">
+                        <div layout="column" flex="30">
+                            <div layout="column">
+                                <span class="rem0_8Text boldText"># of Dice</span>
+                                <span>{{historyObj.rollCount}}</span>
+                            </div>
+                            <div layout="column" class="topMargin">
+                                <span class="rem0_8Text boldText">Bounds</span>
+                                <span>{{historyObj.lowerBound}} - {{historyObj.upperBound}}</span>
+                            </div>
+                        </div>
+                        <div layout="column" flex="70">
+                            <span class="rem0_8Text boldText">Results</span>
+                            <div ng-if="historyObj.rollStyle == 0" layout="row" layout-align="start" layout-wrap>
+                                <span ng-repeat="val in historyObj.rolls track by $index" class="horizontalPadding">
+                                    {{val}}
+                                </span>
+                            </div>
+                            <div ng-if="historyObj.rollStyle == 1" layout="column">
+                                <div layout="row" ng-repeat="val in historyObj.rolls track by $index" ng-class="{'halfBottomMargin': !$last}">
+                                    {{val[2]}}&nbsp;<span class="opacity50"> = ({{val[0]}} + {{val[1]}}) / 2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </md-content>
+    </div>
     <!-- Map -->
     <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
         <div class="mapBackground"
