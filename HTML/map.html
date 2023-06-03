@@ -270,7 +270,7 @@
             <div layout="column" ng-if="skillsExpanded">
                 <skill ng-repeat="skill in search.selected.skills track by $index"
                        skill="skill"
-                       sysdata="data.system.skills[skill]"
+                       sysdata="data.system.skills[skill.name]"
                        expanded="true">
                 </skill>
             </div>

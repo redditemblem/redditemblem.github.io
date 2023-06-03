@@ -38,7 +38,7 @@
             </div>
             <skill ng-repeat="skill in emblem.syncSkills track by $index"
                    skill="skill"
-                   sysdata="skillsysdata[skill]"
+                   sysdata="skillsysdata[skill.name]"
                    expanded="expanded">
             </skill>
         </div>
@@ -48,7 +48,7 @@
             </div>
             <skill ng-repeat="skill in emblem.engageSkills track by $index"
                    skill="skill"
-                   sysdata="skillsysdata[skill]"
+                   sysdata="skillsysdata[skill.name]"
                    expanded="expanded">
             </skill>
         </div>

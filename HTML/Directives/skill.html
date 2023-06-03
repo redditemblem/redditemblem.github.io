@@ -6,7 +6,7 @@
                     <img ng-src="{{sysdata.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
                 </span>
                 <span layout="row" layout-align="start center">
-                    {{skill}}
+                    {{skill.name}}
                 </span>
             </div>
          </div>
@@ -14,6 +14,13 @@
             <i class="fa fa-cog" ng-if="sysdata.isEffectConfigured" aria-label="Effect Configured" style="margin-left: 4px;"><md-tooltip md-direction="top">Effect Configured</md-tooltip></i>
         </div>
     </div>
+    <!--Additional Stats-->
+    <div layout="row" layout-align="start center" layout-wrap class="leftPadding rem0_75Text">
+        <span ng-repeat="(stat, statVal) in skill.additionalStats track by stat">
+            <span ng-if="!$first">, </span>{{statVal}} {{stat}}
+        </span>
+    </div>
+    <!--Text Fields-->
     <div ng-if="expanded && sysdata.textFields.length > 0">
         <md-divider></md-divider>
         <div ng-repeat="text in sysdata.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
