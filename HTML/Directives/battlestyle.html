@@ -1,0 +1,10 @@
+<div layout="column" class="bottomMargin">
+    <div layout="row" layout-align="left center" class="rem0_9Text">
+        <span><b>Battle Style</b>:&nbsp;</span>
+        <img ng-if="sysdata.spriteURL.length > 0" ng-src="{{sysdata.spriteURL}}" style="margin-right: 4px; max-height: 12px; max-width: 12px;"/>
+        <span>{{battleStyle}}</span>
+    </div>
+    <div layout="row" ng-repeat="text in sysdata.textFields track by $index" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
+        {{text}}
+    </div>
+</div>

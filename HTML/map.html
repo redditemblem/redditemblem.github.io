@@ -96,7 +96,6 @@
                 <div ng-if="search.selected.characterApplicationURL.length > 0" layout="row" class="rem0_9Text bottomMargin">
                     <b>Character Application</b>:&nbsp;<span ng-click="launchCharacterApplication(search.selected.characterApplicationURL)" class="hyperlinkText">Link <i class="fa fa-external-link" aria-hidden="true"></i></span>
                 </div>
-                
                 <!--Movement Type-->
                 <div ng-if="search.selected.movementType.length > 0" layout="row" class="rem0_9Text bottomMargin">
                     <b>Movement Type</b>: {{search.selected.movementType}}
@@ -114,6 +113,10 @@
                         {{text}}
                     </div>
                 </div>
+                <!--Battle Style-->
+                <battlestyle ng-if="search.selected.battleStyle.length > 0" 
+                    battlestyle="search.selected.battleStyle" 
+                    sysdata="data.system.battleStyles[search.selected.battleStyle]"></battlestyle>
                 <!--Affiliation-->
                 <div layout="column">
                     <div layout="row" class="rem0_9Text">
@@ -248,7 +251,8 @@
                             skillsysdata="data.system.skills"
                             itemsysdata="data.system.items"
                             tagsysdata="data.system.tags"
-                            engravingsysdata="data.system.engravings"></emblem>
+                            engravingsysdata="data.system.engravings"
+                            engageattacksysdata="data.system.engageAttacks"></emblem>
                 </div>
                 <md-divider></md-divider>
             </div>

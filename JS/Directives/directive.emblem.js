@@ -8,7 +8,8 @@ app.directive('emblem', function() {
             skillsysdata: "=skillsysdata",
             itemsysdata: "=itemsysdata",
             tagsysdata: "=tagsysdata",
-            engravingsysdata: "=engravingsysdata"
+            engravingsysdata: "=engravingsysdata",
+            engageattacksysdata: "=engageattacksysdata"
         },
         link: function($scope, element, attrs) {
             $scope.expanded = false; //start collapsed

@@ -1,0 +1,21 @@
+<md-card class="md-card-hover verticalPadding horizontalPadding">
+    <div layout="row" layout-align="space-between start">
+        <div layout="column">
+            <div layout="row" layout-align="left center">
+                <span ng-if="sysdata.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
+                    <img ng-src="{{sysdata.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
+                </span>
+                <span layout="row" layout-align="start center">
+                    {{engageattack}}
+                </span>
+            </div>
+         </div>
+    </div>
+    <!--Text Fields-->
+    <div ng-if="expanded && sysdata.textFields.length > 0">
+        <md-divider></md-divider>
+        <div ng-repeat="text in sysdata.textFields track by $index" layout="row" class="rem0_9Text" ng-class="{'bottomMargin': !$last}">
+            {{text}}
+        </div>
+    </div>
+</md-card>

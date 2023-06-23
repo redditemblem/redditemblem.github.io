@@ -66,6 +66,17 @@
                        expanded="expanded">
         </inventoryitem>
     </div>
+    <div ng-if="emblem.engageAttacks.length > 0">
+        <md-divider></md-divider>
+        <div ng-if="expanded" class="boldText" layout="row">
+            Engage Attacks
+        </div>
+        <engageattack ng-repeat="attack in emblem.engageAttacks track by $index"
+                      engageattack="attack"
+                      sysdata="engageattacksysdata[attack]"
+                      expanded="expanded">
+        </engageattack>
+    </div>
     <div ng-if="expanded && sysdata.textFields.length > 0">
         <md-divider></md-divider>
         <div ng-repeat="text in sysdata.textFields track by $index" ng-class="{'halfBottomMargin': !$last}" layout="row">{{text}}</div>
