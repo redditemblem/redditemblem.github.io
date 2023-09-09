@@ -1,0 +1,60 @@
+<md-card ng-click="expandCombatArtDisplay()"
+         class="md-card-hover clickable verticalPadding horizontalPadding"
+         layout="column">
+    <div layout="row" layout-align="space-between">
+        <div layout="column">
+            <div layout="row" layout-align="left center">
+                <span ng-if="sysdata.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 24px; width: 24px; margin-right: 4px;">
+                    <img ng-src="{{sysdata.spriteURL}}" style="max-height: 24px; max-width: 24px;"/>
+                </span>
+                <span layout="row" layout-align="start center">
+                    {{combatart}}
+                </span>
+                <span layout="row" layout-align="start center" ng-if="sysdata.tags.length > 0" style="margin-left: 4px;">
+                    <img ng-repeat="tag in sysdata.tags"
+                         ng-if="tagsysdata[tag].spriteURL.length > 0"
+                         ng-src="{{tagsysdata[tag].spriteURL}}" 
+                         style="max-height: 24px; max-width: 24px;" />
+                </span>
+            </div>
+            <div ng-if="sysdata.weaponRank.length > 0 || sysdata.category.length > 0 || sysdata.utilizedStats.length > 0" layout="row" class="rem0_8Text leftPadding">
+                <span ng-if="sysdata.weaponRank.length > 0">{{sysdata.weaponRank}}</span>
+                <span ng-if="sysdata.weaponRank.length > 0 && sysdata.category.length > 0">&nbsp;-&nbsp;</span>
+                <span ng-if="sysdata.category.length > 0">{{sysdata.category}}</span>
+                <span ng-if="sysdata.utilizedStats.length > 0" >
+                    &nbsp;(<span ng-repeat="stat in sysdata.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
+                </span>
+            </div>
+        </div>
+        <div ng-if="sysdata.durabilityCost != 0" layout="column" layout-align="center end">
+            <span title="Cost: {{sysdata.durabilityCost}} Durability">{{sysdata.durabilityCost}}</span>
+        </div>
+    </div>
+    <div ng-if="expanded">
+        <md-divider></md-divider>
+        <div layout="row" layout-wrap class="rem0_8Text">
+            <div ng-repeat="(stat, value) in sysdata.stats track by stat" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <span>{{stat}}</span>
+                <span>{{value}}</span>
+            </div>
+            <div ng-if="sysdata.range.minimum > 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <span>Rng</span>
+                <span>
+                    <span>{{sysdata.range.minimum}} </span>
+                    <span ng-if="sysdata.range.minimum != sysdata.range.maximum">
+                        <span>-</span>
+                        <span>{{sysdata.range.maximum}} </span>
+                    </span>
+                </span>
+            </div>
+            <div ng-if="sysdata.durabilityCost != 0" layout="row" layout-align="space-between" flex="33" class="horizontalPadding">
+                <span>Cost</span>
+                <span>{{sysdata.durabilityCost}}</span>
+            </div>
+        </div>
+        <div ng-if="sysdata.textFields.length > 0">
+            <md-divider></md-divider>
+            <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+        </div>
+    </div>
+</md-card>

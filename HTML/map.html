@@ -238,6 +238,17 @@
                              </div>
                          </div>
                 </md-card>
+                <!-- Combat Arts -->
+                <div ng-if="search.selected.combatArts.length > 0" class="topMargin">
+                    <div class="leftMargin topMargin boldText" layout="row">
+                        Combat Arts
+                    </div>
+                    <combatart ng-repeat="art in search.selected.combatArts track by $index"  
+                               combatart="art"
+                               sysdata="data.system.combatArts[art]"
+                               tagsysdata="data.system.tags">
+                    </combatart>
+                </div>
             </div>
             <md-divider></md-divider>
             <!--Emblem-->
