@@ -278,16 +278,33 @@
                 <md-divider></md-divider>
             </div>
             <!--Skills-->
-            <div ng-if="search.selected.skills.length > 0" class="rem1_2Text boldText" layout="row">
-                <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
-                Skills
-            </div>
-            <div layout="column" ng-if="skillsExpanded">
-                <skill ng-repeat="skill in search.selected.skills track by $index"
-                       skill="skill"
-                       sysdata="data.system.skills[skill.name]"
-                       expanded="true">
-                </skill>
+            <div ng-if="search.selected.skills.length > 0">
+                <div class="rem1_2Text boldText" layout="row">
+                    <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
+                    Skills
+                </div>
+                <div layout="column" ng-if="skillsExpanded">
+                    <skill ng-repeat="skill in search.selected.skills track by $index"
+                           skill="skill"
+                           sysdata="data.system.skills[skill.name]"
+                           expanded="true">
+                    </skill>
+                </div>
+                <md-divider></md-divider>
+            </div> 
+            <!--Adjutants-->
+            <div ng-if="search.selected.adjutants.length > 0">
+                <div class="rem1_2Text boldText" layout="row">
+                    <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !adjutantsExpanded}" ng-click="toggleAdjutantsExpanded()" aria-hidden="true"></i>
+                    Adjutants
+                </div>
+                <div layout="column" ng-if="adjutantsExpanded">
+                    <adjutant ng-repeat="adjutant in search.selected.adjutants track by $index"  
+                              adjutant="adjutant"
+                              sysdata="data.system.adjutants[adjutant]">
+                    </adjutant>
+                </div>
+                <md-divider></md-divider>
             </div>
         </md-content>
     </div>

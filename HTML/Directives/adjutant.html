@@ -1,0 +1,19 @@
+<md-card ng-click="expandAdjutantDisplay()"
+         class="md-card-hover verticalPadding horizontalPadding"
+         layout="column"
+         ng-class="{'clickable': sysdata.textFields.length > 0}">
+    <div layout="row" layout-align="left center">
+        <span ng-if="sysdata.spriteURL.length > 0" layout="column" layout-align="center center" style="height: 32px; width: 32px; margin-right: 4px;">
+            <img ng-src="{{sysdata.spriteURL}}" style="max-height: 32px; max-width: 32px;"/>
+        </span>
+        <span layout="row" layout-align="start center">
+            {{adjutant}}
+        </span>
+    </div>
+    <div ng-if="expanded && sysdata.textFields.length > 0">
+        <div ng-if="sysdata.textFields.length > 0">
+            <md-divider></md-divider>
+            <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+        </div>
+    </div>
+</md-card>
