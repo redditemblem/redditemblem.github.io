@@ -5,7 +5,9 @@ app.directive('battalion', function() {
         scope: {
             battalion: "=battalion",
             battalionsysdata: "=battalionsysdata",
-            gambitsysdata: "=gambitsysdata"
+            gambitsysdata: "=gambitsysdata",
+            battalionlabel: "=battalionlabel",
+            gambitlabel: "=gambitlabel"
         },
         link: function($scope, element, attrs) {
             $scope.expanded = false; //start collapsed

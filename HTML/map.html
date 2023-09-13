@@ -107,7 +107,7 @@
                      layout="column" 
                      class="bottomMargin">
                     <div layout="row" class="rem0_9Text">
-                        <b>Class</b>: {{class}}
+                        <b>{{data.system.interfaceLabels.class}}</b>: {{class}}
                     </div>
                     <div layout="row" ng-repeat="text in classData.textFields track by $index" class="rem0_8Text leftPadding" ng-class="{'bottomMargin': !$last}">
                         {{text}}
@@ -116,7 +116,8 @@
                 <!--Battle Style-->
                 <battlestyle ng-if="search.selected.battleStyle.length > 0" 
                     battlestyle="search.selected.battleStyle" 
-                    sysdata="data.system.battleStyles[search.selected.battleStyle]"></battlestyle>
+                    sysdata="data.system.battleStyles[search.selected.battleStyle]"
+                    label="data.system.interfaceLabels.battleStyle"></battlestyle>
                 <!--Affiliation-->
                 <div layout="column">
                     <div layout="row" class="rem0_9Text">
@@ -146,9 +147,15 @@
                 </div>
             </div>
             <!--Pair-Up Info-->
-            <div ng-if="search.selected.location.pairedUnit.length > 0" layout="row" layout-align="left center" class="rem0_9Text">
-                <i class="fa fa-user-plus fa-fw" aria-hidden="true" style="margin-right: 4px;"><md-tooltip md-direction="top">Unit Pair-Up</md-tooltip></i>
-                Paired with&nbsp;<span ng-click="search.selected = getUnitByName(search.selected.location.pairedUnit)" class="hyperlinkText">{{search.selected.location.pairedUnit}}</span>&nbsp;({{search.selected.location.isBackOfPair ? 'back' : 'front'}})
+            <div ng-if="search.selected.location.pairedUnit.length > 0" layout="row" layout-align="left" class="rem0_9Text">
+                <div layout="column">
+                    <i class="fa fa-user-plus fa-fw" aria-hidden="true" style="margin-right: 4px;"><md-tooltip md-direction="top">Unit Pair-Up</md-tooltip></i>
+                </div>
+                <div>
+                    Paired with
+                    <span ng-click="search.selected = getUnitByName(search.selected.location.pairedUnit)" class="hyperlinkText">{{search.selected.location.pairedUnit}}</span>
+                    ({{search.selected.location.isBackOfPair ? 'back' : 'front'}})
+                </div>
             </div>
             <!--Tags-->
             <div layout="row" ng-if="search.selected.tags.length > 0">
@@ -194,7 +201,7 @@
             <div layout="row">
                 <div layout="row" style="margin-right: 4px; padding-top: 5px;">
                     <i class="fa fa-tasks fa-fw" aria-hidden="true">
-                        <md-tooltip md-direction="top">Weapon Ranks</md-tooltip>
+                        <md-tooltip md-direction="top">{{data.system.interfaceLabels.weaponRanks}}</md-tooltip>
                     </i>
                 </div>
                 <div layout="row" layout-wrap>
@@ -205,7 +212,7 @@
             <div ng-if="search.selected.statusConditions.length > 0" layout="row">
                 <div layout="row" style="margin-right: 4px; padding-top: 5px;">
                     <i class="fa fa-medkit fa-fw" aria-hidden="true">
-                        <md-tooltip md-direction="top">Status Conditions</md-tooltip>
+                        <md-tooltip md-direction="top">{{data.system.interfaceLabels.statusConditions}}</md-tooltip>
                     </i>
                 </div>
                 <div layout="column" flex="100" style="padding-right: 8px;">
@@ -218,7 +225,7 @@
             <!-- Inventory -->
             <div class="rem1_2Text boldText" layout="row">
                 <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !invExpanded}" ng-click="toggleInvExpanded()" aria-hidden="true"></i>
-                Inventory
+                {{data.system.interfaceLabels.inventory}}
             </div>
             <div layout="column" ng-if="invExpanded">
                 <inventoryitem ng-repeat="item in search.selected.inventory.items track by $index"  
@@ -241,7 +248,7 @@
                 <!-- Combat Arts -->
                 <div ng-if="search.selected.combatArts.length > 0" class="topMargin">
                     <div class="leftMargin topMargin boldText" layout="row">
-                        Combat Arts
+                        {{data.system.interfaceLabels.combatArts}}
                     </div>
                     <combatart ng-repeat="art in search.selected.combatArts track by $index"  
                                combatart="art"
@@ -254,7 +261,7 @@
             <!--Emblem-->
             <div ng-if="search.selected.emblem">
                 <div class="rem1_2Text boldText" layout="row">
-                    Emblem
+                    {{data.system.interfaceLabels.emblem}}
                 </div>
                 <div layout="column">
                     <emblem emblem="search.selected.emblem" 
@@ -270,10 +277,15 @@
             <!--Battalion-->
             <div ng-if="search.selected.battalion">
                 <div class="rem1_2Text boldText" layout="row">
-                    Battalion
+                    {{data.system.interfaceLabels.battalion}}
                 </div>
                 <div layout="column">
-                    <battalion battalion="search.selected.battalion" battalionsysdata="data.system.battalions[search.selected.battalion.name]" gambitsysdata="data.system.gambits[search.selected.battalion.gambitName]"></battalion>
+                    <battalion battalion="search.selected.battalion" 
+                               battalionsysdata="data.system.battalions[search.selected.battalion.name]" 
+                               gambitsysdata="data.system.gambits[search.selected.battalion.gambitName]"
+                               battalionlabel="data.system.interfaceLabels.battalion"
+                               gambitlabel="data.system.interfaceLabels.gambit"
+                    ></battalion>
                 </div>
                 <md-divider></md-divider>
             </div>
@@ -281,7 +293,7 @@
             <div ng-if="search.selected.skills.length > 0">
                 <div class="rem1_2Text boldText" layout="row">
                     <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
-                    Skills
+                    {{data.system.interfaceLabels.skills}}
                 </div>
                 <div layout="column" ng-if="skillsExpanded">
                     <skill ng-repeat="skill in search.selected.skills track by $index"
@@ -296,7 +308,7 @@
             <div ng-if="search.selected.adjutants.length > 0">
                 <div class="rem1_2Text boldText" layout="row">
                     <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !adjutantsExpanded}" ng-click="toggleAdjutantsExpanded()" aria-hidden="true"></i>
-                    Adjutants
+                    {{data.system.interfaceLabels.adjutants}}
                 </div>
                 <div layout="column" ng-if="adjutantsExpanded">
                     <adjutant ng-repeat="adjutant in search.selected.adjutants track by $index"  
@@ -511,6 +523,15 @@
                               ng-class="{'pairSpriteFront': unit.location.pairedUnit.length > 0}"
                         ></unit>
                     </div>
+
+                    <div ng-if="displayTileCoordinates"
+                        class="spriteContainer highlightedColor lowCostShadowedText noTextSelection"
+                        ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'font-size': tileCoordinatesFontSize+'px', 'z-index': tile.coordinate.y + 11}"
+                        layout="row"
+                        layout-align="center center"
+                    >
+                    {{tile.coordinate.asText}}
+                   </div>
 
                     <div id="{{tile.coordinate.asText}}_hover" 
                          class="mapTileHover breathe" 

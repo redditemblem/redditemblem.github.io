@@ -10,6 +10,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     $scope.adjutantsExpanded = true;
     $scope.selectedTile = null;
     $scope.numOfPinnedUnits = 0;
+    $scope.displayTileCoordinates = false;
+    $scope.tileCoordinatesFontSize = 0;
 
     $scope.dice = {
         'lowerBound': 1,
@@ -26,6 +28,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     }).then(function successCallback(response) {
         $scope.data = response.data;
         $scope.selectedTile = $scope.data.map.tiles[0][0];
+        setTileCoordinateFontSize();
         $scope.loadComplete = true;
     },function errorCallback(response){
         if(response.data == null)
@@ -285,5 +288,34 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
             inputDiceUpperBound.setCustomValidity("Highest Value must be greater than Lowest Value.");
         else
             inputDiceUpperBound.setCustomValidity("");
+    };
+
+    // COORDINATE DISPLAY --------------------------------------------------------------------
+
+    document.addEventListener("keydown", (event) => {
+        if( event.keyCode == 84 //"T" key
+         && document.activeElement.tagName != "INPUT") //We're not focused on an input field 
+        {
+            //Toggle coord display
+            $scope.displayTileCoordinates = !$scope.displayTileCoordinates;
+            $scope.$apply();
+        }
+    });
+
+    function setTileCoordinateFontSize(){
+        var lastRow = $scope.data.map.tiles[$scope.data.map.tiles.length - 1];
+        var bottomRightTile = lastRow[lastRow.length - 1];
+        var bottomRightCoordLength = bottomRightTile.coordinate.asText.length;
+
+        var multiplier;
+        switch(bottomRightCoordLength)
+        {
+            case 2:
+            case 3: multiplier = 0.35; break;
+            case 4: multiplier = 0.3; break;
+            default: multiplier = 0.25; break;
+        }
+
+        $scope.tileCoordinatesFontSize = Math.floor(($scope.data.map.constants.tileSize + $scope.data.map.constants.tileSpacing) * multiplier);
     };
 }]);

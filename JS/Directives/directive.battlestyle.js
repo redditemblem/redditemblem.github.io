@@ -4,7 +4,8 @@ app.directive('battlestyle', function() {
         templateUrl: 'HTML/Directives/battlestyle.html',
         scope: {
             battleStyle: "=battlestyle",
-            sysdata: "=sysdata"
+            sysdata: "=sysdata",
+            label: "=label"
         },
         link: function($scope, element, attrs) {
         }

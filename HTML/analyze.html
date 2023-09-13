@@ -109,7 +109,7 @@
                      ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpData.warpGroupNumber == filters.selectedWarpGroup.groupNum || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn) || (filters.selectedSpecialty == 'restrictAff' && terrainData.canRestrictAffiliations)}"
                 >
                     <div ng-if="filters.selectedMovType.length > 0 && terrainData.movementCosts[filters.selectedMovType] < 99"
-                         class="spriteContainer"
+                         class="spriteContainer noTextSelection"
                          ng-class="{'lowCostShadowedText': terrainData.movementCosts[filters.selectedMovType] <= 1, 'mediumCostShadowedText': terrainData.movementCosts[filters.selectedMovType] == 2, 'highCostShadowedText': terrainData.movementCosts[filters.selectedMovType] == 3 || terrainData.movementCosts[filters.selectedMovType] == 4, 'extremeCostShadowedText': terrainData.movementCosts[filters.selectedMovType] >= 5}"
                          ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px'}"
                          layout="row"
@@ -124,7 +124,7 @@
                          layout="row"
                          layout-align="center center"
                     >
-                      <div layout="row">
+                      <div layout="row" class="noTextSelection">
                         <div layout="column" layout-align="center end" class="rem0_8Text">
                           <i class="fa fa-long-arrow-down" ng-show="terrainData.warpType == 1" aria-hidden="true"></i>
                           <i class="fa fa-long-arrow-up" ng-show="terrainData.warpType == 2" aria-hidden="true"></i>

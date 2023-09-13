@@ -45,7 +45,7 @@
     -moz-box-shadow:inset 0px 0px 3px 2px rgb(255, 255, 255);
     box-shadow:inset 0px 0px 3px 2px rgb(255, 255, 255);
 }
-.highlightedColor{ background: rgba(255, 255, 255, 0.5); }
+.highlightedColor{ background: rgba(255, 255, 255, 0.6); }
 
 .opacity50{ opacity: 0.5; }
 .pinnedTileObjectShadow{
@@ -72,10 +72,16 @@
     outline: none;
     border: 0;
 }
-.lowCostShadowedText{ color: #ffffff; text-shadow: 1px 1px #000000;}
-.mediumCostShadowedText{ color: #FFC107; text-shadow: 1px 1px #000000;}
-.highCostShadowedText{ color: #F13535; text-shadow: 1px 1px #000000;}
+.lowCostShadowedText{ color: #000000; text-shadow: 1px 1px #ffffff;}
+.mediumCostShadowedText{ color: #e2aa00; text-shadow: 1px 1px #000000;}
+.highCostShadowedText{ color: #db1212; text-shadow: 1px 1px #000000;}
 .extremeCostShadowedText{ color: #992DE4; text-shadow: 1px 1px #000000;}
+
+.noTextSelection{
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
 
 .dim{ 
     -webkit-filter: brightness(50%);
