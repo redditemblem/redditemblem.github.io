@@ -197,17 +197,6 @@
             <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.system)" data="search.selected.stats.system" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Regular stats -->
             <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.general)" data="search.selected.stats.general" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
-            <!--Weapon ranks-->
-            <div layout="row">
-                <div layout="row" style="margin-right: 4px; padding-top: 5px;">
-                    <i class="fa fa-tasks fa-fw" aria-hidden="true">
-                        <md-tooltip md-direction="top">{{data.system.interfaceLabels.weaponRanks}}</md-tooltip>
-                    </i>
-                </div>
-                <div layout="row" layout-wrap>
-                    <div ng-repeat="(type, rank) in search.selected.weaponRanks track by type" class="md-chip-custom">{{type}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
-                </div>
-            </div>
             <!-- Statuses -->
             <div ng-if="search.selected.statusConditions.length > 0" layout="row">
                 <div layout="row" style="margin-right: 4px; padding-top: 5px;">
@@ -219,6 +208,17 @@
                    <statuscondition ng-repeat="status in search.selected.statusConditions track by $index"
                                     status="status"
                                     sysdata="data.system.statusConditions[status.name]"></statuscondition>
+                </div>
+            </div>
+            <!--Weapon ranks-->
+            <div layout="row">
+                <div layout="row" style="margin-right: 4px; padding-top: 5px;">
+                    <i class="fa fa-tasks fa-fw" aria-hidden="true">
+                        <md-tooltip md-direction="top">{{data.system.interfaceLabels.weaponRanks}}</md-tooltip>
+                    </i>
+                </div>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="(type, rank) in search.selected.weaponRanks track by type" class="md-chip-custom">{{type}}<span ng-if="rank.length > 0"> - {{rank}}</span></div>
                 </div>
             </div>
             <md-divider></md-divider>
