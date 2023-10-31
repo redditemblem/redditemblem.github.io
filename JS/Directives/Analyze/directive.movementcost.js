@@ -1,7 +1,7 @@
 app.directive('movementcost', function() {
     return{
         restrict: 'E', //element
-        templateUrl: 'HTML/Directives/Analyze/movementCost.html',
+        templateUrl: 'HTML/Directives/Analyze/movementcost.html',
         scope: {
             terraindata: "=terraindata",
             selectedmovtype: "=selectedmovtype",
