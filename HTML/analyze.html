@@ -31,11 +31,21 @@
             Movement Costs mode will highlight all terrain traversable by the selected Movement Type and display its movement cost.
           </div>
           <div layout="row">
-            <md-input-container flex >
+            <md-input-container flex>
                 <label>Movement Type</label>
                 <md-select ng-model="filters.selectedMovType" class="md-no-underline">
                     <md-option ng-repeat="option in movementTypes" ng-value="option">{{option}}</md-option>
                 </md-select>
+            </md-input-container>
+          </div>
+          <div layout="row" class="doubleLeftPadding" ng-hide="affiliationGroupings.length < 2">
+            <md-input-container flex>
+              <label>Affiliation Filter</label>
+              <md-select ng-model="filters.selectedAffiliationGrouping" class="md-no-underline"> 
+                  <md-option ng-repeat="grouping in affiliationGroupings" ng-value="$index">
+                    {{grouping}}
+                  </md-option>
+              </md-select>
             </md-input-container>
           </div>
         </div>
@@ -51,6 +61,8 @@
                 </md-select>
             </md-input-container>
           </div>
+          <md-divider></md-divider>
+          <tileterraintype ng-if="filters.selectedTerrainType.length > 0" sysdata="data.system.terrainTypes[filters.selectedTerrainType]" layout="column"></tileterraintype>
         </div>
         <div ng-if="filters.mode == 'warpGroup'" layout="column">
           <div layout="row" class="rem0_9Text verticalPadding">
@@ -106,17 +118,15 @@
                      ng-init="terrainData = data.system.terrainTypes[tile.terrainType]"
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px',}"
-                     ng-class="{'highlightedColor': terrainData.movementCosts[filters.selectedMovType] < 99 || tile.terrainType == filters.selectedTerrainType || tile.warpData.warpGroupNumber == filters.selectedWarpGroup.groupNum || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn) || (filters.selectedSpecialty == 'restrictAff' && terrainData.canRestrictAffiliations)}"
+                     ng-class="{'highlightedColor': tile.terrainType == filters.selectedTerrainType || tile.warpData.warpGroupNumber == filters.selectedWarpGroup.groupNum || (filters.selectedSpecialty == 'blocksItems' && terrainData.blocksItems) || (filters.selectedSpecialty == 'cannotStopOn' && terrainData.cannotStopOn) || (filters.selectedSpecialty == 'restrictAff' && terrainData.canRestrictAffiliations)}"
                 >
-                    <div ng-if="filters.selectedMovType.length > 0 && terrainData.movementCosts[filters.selectedMovType] < 99"
-                         class="spriteContainer noTextSelection"
-                         ng-class="{'lowCostShadowedText': terrainData.movementCosts[filters.selectedMovType] <= 1, 'mediumCostShadowedText': terrainData.movementCosts[filters.selectedMovType] == 2, 'highCostShadowedText': terrainData.movementCosts[filters.selectedMovType] == 3 || terrainData.movementCosts[filters.selectedMovType] == 4, 'extremeCostShadowedText': terrainData.movementCosts[filters.selectedMovType] >= 5}"
-                         ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px'}"
-                         layout="row"
-                         layout-align="center center"
-                    >
-                      {{terrainData.movementCosts[filters.selectedMovType]}}
-                    </div>
+                    <movementcost ng-if="filters.selectedMovType.length > 0"
+                                  terraindata="terrainData"
+                                  selectedmovtype="filters.selectedMovType"
+                                  selectedindex="filters.selectedAffiliationGrouping"
+                                  class="spriteContainer"
+                                  ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px'}"
+                    ></movementcost>
 
                     <div ng-if="tile.warpData.warpGroupNumber == filters.selectedWarpGroup.groupNum"
                          class="spriteContainer lowCostShadowedText"

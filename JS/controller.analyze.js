@@ -1,10 +1,14 @@
 app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     
   $scope.data = {};
-  $scope.filters = { 'mode' : 'movCost' };
+  $scope.filters = { 
+    'mode' : 'movCost',
+    'selectedAffiliationGrouping' : 0 
+  };
   $scope.loadComplete = false;
 
   $scope.movementTypes = [];
+  $scope.affiliationGroupings = [];
   $scope.terrainTypes = [];
   $scope.warpGroups = [];
   
@@ -18,12 +22,40 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
       //Build sorted filter lists
       var terrainTypes = $scope.data.system.terrainTypes;
 
-      //Terrain types
+      //Terrain types + movement types
       $scope.terrainTypes = Object.keys(terrainTypes).sort();
 
-      //Movement types
-      var firstKey = Object.keys(terrainTypes)[0];
-      $scope.movementTypes = Object.keys(terrainTypes[firstKey].movementCosts).sort()
+      $scope.affiliationGroupings.push("No Filter / Default");
+      for(var type in terrainTypes)
+      {
+        var terrainType = terrainTypes[type];
+        if(terrainType.statGroups.length < 2)
+          continue;
+
+        //Loop through each group that isn't the default
+        for(var i = 1; i < terrainType.statGroups.length; i++){
+          var group = terrainType.statGroups[i];
+          group.searchIndex = [];
+
+          for(var n in group.affiliationNames)
+          {
+            var name = group.affiliationNames[n];
+            var existingIndex = $scope.affiliationGroupings.indexOf(name);
+            if(existingIndex == -1)
+            {
+              var length = $scope.affiliationGroupings.push(name);
+              group.searchIndex.push(length - 1);
+            }
+            else
+            {
+              group.searchIndex.push(existingIndex);
+            }
+          }
+        }
+      }
+
+      var firstTerrainType = terrainTypes[Object.keys(terrainTypes)[0]];
+      $scope.movementTypes = Object.keys(firstTerrainType.statGroups[0].movementCosts).sort()
 
       //Warp groups
       for(var row in $scope.data.map.tiles){
@@ -55,6 +87,7 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
 
   $scope.mode_OnChange = function(){
     $scope.filters.selectedMovType = "";
+    $scope.filters.selectedAffiliationGrouping = 0;
     $scope.filters.selectedTerrainType = "";
     $scope.filters.selectedWarpGroup = -1;
     $scope.filters.selectedSpecialty = "";

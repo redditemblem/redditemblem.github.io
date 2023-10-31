@@ -8,6 +8,7 @@
 
 .topPadding{ padding-top: 8px; }
 .leftPadding{ padding-left: 8px; }
+.doubleLeftPadding{ padding-left: 16px; }
 .rightPadding{ padding-right: 8px; }
 .verticalPadding{
     padding-top: 8px;

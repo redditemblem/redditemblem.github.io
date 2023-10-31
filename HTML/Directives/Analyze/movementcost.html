@@ -1,0 +1,9 @@
+<div ng-if="movCost > 0 && movCost < 99"
+     class="highlightedColor noTextSelection"
+     ng-class="{'lowCostShadowedText': movCost <= 1, 'mediumCostShadowedText': movCost == 2, 'highCostShadowedText': movCost == 3 || movCost == 4, 'extremeCostShadowedText': movCost >= 5}"
+     layout="row"
+     layout-align="center center"
+     layout-fill
+>
+    {{movCost}}
+</div>

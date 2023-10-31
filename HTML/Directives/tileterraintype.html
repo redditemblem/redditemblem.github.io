@@ -1,4 +1,4 @@
-<div layout="row" class="bottomMargin">
+<div ng-if="showTitle" layout="row" class="bottomMargin">
     <b>Terrain Type</b>: {{sysdata.name}}
 </div>
 <md-card ng-repeat="group in sysdata.statGroups track by $index" layout="column" class="verticalPadding horizontalPadding">
@@ -38,7 +38,7 @@
             <span ng-if="cost >= 99"><i class="fa fa-ban" aria-hidden="true"></i></span>
             <span ng-if="cost < 99">{{cost}}</span>
         </div>
-        <div ng-if="(sysdata.warpType == 1 || sysdata.warpType == 3) && tile.warpData.inWarpGroup"
+        <div ng-if="(sysdata.warpType == 1 || sysdata.warpType == 3) && (tile == undefined || tile.warpData.inWarpGroup)"
                 layout="row" layout-align="space-between" flex="50" class="horizontalPadding"
         >
             <span>Use Warp</span>
@@ -46,7 +46,7 @@
         </div>
     </div>
 </md-card>
-<div layout="column" class="rem0_9Text topMargin bottomMargin leftPadding">
+<div ng-if="tile != undefined" layout="column" class="rem0_9Text topMargin bottomMargin leftPadding">
     <div layout="row">
         <b>Warp</b>:&nbsp;
         <i ng-if="sysdata.warpType == 0 || !tile.warpData.inWarpGroup" class="opacity50">None</i>

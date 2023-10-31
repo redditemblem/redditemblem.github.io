@@ -4,7 +4,8 @@ app.directive('tileterraintype', function() {
         templateUrl: 'HTML/Directives/tileterraintype.html',
         scope: {
             tile: "=tile",
-            sysdata: "=sysdata"
+            sysdata: "=sysdata",
+            showtitle: "=showtitle"
         }
     };
  });
