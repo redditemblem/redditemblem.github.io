@@ -262,9 +262,10 @@
             <!--Emblem-->
             <div ng-if="search.selected.emblem">
                 <div class="rem1_2Text boldText" layout="row">
+                    <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !emblemExpanded}" ng-click="toggleEmblemExpanded()" aria-hidden="true"></i>
                     {{data.system.interfaceLabels.emblem}}
                 </div>
-                <div layout="column">
+                <div layout="column" ng-if="emblemExpanded">
                     <emblem emblem="search.selected.emblem" 
                             sysdata="data.system.emblems[search.selected.emblem.name]" 
                             skillsysdata="data.system.skills"
@@ -273,8 +274,8 @@
                             engravingsysdata="data.system.engravings"
                             engageattacksysdata="data.system.engageAttacks"></emblem>
                 </div>
-                <md-divider></md-divider>
             </div>
+            <md-divider ng-if="search.selected.emblem"></md-divider>
             <!--Battalion-->
             <div ng-if="search.selected.battalion">
                 <div class="rem1_2Text boldText" layout="row">

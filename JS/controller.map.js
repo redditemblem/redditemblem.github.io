@@ -6,6 +6,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     $scope.unitInfoExpanded = false;
     $scope.statsExpanded = false;
     $scope.invExpanded = true;
+    $scope.emblemExpanded = true;
     $scope.skillsExpanded = true;
     $scope.adjutantsExpanded = true;
     $scope.selectedTile = null;
@@ -69,6 +70,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
 
     $scope.toggleStatsExpanded = function(){ $scope.statsExpanded = !$scope.statsExpanded; };
     $scope.toggleInvExpanded = function(){ $scope.invExpanded = !$scope.invExpanded; };
+    $scope.toggleEmblemExpanded = function(){ $scope.emblemExpanded = !$scope.emblemExpanded; };
     $scope.toggleSkillsExpanded = function(){ $scope.skillsExpanded = !$scope.skillsExpanded; };
     $scope.toggleAdjutantsExpanded = function(){ $scope.adjutantsExpanded = !$scope.adjutantsExpanded; };
 
