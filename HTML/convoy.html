@@ -39,7 +39,7 @@
                              Show Expanded Item Data
                 </md-checkbox>
             </div>
-            <div ng-if="data.parameters.filterConditions.AllowEngravings">
+            <div ng-if="data.parameters.filterConditions.AllowEngravings || data.parameters.filterConditions.AllowEquippedSkills">
                 <md-divider></md-divider>
                 <!-- Filters -->
                 <div layout="column" style="margin-top: 16px;">
@@ -47,6 +47,11 @@
                                  ng-model="filters.showEngravings"
                                  aria-label="Engraved">
                                 Engraved
+                    </md-checkbox>
+                    <md-checkbox ng-if="data.parameters.filterConditions.AllowEquippedSkills"
+                                 ng-model="filters.showEquippedSkills"
+                                 aria-label="Grants Equipped {{data.interfaceLabels.skills}}">
+                                Grants Equipped {{data.interfaceLabels.skills}}
                     </md-checkbox>
                 </div>
             </div>
@@ -84,7 +89,7 @@
     <md-content id="convoyItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.convoyItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="(filters.showOwner == 'All' || item.owner == filters.showOwner) && filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (item.engravings.length > 0 || !filters.showEngravings)"
+                 ng-show="(filters.showOwner == 'All' || item.owner == filters.showOwner) && filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (item.engravings.length > 0 || !filters.showEngravings) && (itemData.equippedSkills.length > 0 || !filters.showEquippedSkills)"
                  ng-click="item.expanded = !item.expanded"
                  class="fade clickable">
                  <div layout="row" layout-align="space-between center">
@@ -174,6 +179,15 @@
                         </div>
                      </div>
                  </div>
+                 <div layout="column" ng-if="itemData.equippedSkills.length > 0">
+                    <md-divider ng-if="filters.expandItemInfo || item.expanded"></md-divider>
+                    <skill ng-repeat="skill in itemData.equippedSkills track by $index"
+                           skill="skill"
+                           sysdata="data.skills[skill.name]"
+                           expanded="filters.expandItemInfo || item.expanded"
+                           active="true">
+                    </skill>
+                </div>
         </md-card>
         <div ng-if="data.convoyItems.length == 0" layout="row" layout-align="center center" class="rem2_25Text" layout-fill>
             There are no items stored in the convoy.
