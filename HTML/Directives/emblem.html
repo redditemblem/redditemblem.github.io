@@ -39,7 +39,8 @@
             <skill ng-repeat="skill in emblem.syncSkills track by $index"
                    skill="skill"
                    sysdata="skillsysdata[skill.name]"
-                   expanded="expanded">
+                   expanded="true"
+                   active="true">
             </skill>
         </div>
         <div ng-if="emblem.engageSkills.length > 0" ng-class="{'topPadding': expanded && emblem.syncSkills.length > 0}">
@@ -49,7 +50,8 @@
             <skill ng-repeat="skill in emblem.engageSkills track by $index"
                    skill="skill"
                    sysdata="skillsysdata[skill.name]"
-                   expanded="expanded">
+                   expanded="emblem.isEngaged || expanded"
+                   active="emblem.isEngaged">
             </skill>
         </div>
     </div>

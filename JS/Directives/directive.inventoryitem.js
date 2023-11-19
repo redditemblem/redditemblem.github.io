@@ -5,6 +5,7 @@ app.directive('inventoryitem', function() {
         scope: {
             item: "=item",
             sysdata: "=sysdata",
+            skillsysdata: "=skillsysdata",
             tagsysdata: "=tagsysdata",
             engravingsysdata: "=engravingsysdata",
             expanded: "=?expanded"

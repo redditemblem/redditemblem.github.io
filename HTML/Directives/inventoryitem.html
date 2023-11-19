@@ -94,6 +94,17 @@
             <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
         </div>
     </div>
+    <!--Equipped Skills-->
+    <div layout="column">
+        <md-divider ng-if="expanded"></md-divider>
+        <skill ng-repeat="skill in sysdata.equippedSkills track by $index"
+               skill="skill"
+               sysdata="skillsysdata[skill.name]"
+               expanded="item.isPrimaryEquipped || item.isSecondaryEquipped || expanded"
+               active="item.isPrimaryEquipped || item.isSecondaryEquipped">
+        </skill>
+    </div>
+    <!--Range Warnings-->
     <div ng-if="item.maxRangeExceedsCalculationLimit || item.isNotInInventory" class="rem0_8Text">
         <md-divider></md-divider>
         <div ng-if="item.maxRangeExceedsCalculationLimit" class="errorMessageColor" layout="row" layout-align="start center" >

@@ -5,6 +5,7 @@ app.directive('skill', function() {
         scope: {
             skill: "=skill",
             sysdata: "=sysdata",
+            active: "=active",
             expanded: "=expanded"
         }
     };

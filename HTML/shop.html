@@ -46,6 +46,11 @@
                              aria-label="Engraved">
                             Engraved
                 </md-checkbox>
+                <md-checkbox ng-if="data.parameters.filterConditions.AllowEquippedSkills"
+                             ng-model="filters.showEquippedSkills"
+                             aria-label="Grants Equipped {{data.interfaceLabels.skills}}">
+                            Grants Equipped {{data.interfaceLabels.skills}}
+                </md-checkbox>
                 <md-checkbox ng-model="filters.showOutOfStock"
                              aria-label="Out of Stock">
                             Out-of-Stock
@@ -86,7 +91,7 @@
     <md-content id="shopItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.shopItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0)) && (item.engravings.length > 0 || !filters.showEngravings)"
+                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0)) && (item.engravings.length > 0 || !filters.showEngravings) && (itemData.equippedSkills.length > 0 || !filters.showEquippedSkills)"
                  ng-click="item.expanded = !item.expanded"
                  class="fade clickable">
                  <div layout="row" layout-align="space-between center">
@@ -176,6 +181,15 @@
                         </div>
                      </div>
                  </div>
+                 <div layout="column" ng-if="itemData.equippedSkills.length > 0">
+                    <md-divider ng-if="filters.expandItemInfo || item.expanded"></md-divider>
+                    <skill ng-repeat="skill in itemData.equippedSkills track by $index"
+                           skill="skill"
+                           sysdata="data.skills[skill.name]"
+                           expanded="filters.expandItemInfo || item.expanded"
+                           active="true">
+                    </skill>
+                </div>
         </md-card>
         <div ng-if="data.shopItems.length == 0" layout="row" layout-align="center center" class="rem2_25Text" layout-fill>
             There are no items available in the shop.

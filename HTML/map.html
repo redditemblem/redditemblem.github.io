@@ -231,6 +231,7 @@
                 <inventoryitem ng-repeat="item in search.selected.inventory.items track by $index"  
                                item="item"
                                sysdata="data.system.items[item.name]"
+                               skillsysdata="data.system.skills"
                                tagsysdata="data.system.tags"
                                engravingsysdata="data.system.engravings">
                 </inventoryitem>
@@ -299,7 +300,8 @@
                     <skill ng-repeat="skill in search.selected.skills track by $index"
                            skill="skill"
                            sysdata="data.system.skills[skill.name]"
-                           expanded="true">
+                           expanded="true"
+                           active="true">
                     </skill>
                 </div>
                 <md-divider></md-divider>
