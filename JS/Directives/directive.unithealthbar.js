@@ -4,6 +4,8 @@ app.directive('unithealthbar', [function() {
         templateUrl: 'HTML/Directives/unithealthbar.html',
         scope: {
             hpPercentage: "=hppercentage",
+            fallbackWidth: "=?fallbackwidth",
+            fallbackHeight: "=?fallbackheight"
         },
         link: function($scope, element, attrs) {
 
@@ -14,11 +16,13 @@ app.directive('unithealthbar', [function() {
                 var context = canvas.getContext("2d");
 
                 //Match canvas size to that of its parent
-                //If element isn't actually rendered yet (clientWidth/Height), fall back to styling
+                //If element isn't actually rendered yet (clientWidth/Height), try fallbacks
                 if(unithealthbar.clientWidth > 0) canvas.width = unithealthbar.clientWidth;
+                else if($scope.fallbackWidth != undefined) canvas.width = $scope.fallbackWidth;
                 else if(unithealthbar.style.width.length > 0) canvas.width = unithealthbar.style.width.slice(0, -2);
 
                 if(unithealthbar.clientHeight > 0) canvas.height = unithealthbar.clientHeight;
+                else if($scope.fallbackHeight != undefined) canvas.height = $scope.fallbackHeight;
                 else if(unithealthbar.style.height.length > 0) canvas.height = unithealthbar.style.height.slice(0, -2);
 
                 context.fillStyle = 'gray';

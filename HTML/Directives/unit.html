@@ -25,5 +25,5 @@
                 ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Health bar-->
-    <unithealthbar hppercentage="unit.stats.hp.percentage" class="unitHealthBarPosition" />
+    <unithealthbar hppercentage="unit.stats.hp.percentage" fallbackwidth="((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize) - 3" fallbackheight="3" class="unitHealthBarPosition" />
 </div>
