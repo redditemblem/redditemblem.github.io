@@ -108,13 +108,15 @@
                                 <img ng-repeat="engraving in item.engravings"
                                      ng-if="data.engravings[engraving].spriteURL.length > 0"
                                      ng-src="{{data.engravings[engraving].spriteURL}}" 
-                                     style="max-height: 24px; max-width: 24px;" />
+                                     style="max-height: 24px; max-width: 24px;"
+                                     title="{{engraving}}" />
                             </span>
-                            <span layout="row" layout-align="start center" ng-if="itemData.tags.length > 0" style="margin-left: 4px;">
-                                <img ng-repeat="tag in itemData.tags"
+                            <span layout="row" layout-align="start center" ng-if="item.tags.length > 0" style="margin-left: 4px;">
+                                <img ng-repeat="tag in item.tags"
                                      ng-if="data.tags[tag].spriteURL.length > 0"
                                      ng-src="{{data.tags[tag].spriteURL}}" 
-                                     style="max-height: 24px; max-width: 24px;" />
+                                     style="max-height: 24px; max-width: 24px;"
+                                     title="{{tag}}" />
                             </span>
                         </div>
                         <div layout="row" class="rem0_8Text leftPadding">

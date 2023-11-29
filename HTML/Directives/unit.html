@@ -25,5 +25,5 @@
                 ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Health bar-->
-    <canvas id="{{unit.name}}_hpBar" class="healthBar"></canvas>
+    <unithealthbar hppercentage="unit.stats.hp.percentage" class="unitHealthBarPosition" />
 </div>

@@ -78,35 +78,7 @@ app.directive('unit', ['$interval', function($interval) {
                 if($scope.unit.sprite.aura.length > 0)
                     filterString += `drop-shadow(0px 0px 3px ${$scope.unit.sprite.aura}) drop-shadow(0px 0px 2px ${$scope.unit.sprite.aura})`;
                 sprite.style.filter = filterString;
-
-                //<canvas> elements cannot fire an onload event, so piggyback off the image load
-                renderHealthBarCanvas();
             });
-
-            //Render health bar canvas
-            function renderHealthBarCanvas(){
-                var canvas = document.getElementById($scope.unit.name + "_hpBar");
-                var context = canvas.getContext("2d");
-
-                canvas.width = canvas.clientWidth;
-                canvas.height = canvas.clientHeight;
-
-                context.fillStyle = 'gray';
-                context.fillRect(0, 0, canvas.width, canvas.height);
-
-                var hpPercentage = $scope.unit.stats.hp.percentage;
-                var hpColor;
-                if(hpPercentage > 100) hpColor = "#992DE4"; //purple
-                else if(hpPercentage > 50) hpColor = "#3CD66F"; //green
-                else if(hpPercentage > 25) hpColor = "#FFC107"; //yellow
-                else hpColor = "#F13535"; //red
-
-                context.fillStyle = hpColor;
-                context.fillRect(0, 0, Math.floor(canvas.width*(Math.min(100,hpPercentage)/100)), canvas.height);
-                
-                context.lineWidth = 2;
-                context.strokeRect(0, 0, canvas.width, canvas.height);
-            };
         }
     };
  }]);
