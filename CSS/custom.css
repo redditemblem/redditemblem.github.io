@@ -51,7 +51,7 @@
     margin-bottom: 1px;
 }
 
-.healthBar{
+.unitHealthBarPosition{
     position: absolute;
     width: calc(100% - 3px);
     height: 3px;

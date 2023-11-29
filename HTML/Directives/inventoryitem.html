@@ -16,13 +16,15 @@
                     <img ng-repeat="engraving in item.engravings"
                          ng-if="engravingsysdata[engraving].spriteURL.length > 0"
                          ng-src="{{engravingsysdata[engraving].spriteURL}}" 
-                         style="max-height: 24px; max-width: 24px;" />
+                         style="max-height: 24px; max-width: 24px;"
+                         title="{{engraving}}" />
                 </span>
-                <span layout="row" layout-align="start center" ng-if="sysdata.tags.length > 0" style="margin-left: 4px;">
-                    <img ng-repeat="tag in sysdata.tags"
+                <span layout="row" layout-align="start center" ng-if="item.tags.length > 0" style="margin-left: 4px;">
+                    <img ng-repeat="tag in item.tags"
                          ng-if="tagsysdata[tag].spriteURL.length > 0"
                          ng-src="{{tagsysdata[tag].spriteURL}}" 
-                         style="max-height: 24px; max-width: 24px;" />
+                         style="max-height: 24px; max-width: 24px;"
+                         title="{{tag}}" />
                 </span>
             </div>
             <div layout="row" class="rem0_8Text leftPadding">
