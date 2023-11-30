@@ -1,7 +1,7 @@
 <div ng-repeat="(stat, statObj) in statList track by stat" layout="column" flex="50" class="horizontalPadding">
     <div layout="row" layout-align="space-between" ng-class="{'boldText': expanded}">
         <span>{{stat}}</span>
-        <span ng-class="{'buffedStatColor': statObj.finalValue > statObj.baseValue, 'debuffedStatColor': statObj.finalValue < statObj.baseValue}">
+        <span ng-class="{'buffedStatColor': (statObj.baseValue < statObj.finalValue && !statObj.invertModifiedDisplayColors) || (statObj.baseValue > statObj.finalValue && statObj.invertModifiedDisplayColors), 'debuffedStatColor': (statObj.baseValue > statObj.finalValue && !statObj.invertModifiedDisplayColors) || (statObj.baseValue < statObj.finalValue && statObj.invertModifiedDisplayColors)}">
             <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i>
             <i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i>
             {{statObj.finalValue}}
