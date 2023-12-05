@@ -61,6 +61,14 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
         );
     };
 
+    $scope.clearPinnedUnitsList = function(clearCurrentUnit){
+        var pinnedUnits = $scope.getPinnedUnitsList();
+        pinnedUnits.forEach((unit) => {
+            if(clearCurrentUnit || $scope.search.selected.name != unit.name)
+                $scope.pinButton_OnClick(unit);
+        });
+    };
+
     $scope.unitSort = function(unit){
         var sort = 0;
         if(unit.pinned) sort -= 2;

@@ -43,24 +43,42 @@
                 </div>
             </md-item-template>
         </md-autocomplete>
-        <div layout="column" ng-if="numOfPinnedUnits > 0">
-            <div layout="row" class="topMargin halfBottomMargin leftPadding rem0_9Text opacity50">
-                Pinned Units
-            </div>
-            <div layout="row" layout-wrap>
-                <div ng-repeat="unit in getPinnedUnitsList() | orderBy: 'name'" class="md-chip-custom-jumbo" style="width: 45%;">
-                    <div layout="row" layout-align="space-between center" class="clickable">
-                        <div ng-click="search.selected = unit" layout="column" flex style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{unit.name}}">
-                            {{unit.name}}
-                        </div>
-                        <div ng-click="pinButton_OnClick(unit)" layout="column" layout-align="center end" flex="25" title="Click to unpin unit">
-                            <i class="fa fa-times fa-fw" aria-hidden="true"></i>
-                        </div>
-                    </div>  
+        <!--Pinned Units List-->
+        <div ng-if="numOfPinnedUnits > 0" layout="row" layout-align="space-between" class="topMargin">
+            <div layout="column" flex>
+                <div layout="row" class="halfBottomMargin leftPadding rem0_9Text opacity50">
+                    Pinned Units
+                </div>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="unit in getPinnedUnitsList() | orderBy: 'name'" class="md-chip-custom-jumbo" style="width: 44%;">
+                        <div layout="row" layout-align="space-between center" class="clickable">
+                            <div ng-click="search.selected = unit" layout="column" flex style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{unit.name}}">
+                                {{unit.name}}
+                            </div>
+                            <div ng-click="pinButton_OnClick(unit)" layout="column" layout-align="center end" flex="25" title="Unpin unit">
+                                <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+                            </div>
+                        </div>  
+                    </div>
                 </div>
             </div>
-            <md-divider style="margin-top: 4px;"></md-divider>
+            <div layout="column">
+                <md-menu>
+                    <md-button ng-click="$mdMenu.open($event)" class="md-icon-button" aria-label="Unpin Actions">
+                        <i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"><md-tooltip md-direction="right">Unpin Actions</md-tooltip></i>
+                    </md-button>
+                    <md-menu-content>
+                      <md-menu-item>
+                        <md-button ng-disabled="numOfPinnedUnits < 2 || !search.selected.pinned" ng-click="clearPinnedUnitsList(false)">Unpin all except current unit</md-button>
+                      </md-menu-item>
+                      <md-menu-item>
+                        <md-button ng-click="clearPinnedUnitsList(true)">Unpin all units</md-button>
+                      </md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
+            </div>
         </div>
+        <md-divider ng-if="numOfPinnedUnits > 0" style="margin-top: 4px;"></md-divider>
         <!--Unit display-->
         <md-content ng-if="search.selected" layout-padding>
             <!-- Sprite, name, & pin icon -->
