@@ -1,7 +1,18 @@
 app.controller('ConvoyCtrl', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     
     $scope.data = {};
-    $scope.filters = { "showOwner": "All", "showCategory" : {}, "showStat" : {} };
+    $scope.filters = { 
+        "showOwner": "All", 
+        "showCategory" : {
+            "all": true 
+        }, 
+        "showUtilizedStats" : {
+            "all": true 
+        }, 
+        "showTargetedStats": {
+            "all": true 
+        }
+    };
     $scope.loadComplete = false;
     
     //Call API to fetch JSON on load
@@ -15,10 +26,9 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$routeParams', function ($scop
         $scope.filters.expandItemInfo = false;
         $scope.filters.selectedSort = $scope.data.parameters.sorts[0];
 
-        $scope.filters.showCategory.all = true;
-        $scope.filters.showStat.all = true;
         $scope.toggleCategoryFilters();
-        $scope.toggleStatFilters();
+        $scope.toggleUtilizedStatFilters();
+        $scope.toggleTargetedStatFilters();
 
         //Finish up
         $scope.sortItems();
@@ -56,7 +66,15 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$routeParams', function ($scop
 
     $scope.showUtilizedStat = function(utilizedStatList){
         for(var utilStat in utilizedStatList){
-            if($scope.filters.showStat[utilizedStatList[utilStat]])
+            if($scope.filters.showUtilizedStats[utilizedStatList[utilStat]])
+                return true;
+        }
+        return false;
+    };
+
+    $scope.showTargetedStat = function(targetedStatList){
+        for(var targetedStat in targetedStatList){
+            if($scope.filters.showTargetedStats[targetedStatList[targetedStat]])
                 return true;
         }
         return false;
@@ -74,16 +92,28 @@ app.controller('ConvoyCtrl', ['$scope', '$http', '$routeParams', function ($scop
         $scope.filters.showCategory.all = allSelected;
     };
 
-    $scope.toggleStatFilters = function(){
+    $scope.toggleUtilizedStatFilters = function(){
         for(var key in $scope.data.parameters.utilizedStats)
-            $scope.filters.showStat[$scope.data.parameters.utilizedStats[key]] = $scope.filters.showStat.all;
+            $scope.filters.showUtilizedStats[$scope.data.parameters.utilizedStats[key]] = $scope.filters.showUtilizedStats.all;
     };
 
-    $scope.updateStatFilters = function(){
+    $scope.updateUtilizedStatFilters = function(){
         var allSelected = true;
         for(var key in $scope.data.parameters.utilizedStats)
-            allSelected = (allSelected && $scope.filters.showStat[$scope.data.parameters.utilizedStats[key]]);
-        $scope.filters.showStat.all = allSelected;
+            allSelected = (allSelected && $scope.filters.showUtilizedStats[$scope.data.parameters.utilizedStats[key]]);
+        $scope.filters.showUtilizedStats.all = allSelected;
+    };
+
+    $scope.toggleTargetedStatFilters = function(){
+        for(var key in $scope.data.parameters.targetedStats)
+            $scope.filters.showTargetedStats[$scope.data.parameters.targetedStats[key]] = $scope.filters.showTargetedStats.all;
+    };
+
+    $scope.updateTargetedStatFilters = function(){
+        var allSelected = true;
+        for(var key in $scope.data.parameters.targetedStats)
+            allSelected = (allSelected && $scope.filters.showTargetedStats[$scope.data.parameters.targetedStats[key]]);
+        $scope.filters.showTargetedStats.all = allSelected;
     };
 
     $scope.showExpandedItemData_OnChange = function(){
