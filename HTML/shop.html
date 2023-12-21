@@ -77,13 +77,27 @@
                 Utilized Stat
             </div>
             <div layout="column">
-                <md-checkbox ng-model="filters.showStat.all"
-                             ng-change="toggleStatFilters()" 
+                <md-checkbox ng-model="filters.showUtilizedStats.all"
+                             ng-change="toggleUtilizedStatFilters()" 
                              aria-label="Show All">
                              Show All
                 </md-checkbox>
                 <div layout="column" class="leftPadding">
-                    <md-checkbox ng-repeat="stat in data.parameters.utilizedStats" ng-model="filters.showStat[stat]" ng-change="updateStatFilters()" aria-label="{{stat}}">{{stat}}</md-checkbox>
+                    <md-checkbox ng-repeat="stat in data.parameters.utilizedStats" ng-model="filters.showUtilizedStats[stat]" ng-change="updateUtilizedStatFilters()" aria-label="{{stat}}">{{stat}}</md-checkbox>
+                </div>
+            </div>
+            <!-- Targeted Stats -->
+            <div ng-if="data.parameters.targetedStats.length > 0" layout="row" layout-align="start center" class="rem1_2Text boldText verticalPadding">
+                Targeted Stat
+            </div>
+            <div ng-if="data.parameters.targetedStats.length > 0" layout="column">
+                <md-checkbox ng-model="filters.showTargetedStats.all"
+                             ng-change="toggleTargetedStatFilters()" 
+                             aria-label="Show All">
+                             Show All
+                </md-checkbox>
+                <div layout="column" class="leftPadding">
+                    <md-checkbox ng-repeat="stat in data.parameters.targetedStats" ng-model="filters.showTargetedStats[stat]" ng-change="updateTargetedStatFilters()" aria-label="{{stat}}">{{stat}}</md-checkbox>
                 </div>
             </div>
         </md-content>
@@ -91,7 +105,7 @@
     <md-content id="shopItemsBox" class="backgroundTexture" layout-padding flex>
         <md-card ng-repeat="item in data.shopItems"
                  ng-init="itemData = data.items[item.name]"
-                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showStat.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0)) && (item.engravings.length > 0 || !filters.showEngravings) && (itemData.equippedSkills.length > 0 || !filters.showEquippedSkills)"
+                 ng-show="filters.showCategory[itemData.category] && (showUtilizedStat(itemData.utilizedStats) || filters.showUtilizedStats.all) && (showTargetedStat(itemData.targetedStats) || filters.showTargetedStats.all) && (!filters.showNew || item.isNew) && (!filters.showSales || item.salePrice != item.price) && ((!filters.showOutOfStock && item.stock > 0) || (filters.showOutOfStock && item.stock == 0)) && (item.engravings.length > 0 || !filters.showEngravings) && (itemData.equippedSkills.length > 0 || !filters.showEquippedSkills)"
                  ng-click="item.expanded = !item.expanded"
                  class="fade clickable">
                  <div layout="row" layout-align="space-between center">
@@ -121,8 +135,8 @@
                         </div>
                         <div layout="row" class="rem0_8Text leftPadding">
                             <span ng-if="itemData.weaponRank.length > 0">{{itemData.weaponRank}}&nbsp;-&nbsp;</span>{{itemData.category}}
-                            <span ng-if="itemData.utilizedStats.length > 0" >
-                                &nbsp;(<span ng-repeat="stat in itemData.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
+                            <span ng-if="itemData.utilizedStats.length > 0 || itemData.targetedStats.length > 0">
+                                &nbsp;(<span ng-if="itemData.utilizedStats.length > 0" ng-repeat="stat in itemData.utilizedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span><i ng-if="itemData.targetedStats.length > 0" class="fa fa-angle-double-right fa-fw" aria-hidden="true"></i><span ng-if="itemData.targetedStats.length > 0" ng-repeat="stat in itemData.targetedStats track by $index">{{stat}}<span ng-if="!$last">/</span></span>)
                             </span>
                         </div>
                      </div>
