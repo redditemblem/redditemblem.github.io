@@ -377,6 +377,19 @@
                 <div layout="row">
                     <span class="boldText">{{tileObj.inst.name}}</span>
                 </div>
+                <div ng-if="tileObj.inst.hp" layout="row">
+                    <!--HP-->
+                    <div layout="column" flex="50" class="rem0_9Text horizontalPadding bottomMargin">
+                        <div layout="row" layout-align="space-between top">
+                            <span>Durability</span>
+                            <span>
+                                <span>{{tileObj.inst.hp.current}} / </span>
+                                <span class="rem0_8Text">{{tileObj.inst.hp.maximum}}</span>
+                            </span>
+                        </div>
+                        <tileobjecthealthbar hppercentage="tileObj.inst.hp.percentage" fallbackwidth="150" fallbackheight="6" style="width: 150px; height: 6px;"/>
+                    </div>
+                </div>
                 <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
                     <div ng-if="tileObj.data.hpModifier != 0" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                         <span>HP</span>
@@ -518,7 +531,9 @@
                          ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * tileObj.data.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * tileObj.data.size)+'px', 'z-index': tile.coordinate.y + (tileObj.data.layer * 10)}"
                          layout="row"
                          layout-align="center center">
-                         <img ng-src="{{tileObj.data.spriteURL}}" />
+                         
+                        <img ng-src="{{tileObj.data.spriteURL}}" />
+                        <tileobjecthealthbar ng-if="tileObj.inst.hp" hppercentage="tileObj.inst.hp.percentage" fallbackwidth="((tileconsts.tileSize + tileconsts.tileSpacing) * tileObj.data.size) - 3" fallbackheight="3" class="unitHealthBarPosition" />
                     </div>
 
                     <!--Draw unit-->
