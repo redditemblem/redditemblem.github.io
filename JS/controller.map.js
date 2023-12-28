@@ -304,6 +304,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
 
     document.addEventListener("keydown", (event) => {
         if( event.keyCode == 84 //"T" key
+         && !(event.altKey || event.ctrlKey || event.shiftKey) //Make sure we're not firing off any keyboard shortcuts
          && document.activeElement.tagName != "INPUT") //We're not focused on an input field 
         {
             //Toggle coord display
