@@ -1,7 +1,7 @@
-app.directive('unithealthbar', [function() {
+app.directive('tileobjecthealthbar', [function() {
     return{
         restrict: 'E', //element
-        templateUrl: 'HTML/Directives/unithealthbar.html',
+        templateUrl: 'HTML/Directives/tileobjecthealthbar.html',
         scope: {
             hpPercentage: "=hppercentage",
             fallbackWidth: "=?fallbackwidth",
@@ -11,28 +11,26 @@ app.directive('unithealthbar', [function() {
 
             //Render health bar canvas
             function renderCanvas(){
-                var unithealthbar = element[0];
-                var canvas = unithealthbar.firstChild;
+                var tileobjecthealthbar = element[0];
+                var canvas = tileobjecthealthbar.firstChild;
                 var context = canvas.getContext("2d");
 
                 //Match canvas size to that of its parent
                 //If element isn't actually rendered yet (clientWidth/Height), try fallbacks
-                if(unithealthbar.clientWidth > 0) canvas.width = unithealthbar.clientWidth;
+                if(tileobjecthealthbar.clientWidth > 0) canvas.width = tileobjecthealthbar.clientWidth;
                 else if($scope.fallbackWidth != undefined) canvas.width = $scope.fallbackWidth;
-                else if(unithealthbar.style.width.length > 0) canvas.width = unithealthbar.style.width.slice(0, -2);
+                else if(tileobjecthealthbar.style.width.length > 0) canvas.width = tileobjecthealthbar.style.width.slice(0, -2);
 
-                if(unithealthbar.clientHeight > 0) canvas.height = unithealthbar.clientHeight;
+                if(tileobjecthealthbar.clientHeight > 0) canvas.height = tileobjecthealthbar.clientHeight;
                 else if($scope.fallbackHeight != undefined) canvas.height = $scope.fallbackHeight;
-                else if(unithealthbar.style.height.length > 0) canvas.height = unithealthbar.style.height.slice(0, -2);
+                else if(tileobjecthealthbar.style.height.length > 0) canvas.height = tileobjecthealthbar.style.height.slice(0, -2);
 
                 context.fillStyle = 'white';
                 context.fillRect(0, 0, canvas.width, canvas.height);
-
+                
                 var hpColor;
                 if($scope.hpPercentage > 100) hpColor = "#992DE4"; //purple
-                else if($scope.hpPercentage > 50) hpColor = "#3CD66F"; //green
-                else if($scope.hpPercentage > 25) hpColor = "#FFC107"; //yellow
-                else hpColor = "#F13535"; //red
+                else hpColor = "#00A9D4"; //blue
 
                 context.fillStyle = hpColor;
                 context.fillRect(0, 0, Math.floor(canvas.width*(Math.min(100, $scope.hpPercentage)/100)), canvas.height);
