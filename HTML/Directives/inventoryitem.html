@@ -94,12 +94,13 @@
                 </div>
             </div>
         </div>
-        <div ng-if="item.engravings.length > 0 || sysdata.textFields.length > 0">
+        <div ng-if="item.engravings.length > 0 || sysdata.textFields.length > 0 || sysdata.graphicURL.length > 0">
             <md-divider></md-divider>
-            <div ng-if="item.engravings.length > 0" ng-repeat="engraving in item.engravings track by $index" ng-class="{'bottomMargin': !$last || sysdata.textFields.length > 0}">
+            <div ng-if="item.engravings.length > 0" ng-repeat="engraving in item.engravings track by $index" ng-class="{'bottomMargin': !$last || sysdata.textFields.length > 0 || sysdata.graphicURL.length > 0}">
                 <engraving sysdata="engravingsysdata[engraving]"></engraving>
             </div>
-            <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last}" layout="row">{{text}}</div>
+            <div ng-repeat="text in sysdata.textFields track by $index" class="rem0_9Text" ng-class="{'bottomMargin': !$last || sysdata.graphicURL.length > 0}" layout="row">{{text}}</div>
+            <img ng-if="sysdata.graphicURL.length > 0" ng-src="{{sysdata.graphicURL}}" style="max-height: 100px; max-width: 250px;" />
         </div>
     </div>
     <!--Equipped Skills-->
