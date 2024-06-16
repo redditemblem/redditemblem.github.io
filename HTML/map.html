@@ -85,7 +85,7 @@
             <div layout="row" layout-align="space-between">
                 <div layout="column">
                     <div layout="row" class="halfBottomMargin">
-                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" ng-class="{'smooth' : search.selected.sprite.portraitURL.length > 0, 'flipHorizontal' : search.selected.sprite.portraitURL.length == 0 && data.system.affiliations[search.selected.affiliation].flipUnitSprites}" style="max-width: 200px; max-height: 200px;"/>
+                        <img ng-src="{{search.selected.sprite.portraitURL.length > 0 ? search.selected.sprite.portraitURL : search.selected.sprite.spriteURL}}" ng-class="{'smooth' : search.selected.sprite.portraitURL.length > 0, 'flipHorizontal' : search.selected.sprite.portraitURL.length == 0 && data.system.affiliations[search.selected.affiliation].flipUnitSprites}" style="max-width: 275px; max-height: 200px;"/>
                     </div>
                     <div layout="row">
                         <div layout="column" class="rem1_4Text boldText">
@@ -252,24 +252,30 @@
                 {{data.system.interfaceLabels.inventory}}
             </div>
             <div layout="column" ng-if="invExpanded">
-                <inventoryitem ng-repeat="item in search.selected.inventory.items track by $index"  
+                <!--Inventory Subsections-->
+                <div ng-repeat="subsection in search.selected.inventory.subsections track by $index" ng-class="{'bottomMargin': !$last}">
+                    <div ng-if="data.system.interfaceLabels.inventorySubsections.length >= $index">
+                        {{data.system.interfaceLabels.inventorySubsections[$index]}}
+                    </div>
+                    <inventoryitem ng-repeat="item in subsection.items track by $index"  
                                item="item"
                                sysdata="data.system.items[item.name]"
                                skillsysdata="data.system.skills"
                                tagsysdata="data.system.tags"
                                engravingsysdata="data.system.engravings">
-                </inventoryitem>
-                <md-card ng-if="search.selected.inventory.emptySlotCount > 0"
-                         class="md-card-hover verticalPadding horizontalPadding"
-                         layout="column">
-                         <div layout="row" layout-align="space-between start" class="opacity50">
-                            <div layout="column">
-                                <div layout="row" layout-align="left center">
-                                    <i layout="row" layout-align="start center">Empty x{{search.selected.inventory.emptySlotCount}}</i>
+                    </inventoryitem>
+                    <md-card ng-if="subsection.emptySlotCount > 0"
+                            class="md-card-hover verticalPadding horizontalPadding"
+                            layout="column">
+                            <div layout="row" layout-align="space-between start" class="opacity50">
+                                <div layout="column">
+                                    <div layout="row" layout-align="left center">
+                                        <i layout="row" layout-align="start center">Empty x{{subsection.emptySlotCount}}</i>
+                                    </div>
                                 </div>
-                             </div>
-                         </div>
-                </md-card>
+                            </div>
+                    </md-card>
+                </div>
                 <!-- Combat Arts -->
                 <div ng-if="search.selected.combatArts.length > 0" class="topMargin">
                     <div class="leftMargin topMargin boldText" layout="row">
@@ -316,21 +322,26 @@
                 <md-divider></md-divider>
             </div>
             <!--Skills-->
-            <div ng-if="search.selected.skills.length > 0">
+            <div ng-if="search.selected.hasSkills">
                 <div class="rem1_2Text boldText" layout="row">
                     <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !skillsExpanded}" ng-click="toggleSkillsExpanded()" aria-hidden="true"></i>
                     {{data.system.interfaceLabels.skills}}
                 </div>
                 <div layout="column" ng-if="skillsExpanded">
-                    <skill ng-repeat="skill in search.selected.skills track by $index"
-                           skill="skill"
-                           sysdata="data.system.skills[skill.name]"
-                           expanded="true"
-                           active="true">
-                    </skill>
+                    <div ng-repeat="subsection in search.selected.skillSubsections track by $index" ng-if="subsection.skills.length > 0" class="topMargin">
+                        <div ng-if="data.system.interfaceLabels.skillSubsections.length >= $index">
+                            {{data.system.interfaceLabels.skillSubsections[$index]}}
+                        </div>
+                        <skill ng-repeat="skill in subsection.skills track by $index"
+                               skill="skill"
+                               sysdata="data.system.skills[skill.name]"
+                               expanded="true"
+                               active="true">
+                        </skill>
+                    </div>
                 </div>
-                <md-divider></md-divider>
-            </div> 
+            </div>
+            <md-divider ng-if="search.selected.hasSkills"></md-divider>
             <!--Adjutants-->
             <div ng-if="search.selected.adjutants.length > 0">
                 <div class="rem1_2Text boldText" layout="row">
