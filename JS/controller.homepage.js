@@ -22,6 +22,10 @@ app.controller('HomepageCtrl', ['$scope', '$http', '$location', '$cookies', '$md
         return $mdTheming.defaultTheme();
     };
 
+    $scope.browserPrefersDarkMode = function(){
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    };
+
     $scope.toggleAppTheme = function(){
         var theme = $mdTheming.defaultTheme();
         if(theme == 'default') theme = 'dark';

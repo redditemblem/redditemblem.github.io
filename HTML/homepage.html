@@ -6,9 +6,10 @@
                 <md-button class="md-raised md-primary" ng-click="navigateToInfo()" flex>
                     <i class="fa fa-info-circle" aria-hidden="true"></i> Info
                 </md-button>
-                <md-button class="md-raised md-primary" ng-click="toggleAppTheme()" flex>
+                <md-button class="md-raised md-primary" ng-click="toggleAppTheme()" ng-disabled="browserPrefersDarkMode()" flex>
                     <span ng-if="getAppTheme() == 'dark'"><i class="fa fa-sun-o fa-lg fa-fw" aria-hidden="true"></i> Light Mode</span>
                     <span ng-if="getAppTheme() == 'default'"><i class="fa fa-moon-o fa-lg fa-fw" aria-hidden="true"></i> Dark Mode</span>
+                    <md-tooltip md-direction="top">{{browserPrefersDarkMode() ? "Your browser settings are configured to force websites to use dark mode when possible. The theme toggle has been locked to dark." : ""}}</md-tooltip>
                 </md-button>
             </div>
             <md-divider></md-divider>
