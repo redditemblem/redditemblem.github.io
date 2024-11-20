@@ -1,3 +1,7 @@
+:root {
+    color-scheme: only light;
+}
+
 body {
     scrollbar-width: thin;
     scrollbar-color: gray lightgray;
