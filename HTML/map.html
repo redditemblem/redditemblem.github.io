@@ -91,9 +91,12 @@
                         <div layout="column" class="rem1_4Text boldText">
                             <i class="fa fa-caret-down fa-fw clickable" ng-class="{'fa-rotate-270': !unitInfoExpanded}" ng-click="unitInfoExpanded = !unitInfoExpanded" aria-hidden="true"></i>
                         </div>
+                        <div ng-if="data.system.affiliations[search.selected.affiliation].spriteURL.length > 0" layout="column" layout-align="start center" style="margin-right: 4px;">
+                            <img ng-src="{{data.system.affiliations[search.selected.affiliation].spriteURL}}" style="max-height: 48px; max-width: 36px;"/>
+                        </div>
                         <div layout="column">
-                            <span class="rem1_4Text boldText">{{search.selected.name}}</span>
-                            <span class="rem0_9Text leftPadding">Lvl. {{search.selected.stats.level}} {{search.selected.classes[0]}}</span>
+                            <div layout="row" class="rem1_4Text boldText">{{search.selected.name}}</div>
+                            <div layout="row" class="rem0_9Text leftPadding">Lvl. {{search.selected.stats.level}} {{search.selected.classes[0]}}</div>
                         </div>
                     </div>
                 </div>
