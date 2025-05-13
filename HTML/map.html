@@ -160,7 +160,12 @@
                             <span class="rem0_8Text">{{search.selected.stats.hp.maximum}}</span>
                         </span>
                     </div>
-                    <unithealthbar hppercentage="search.selected.stats.hp.percentage" fallbackwidth="142" fallbackheight="6" style="width: 142px; height: 6px;"/>
+                    <div style="height: 6px;">
+                        <unithealthbar hppercentage="search.selected.stats.hp.percentage" fallbackwidth="142" fallbackheight="6" style="width: 142px; height: 6px;"/>
+                    </div>
+                    <div ng-if="search.selected.stats.hp.remainingBars > 0" class="rem0_7Text" layout="row" layout-align="end">
+                        +{{search.selected.stats.hp.remainingBars}} Bars Remaining
+                    </div>
                 </div>
                 <!--Exp-->
                 <div ng-if="search.selected.stats.experience > -1" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
@@ -401,7 +406,12 @@
                                 <span class="rem0_8Text">{{tileObj.inst.hp.maximum}}</span>
                             </span>
                         </div>
-                        <tileobjecthealthbar hppercentage="tileObj.inst.hp.percentage" fallbackwidth="150" fallbackheight="6" style="width: 150px; height: 6px;"/>
+                        <div style="height: 6px;">
+                            <tileobjecthealthbar hppercentage="tileObj.inst.hp.percentage" fallbackwidth="150" fallbackheight="6" style="width: 150px; height: 6px;"/>
+                        </div>
+                        <div ng-if="tileObj.inst.hp.remainingBars > 0" class="rem0_7Text" layout="row" layout-align="end">
+                            +{{tileObj.inst.hp.remainingBars}} Bars Remaining
+                        </div>
                     </div>
                 </div>
                 <div layout="row" layout-wrap class="rem0_9Text bottomMargin">
