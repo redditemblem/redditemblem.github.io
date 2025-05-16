@@ -83,6 +83,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     $scope.toggleAdjutantsExpanded = function(){ $scope.adjutantsExpanded = !$scope.adjutantsExpanded; };
 
     $scope.dictHasKeys = function(dictionary){
+        if(dictionary == null || dictionary == undefined)
+            return false;
         return Object.keys(dictionary).length > 0;
     };
 

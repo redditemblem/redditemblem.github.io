@@ -167,6 +167,15 @@
                         +{{search.selected.stats.hp.remainingBars}} Bars Remaining
                     </div>
                 </div>
+                <!--Prioritized System Stats-->
+                <div ng-if="dictHasKeys(search.selected.stats.system_Prioritized)" ng-repeat="(stat, statObj) in search.selected.stats.system_Prioritized track by stat" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
+                    <span>{{stat}}</span>
+                    <span ng-class="{'buffedStatColor': (statObj.baseValue < statObj.finalValue && !statObj.invertModifiedDisplayColors) || (statObj.baseValue > statObj.finalValue && statObj.invertModifiedDisplayColors), 'debuffedStatColor': (statObj.baseValue > statObj.finalValue && !statObj.invertModifiedDisplayColors) || (statObj.baseValue < statObj.finalValue && statObj.invertModifiedDisplayColors)}">
+                        <i class="fa fa-long-arrow-up" ng-if="statObj.finalValue > statObj.baseValue" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" ng-if="statObj.finalValue < statObj.baseValue" aria-hidden="true"></i>
+                        {{statObj.finalValue}}
+                    </span>
+                </div>
                 <!--Exp-->
                 <div ng-if="search.selected.stats.experience > -1" layout="row" layout-align="space-between" flex="50" class="horizontalPadding">
                     <span>Exp</span>
@@ -225,8 +234,8 @@
             </div>
             <!-- Combat stats -->
             <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.combat)" data="search.selected.stats.combat" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
-            <!-- System stats -->
-            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.system)" data="search.selected.stats.system" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
+            <!-- Nonprioritized System stats -->
+            <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.system_NonPrioritized)" data="search.selected.stats.system_NonPrioritized" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Regular stats -->
             <modifiedstatlist ng-if="dictHasKeys(search.selected.stats.general)" data="search.selected.stats.general" expanded="statsExpanded" layout="row" layout-wrap></modifiedstatlist>
             <!-- Statuses -->
