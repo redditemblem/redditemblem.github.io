@@ -13,6 +13,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     $scope.numOfPinnedUnits = 0;
     $scope.displayTileCoordinates = false;
     $scope.tileCoordinatesFontSize = 0;
+    $scope.currentSegmentIndex = 0;
 
     $scope.dice = {
         'lowerBound': 1,
@@ -28,7 +29,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
         url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/map/" + $routeParams.teamName
     }).then(function successCallback(response) {
         $scope.data = response.data;
-        $scope.selectedTile = $scope.data.map.tiles[0][0];
+        $scope.selectedTile = $scope.data.map.segments[$scope.currentSegmentIndex].tiles[0][0];
         setTileCoordinateFontSize();
         $scope.loadComplete = true;
     },function errorCallback(response){
@@ -90,8 +91,12 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
 
     $scope.launchCharacterApplication = function(characterAppURL) { $window.open(characterAppURL); };
 
-    // TILE FUNCTIONS -------------------------------------------------
+    // MAP / TILE FUNCTIONS -------------------------------------------------
     
+    $scope.mapSegmentTab_OnClick = function(index){
+        $scope.currentSegmentIndex = index;
+    };
+
     $scope.mapTile_OnMouseover = function(tile){
         $scope.selectedTile = tile;
         if(tile.unitData.occupyingUnitName.length > 0)
@@ -122,7 +127,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
         }
         
         for(var i = 0; i < tile.tileObjectInstanceIDs.length > 0; i++){
-            var tileObj = $scope.data.map.tileObjectInstances[tile.tileObjectInstanceIDs[i]];
+            var segment = getSegmentByCoordinate(tile.coordinate);
+            var tileObj = segment.tileObjectInstances[tile.tileObjectInstanceIDs[i]];
             
             //Only allow tile objects with ranges to be pinned
             if(tileObj.attackRange.length > 0)
@@ -198,22 +204,25 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
         for(var i = 0; i < unit.ranges.movement.length; i++)
         {
             var coord = unit.ranges.movement[i];
-            $scope.data.map.tiles[coord.y - 1][coord.x - 1].movCount += updateVal;
+            var segment = getSegmentByCoordinate(coord);
+            segment.tiles[coord.y - 1][coord.x - segment.horizontalTileRangeWithinMap.start.value].movCount += updateVal;
         } 
         
         //Attack
         for(var i = 0; i < unit.ranges.attack.length; i++)
         {
             var coord = unit.ranges.attack[i];
-            $scope.data.map.tiles[coord.y - 1][coord.x - 1].atkCount += updateVal;
+            var segment = getSegmentByCoordinate(coord);
+            segment.tiles[coord.y - 1][coord.x - segment.horizontalTileRangeWithinMap.start.value].atkCount += updateVal;
         } 
 
         //Utility
         for(var i = 0; i < unit.ranges.utility.length; i++)
         {
             var coord = unit.ranges.utility[i];
-            $scope.data.map.tiles[coord.y - 1][coord.x - 1].utilCount += updateVal;
-        } 
+            var segment = getSegmentByCoordinate(coord);
+            segment.tiles[coord.y - 1][coord.x - segment.horizontalTileRangeWithinMap.start.value].utilCount += updateVal;
+        }
     }
 
     function toggleTileObjectPinnedStatus(tileObj){
@@ -230,8 +239,16 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     function updateVisibleTileObjectRanges(tileObj, updateVal){
         for(var i = 0; i < tileObj.attackRange.length; i++){
             var coord = tileObj.attackRange[i];
-            $scope.data.map.tiles[coord.y - 1][coord.x - 1].tileObjCount += updateVal;
+            var segment = getSegmentByCoordinate(coord);
+            segment.tiles[coord.y - 1][coord.x - segment.horizontalTileRangeWithinMap.start.value].tileObjCount += updateVal;
         }
+    };
+
+    function getSegmentByCoordinate(coordinate){
+        return $scope.data.map.segments.find((s) => {
+            return s.horizontalTileRangeWithinMap.start.value <= coordinate.x
+                && s.horizontalTileRangeWithinMap.end.value >= coordinate.x
+        });
     };
 
     $scope.getUnitByName = function(unitName){
@@ -316,7 +333,8 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     });
 
     function setTileCoordinateFontSize(){
-        var lastRow = $scope.data.map.tiles[$scope.data.map.tiles.length - 1];
+        var tiles = $scope.data.map.segments[$scope.currentSegmentIndex].tiles;
+        var lastRow = tiles[tiles.length - 1];
         var bottomRightTile = lastRow[lastRow.length - 1];
         var bottomRightCoordLength = bottomRightTile.coordinate.asText.length;
 
@@ -329,6 +347,6 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
             default: multiplier = 0.25; break;
         }
 
-        $scope.tileCoordinatesFontSize = Math.floor(($scope.data.map.constants.tileSize + $scope.data.map.constants.tileSpacing) * multiplier);
+        $scope.tileCoordinatesFontSize = Math.floor($scope.data.map.constants.tileSize * multiplier);
     };
 }]);

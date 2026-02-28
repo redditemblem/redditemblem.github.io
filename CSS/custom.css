@@ -4,6 +4,40 @@
     padding: 0px;
 }
 
+.mapSegmentBar{
+    height: 40px;
+    width: 100%; 
+    padding: 0px; 
+    border-bottom: solid gray;
+}
+
+.mapSegmentTab{
+    display: inline-block;
+    width: 175px;
+    height: 35px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 4px;
+    margin-right: 8px;
+    border-radius: 10px 10px 0px 0px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    background-color: #FFC107;
+
+    -webkit-transition: height 0.25s ease, padding-bottom 0.25s ease;
+    -moz-transition: height 0.25s ease, padding-bottom 0.25s ease;
+    -ms-transition: height 0.25s ease, padding-bottom 0.25s ease;
+    -o-transition: height 0.25s ease, padding-bottom 0.25s ease;
+    transition: height 0.25s ease, padding-bottom 0.25s ease;
+}
+
+.mapSegmentTab.poppedUp{
+    height: 40px;
+    padding-bottom: 9px;
+}
+
 .mapRow{
     margin-left: 1px;
     white-space: nowrap;
