@@ -6,9 +6,9 @@
 
 .mapSegmentBar{
     height: 40px;
-    width: 100%; 
-    padding: 0px; 
-    border-bottom: solid gray;
+    width: 100%;
+    padding: 0px;
+    border-bottom: solid lightgray;
 }
 
 .mapSegmentTab{

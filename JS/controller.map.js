@@ -29,7 +29,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
         url: "https://2zxk6z36pe.execute-api.us-east-2.amazonaws.com/Prod/api/map/" + $routeParams.teamName
     }).then(function successCallback(response) {
         $scope.data = response.data;
-        $scope.selectedTile = $scope.data.map.segments[$scope.currentSegmentIndex].tiles[0][0];
+        $scope.mapSegmentTab_OnClick(0);
         setTileCoordinateFontSize();
         $scope.loadComplete = true;
     },function errorCallback(response){
@@ -95,6 +95,7 @@ app.controller('MapCtrl', ['$scope', '$http', '$routeParams', '$window', functio
     
     $scope.mapSegmentTab_OnClick = function(index){
         $scope.currentSegmentIndex = index;
+        $scope.selectedTile = $scope.data.map.segments[index].tiles[0][0];
     };
 
     $scope.mapTile_OnMouseover = function(tile){

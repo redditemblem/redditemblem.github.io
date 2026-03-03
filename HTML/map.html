@@ -380,7 +380,7 @@
         <md-content ng-if="selectedTile" class="horizontalPadding">
             <div layout="row" layout-align="left center" class="rem1_4Text boldText bottomMargin">
                 <!--Tile preview-->
-                <div ng-style="{'background-image': 'url({{data.map.segments[currentSegmentIndex].imageURL}})', 'background-position': 'left -'+((data.map.constants.tileSize)*(selectedTile.coordinate.x-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize)+'px', 'height': (data.map.constants.tileSize)+'px', 'overflow': hidden}"></div>
+                <div ng-style="{'background-image': 'url('+data.map.segments[currentSegmentIndex].imageURL+')', 'background-position': 'left -'+((data.map.constants.tileSize)*(1+selectedTile.coordinate.x-data.map.segments[currentSegmentIndex].horizontalTileRangeWithinMap.start.value-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize)+'px', 'height': (data.map.constants.tileSize)+'px', 'overflow': hidden}"></div>
                 <!--Coords-->
                 <span class="leftPadding">Tile {{selectedTile.coordinate.asText}}</span>
             </div>
@@ -399,9 +399,9 @@
             <md-divider></md-divider>
             <!-- Tile Objects -->
             <div ng-repeat="tileObjInstID in selectedTile.tileObjectInstanceIDs"
-                 ng-init="tileObj = {inst: data.map.tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.tileObjectInstances[tileObjInstID].name]}"
+                 ng-init="tileObj = {inst: data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID].name]}"
                  layout="column"
-                 class="bottomMargin">
+                 class="bottomMargin">     
                 <div layout="row">
                     <span class="boldText">{{tileObj.inst.name}}</span>
                 </div>
@@ -554,7 +554,7 @@
             </div>
         </div>
         <div class="mapBackground"
-             ng-style="{'background-image': 'url({{data.map.segments[currentSegmentIndex].imageURL}})', 'width': data.map.segments[currentSegmentIndex].widthInPixels + 'px', 'height': data.map.segments[currentSegmentIndex].heightInPixels + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px'}">
+             ng-style="{'background-image': 'url('+data.map.segments[currentSegmentIndex].imageURL+')', 'width': data.map.segments[currentSegmentIndex].widthInPixels + 'px', 'height': data.map.segments[currentSegmentIndex].heightInPixels + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px'}">
              <!--Draw tiles-->
              <div ng-repeat="row in data.map.segments[currentSegmentIndex].tiles track by $index"
                  class="mapRow"
@@ -570,7 +570,7 @@
                 >
                     <!-- Draw tile objects -->
                     <div ng-repeat="tileObjInstID in tile.tileObjectInstanceIDs"
-                         ng-init="tileObj = {inst: data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.tileObjectInstances[tileObjInstID].name]}"
+                         ng-init="tileObj = {inst: data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID].name]}"
                          ng-show="tileObj.inst.anchorCoordinate.asText == tile.coordinate.asText"
                          class="spriteContainer"
                          ng-class="{'pinnedTileObjectShadow': tileObj.inst.pinned}"
