@@ -24,7 +24,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: nowrap;
-    background-color: #FFC107;
 
     -webkit-transition: height 0.25s ease, padding-bottom 0.25s ease;
     -moz-transition: height 0.25s ease, padding-bottom 0.25s ease;

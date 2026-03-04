@@ -108,13 +108,26 @@
     
     <!-- Map -->
     <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
+        <div id="segmentTabs" ng-show="data.map.segments.length > 1" class="mapSegmentBar" layout="row" layout-align="start end">
+            <div id="segmentTab_{{$index}}"
+                 ng-repeat="segment in data.map.segments track by $index" 
+                 class="mapSegmentTab clickable rem0_9Text"
+                 ng-style="{'background-color': 'hsl(207, 90%, '+(54+($index*7))+'%)'}"
+                 ng-class="{'poppedUp': currentSegmentIndex == $index}"
+                 ng-click="mapSegmentTab_OnClick($index)"
+                 layout="row" 
+                 layout-align="center end"
+                 title="{{segment.title}}">
+                {{segment.title}}
+            </div>
+        </div>
         <div class="mapBackground"
-             ng-style="{'background-image': 'url({{currentSegment.imageURL}})', 'width': currentSegment.widthInPixels + 'px', 'height': currentSegment.heightInPixels + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px'}">
+             ng-style="{'background-image': 'url('+data.map.segments[currentSegmentIndex].imageURL+')', 'width': data.map.segments[currentSegmentIndex].widthInPixels + 'px', 'height': data.map.segments[currentSegmentIndex].heightInPixels + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px'}">
              <!--Draw tiles-->
-             <div ng-repeat="row in currentSegment.tiles track by $index"
+             <div ng-repeat="row in data.map.segments[currentSegmentIndex].tiles"
                  class="mapRow"
                  ng-style="{'height': data.map.constants.tileSize+'px'}">
-                <div ng-repeat="tile in row track by $index" 
+                <div ng-repeat="tile in row"
                      ng-init="terrainData = data.system.terrainTypes[tile.terrainType]"
                      class="mapTile"
                      ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px'}"

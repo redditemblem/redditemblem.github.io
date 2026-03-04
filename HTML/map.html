@@ -544,7 +544,8 @@
         <div id="segmentTabs" ng-show="data.map.segments.length > 1" class="mapSegmentBar" layout="row" layout-align="start end">
             <div id="segmentTab_{{$index}}"
                  ng-repeat="segment in data.map.segments track by $index" 
-                 class="mapSegmentTab clickable"
+                 class="mapSegmentTab clickable rem0_9Text"
+                 ng-style="{'background-color': 'hsl(207, 90%, '+(54+($index*7))+'%)'}"
                  ng-class="{'poppedUp': currentSegmentIndex == $index}"
                  ng-click="mapSegmentTab_OnClick($index)"
                  layout="row" 
