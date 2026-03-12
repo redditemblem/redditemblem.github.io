@@ -1,6 +1,6 @@
 <img id="{{unit.name}}_sprite" ng-src="{{unit.sprite.spriteURL}}" class="unitSpriteImage" ng-class="{'flipHorizontal' : affiliationsysdata[unit.affiliation].flipUnitSprites}" />
 <div class="absolute"
-     ng-style="{'width': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize)+'px', 'height': ((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize)+'px'}">
+     ng-style="{'width': (tileconsts.tileSize * unit.location.unitSize)+'px', 'height': (tileconsts.tileSize * unit.location.unitSize)+'px'}">
     <!--Status condition icon-->
     <div ng-if="statusSpriteList.length > 0" class="unitStatusSprites" layout="row" layout-align="right top">
         <img ng-repeat="statusSprite in statusSpriteList track by $index"
@@ -25,5 +25,5 @@
                 ng-class="{'dim': unit.location.isBackOfPair}"/>
     </div>
     <!--Health bar-->
-    <unithealthbar hppercentage="unit.stats.hp.percentage" fallbackwidth="((tileconsts.tileSize + tileconsts.tileSpacing) * unit.location.unitSize) - 3" fallbackheight="3" class="unitHealthBarPosition" />
+    <unithealthbar hppercentage="unit.stats.hp.percentage" fallbackwidth="(tileconsts.tileSize * unit.location.unitSize) - 3" fallbackheight="3" class="unitHealthBarPosition" />
 </div>

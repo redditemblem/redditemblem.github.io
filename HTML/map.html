@@ -380,7 +380,7 @@
         <md-content ng-if="selectedTile" class="horizontalPadding">
             <div layout="row" layout-align="left center" class="rem1_4Text boldText bottomMargin">
                 <!--Tile preview-->
-                <div ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'background-position': 'left -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.x-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize + data.map.constants.tileSpacing)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'overflow': hidden}"></div>
+                <div ng-style="{'background-image': 'url('+data.map.segments[currentSegmentIndex].imageURL+')', 'background-position': 'left -'+((data.map.constants.tileSize)*(1+selectedTile.coordinate.x-data.map.segments[currentSegmentIndex].horizontalTileRangeWithinMap.start.value-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px top -'+((data.map.constants.tileSize)*(selectedTile.coordinate.y-(data.map.constants.hasHeaderTopLeft ? 0 : 1)))+'px', 'width': (data.map.constants.tileSize)+'px', 'height': (data.map.constants.tileSize)+'px', 'overflow': hidden}"></div>
                 <!--Coords-->
                 <span class="leftPadding">Tile {{selectedTile.coordinate.asText}}</span>
             </div>
@@ -399,9 +399,9 @@
             <md-divider></md-divider>
             <!-- Tile Objects -->
             <div ng-repeat="tileObjInstID in selectedTile.tileObjectInstanceIDs"
-                 ng-init="tileObj = {inst: data.map.tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.tileObjectInstances[tileObjInstID].name]}"
+                 ng-init="tileObj = {inst: data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID].name]}"
                  layout="column"
-                 class="bottomMargin">
+                 class="bottomMargin">     
                 <div layout="row">
                     <span class="boldText">{{tileObj.inst.name}}</span>
                 </div>
@@ -540,15 +540,29 @@
     </div>
     <!-- Map -->
     <md-content id="mapScollBox" class="backgroundTexture" layout-padding flex>
+        <!-- Map segment tabs -->
+        <div id="segmentTabs" ng-show="data.map.segments.length > 1" class="mapSegmentBar" layout="row" layout-align="start end">
+            <div id="segmentTab_{{$index}}"
+                 ng-repeat="segment in data.map.segments track by $index" 
+                 class="mapSegmentTab clickable rem0_9Text"
+                 ng-style="{'background-color': 'hsl(207, 90%, '+(54+($index*7))+'%)'}"
+                 ng-class="{'poppedUp': currentSegmentIndex == $index}"
+                 ng-click="mapSegmentTab_OnClick($index)"
+                 layout="row" 
+                 layout-align="center end"
+                 title="{{segment.title}}">
+                {{segment.title}}
+            </div>
+        </div>
         <div class="mapBackground"
-             ng-style="{'background-image': 'url({{data.map.mapImageURL}})', 'width': data.map.imageWidth + 'px', 'height': data.map.imageHeight + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px'}">
+             ng-style="{'background-image': 'url('+data.map.segments[currentSegmentIndex].imageURL+')', 'width': data.map.segments[currentSegmentIndex].widthInPixels + 'px', 'height': data.map.segments[currentSegmentIndex].heightInPixels + 'px', 'padding-top': data.map.constants.hasHeaderTopLeft ? (data.map.constants.tileSize)+'px' : '0px', 'padding-left': data.map.constants.hasHeaderTopLeft ? data.map.constants.tileSize+'px' : '0px'}">
              <!--Draw tiles-->
-             <div ng-repeat="row in data.map.tiles track by $index"
+             <div ng-repeat="row in data.map.segments[currentSegmentIndex].tiles track by $index"
                  class="mapRow"
-                 ng-style="{'height': data.map.constants.tileSize+'px', 'margin-bottom': data.map.constants.tileSpacing+'px'}">
+                 ng-style="{'height': data.map.constants.tileSize+'px'}">
                 <div ng-repeat="tile in row track by $index"
                      class="mapTile"
-                     ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px', 'margin-right': data.map.constants.tileSpacing+'px'}"
+                     ng-style="{'width': (data.map.constants.tileSize+1)+'px', 'height': (data.map.constants.tileSize+1)+'px'}"
                      title="({{tile.coordinate.asText}}) {{tile.terrainType}} {{tile.unitData.occupyingUnitName.length > 0 ? '['+tile.unitData.occupyingUnitName+(tile.unitData.location.pairedUnitName.length > 0 ? '/'+tile.unitData.location.pairedUnitName : '')+']' : ''}}"
                      ng-mouseover="mapTile_OnMouseover(tile)"
                      ng-mouseout="mapTile_OnMouseout(tile)"
@@ -557,23 +571,23 @@
                 >
                     <!-- Draw tile objects -->
                     <div ng-repeat="tileObjInstID in tile.tileObjectInstanceIDs"
-                         ng-init="tileObj = {inst: data.map.tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.tileObjectInstances[tileObjInstID].name]}"
-                         ng-show="tileObj.inst.anchorCoordinate == tile.coordinate.asText"
+                         ng-init="tileObj = {inst: data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID], data: data.system.tileObjects[data.map.segments[currentSegmentIndex].tileObjectInstances[tileObjInstID].name]}"
+                         ng-show="tileObj.inst.anchorCoordinate.asText == tile.coordinate.asText"
                          class="spriteContainer"
                          ng-class="{'pinnedTileObjectShadow': tileObj.inst.pinned}"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * tileObj.data.size)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * tileObj.data.size)+'px', 'z-index': tile.coordinate.y + (tileObj.data.layer * 10)}"
+                         ng-style="{'width': ((data.map.constants.tileSize) * tileObj.data.size)+'px', 'height': ((data.map.constants.tileSize) * tileObj.data.size)+'px', 'z-index': tile.coordinate.y + (tileObj.data.layer * 10)}"
                          layout="row"
                          layout-align="center center">
                          
                         <img ng-src="{{tileObj.data.spriteURL}}" />
-                        <tileobjecthealthbar ng-if="tileObj.inst.hp" hppercentage="tileObj.inst.hp.percentage" fallbackwidth="((tileconsts.tileSize + tileconsts.tileSpacing) * tileObj.data.size) - 3" fallbackheight="3" class="unitHealthBarPosition" />
+                        <tileobjecthealthbar ng-if="tileObj.inst.hp" hppercentage="tileObj.inst.hp.percentage" fallbackwidth="((tileconsts.tileSize) * tileObj.data.size) - 3" fallbackheight="3" class="unitHealthBarPosition" />
                     </div>
 
                     <!--Draw unit-->
                     <div ng-if="tile.unitData.isUnitAnchor"
                          ng-init="unit = getUnitByName(tile.unitData.occupyingUnitName)"
                          class="spriteContainer"
-                         ng-style="{'width': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.location.unitSize)+'px', 'height': ((data.map.constants.tileSize + data.map.constants.tileSpacing) * unit.location.unitSize)+'px', 'z-index': tile.coordinate.y + unit.location.unitSize}"
+                         ng-style="{'width': ((data.map.constants.tileSize) * unit.location.unitSize)+'px', 'height': ((data.map.constants.tileSize) * unit.location.unitSize)+'px', 'z-index': tile.coordinate.y + unit.location.unitSize}"
                          layout="row"
                          layout-align="center end"
                     >
@@ -601,7 +615,7 @@
 
                     <div ng-if="displayTileCoordinates"
                         class="spriteContainer highlightedColor lowCostShadowedText noTextSelection"
-                        ng-style="{'width': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'height': (data.map.constants.tileSize + data.map.constants.tileSpacing)+'px', 'font-size': tileCoordinatesFontSize+'px', 'z-index': tile.coordinate.y + 11}"
+                        ng-style="{'width': (data.map.constants.tileSize)+'px', 'height': (data.map.constants.tileSize)+'px', 'font-size': tileCoordinatesFontSize+'px', 'z-index': tile.coordinate.y + 11}"
                         layout="row"
                         layout-align="center center"
                     >

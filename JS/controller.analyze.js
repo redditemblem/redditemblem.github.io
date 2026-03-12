@@ -7,6 +7,7 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
   };
   $scope.loadComplete = false;
 
+  $scope.currentSegmentIndex = 0;
   $scope.movementTypes = [];
   $scope.affiliationGroupings = [];
   $scope.terrainTypes = [];
@@ -58,16 +59,19 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
       $scope.movementTypes = Object.keys(firstTerrainType.statGroups[0].movementCosts).sort()
 
       //Warp groups
-      for(var row in $scope.data.map.tiles){
-        for(var tile in $scope.data.map.tiles[row]){
-          var groupNum = $scope.data.map.tiles[row][tile].warpData.warpGroupNumber;
-          if(groupNum > 0 && !$scope.warpGroups.some((g) => g.groupNum == groupNum))
-            $scope.warpGroups.push({
-              "groupNum": groupNum, 
-              "coordinates": $scope.data.map.tiles[row][tile].warpData.warpGroupCoordinates
-            });
+      for(var segment in $scope.data.map.segments){
+        for(var row in $scope.data.map.segments[segment].tiles){
+          for(var tile in $scope.data.map.segments[segment].tiles[row]){
+            var groupNum = $scope.data.map.segments[segment].tiles[row][tile].warpData.warpGroupNumber;
+            if(groupNum > 0 && !$scope.warpGroups.some((g) => g.groupNum == groupNum))
+              $scope.warpGroups.push({
+                "groupNum": groupNum, 
+                "coordinates": $scope.data.map.segments[segment].tiles[row][tile].warpData.warpGroupCoordinates
+              });
+          }
         }
       }
+      
       $scope.warpGroups.sort();
 
       $scope.loadComplete = true;
@@ -91,6 +95,10 @@ app.controller('AnalyzeCtrl', ['$scope', '$http', '$routeParams', function ($sco
     $scope.filters.selectedTerrainType = "";
     $scope.filters.selectedWarpGroup = -1;
     $scope.filters.selectedSpecialty = "";
+  };
+
+  $scope.mapSegmentTab_OnClick = function(index){
+    $scope.currentSegmentIndex = index;
   };
 
 }]);
