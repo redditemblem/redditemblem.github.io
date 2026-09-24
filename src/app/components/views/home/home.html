@@ -1,0 +1,103 @@
+<div id="decorativePanelTop"></div>
+<div id="homeViewContainer">
+  <div id="homeViewColumn" [style.width]="getViewWidth()">
+    <div id="logoColumn">
+      <img id="logo" src="img/logo.png" alt="Reddit Emblem Maps Logo" />
+      <button matButton="outlined" id="themeButton" (click)="themeService.toggleTheme()">
+        <img matListItemIcon [src]="themeService.inDarkMode() ? 'img/sun_icon.png' : 'img/moon_icon.png'" height="20" width="20" aria-hidden="true" />
+        <span>
+          @if(themeService.inDarkMode()) { Switch to Light Mode } 
+          @else { Switch to Dark Mode }
+        </span>
+      </button>
+    </div>
+    <div id="teamListingColumn">
+      @if (isLoading()) {
+        <div class="teamListingRow">
+          <loading-icon />
+        </div>
+      }
+      @else if (teamListService.errorMessages().length > 0) {
+        <div class="teamListingRow">
+          @for (error of teamListService.errorMessages(); track $index) {
+            <p class="pixelFont">{{error}}</p>
+          }
+        </div>
+      }
+      @else {
+        @for (team of teamListService.teamsList(); track team.teamName) {
+          <team-listing [team]="team" />
+        }
+        @empty {
+          <div class="teamListingRow">
+            <p class="pixelFont">
+              There are no teams configured.
+            </p>
+          </div>
+        }
+      }
+    </div>
+    <div>
+      <h1 class="pixelFont">About Maps</h1>
+      <p>Reddit Emblem Maps is an interactive web application custom built for the Reddit Emblem play-by-post community on Discord! Maps' goal is to improve the GM and player gameplay experience by unifying map and system information in one place using a video game-esque UI. Its flexible web display is backed by a highly configurable API that can support a wide range of system designs and customized mechanics.</p>
+    </div>
+    <div>
+      <h2 class="pixelFont">Resources</h2>
+      <mat-action-list class="itemsList">
+        <a mat-list-item href="https://docs.google.com/document/d/150h2pxQbrd3uZOKM_r3iniCRBPtnfIJbSTnWlm-pRUM/edit?usp=sharing" target="_blank">
+          <img matListItemIcon src="img/books_icon.png" aria-hidden="true" />
+          <p matListItemTitle>User Documentation</p>
+          <p matListItemLine>Read about Maps' functionality</p>
+          <div matListItemMeta>
+            <mat-icon>open_in_new</mat-icon>
+          </div>
+        </a>
+        <a mat-list-item href="https://discord.gg/d3N7TXZMq9" target="_blank">
+          <img matListItemIcon src="img/chat_icon.png" aria-hidden="true" />
+          <p matListItemTitle>Maps Discord Server</p>
+          <p matListItemLine>Ask questions, request features, and report bugs</p>
+          <div matListItemMeta>
+            <mat-icon>open_in_new</mat-icon>
+          </div>
+        </a>
+        <a mat-list-item href="https://github.com/redditemblem/RedditEmblemAPI" target="_blank">
+          <img matListItemIcon src="img/code_icon.png" aria-hidden="true" />
+          <p matListItemTitle>API Github Repository</p>
+          <p matListItemLine>C# code for Maps' backing API</p>
+          <div matListItemMeta>
+            <mat-icon>open_in_new</mat-icon>
+          </div>
+        </a>
+        <a mat-list-item href="https://github.com/redditemblem/redditemblem.github.io" target="_blank">
+          <img matListItemIcon src="img/code_icon.png" aria-hidden="true" />
+          <p matListItemTitle>UI Github Repository</p>
+          <p matListItemLine>HTML + Typescript code for Maps' web display</p>
+          <div matListItemMeta>
+            <mat-icon>open_in_new</mat-icon>
+          </div>
+        </a>
+      </mat-action-list>
+    </div>
+    <div>
+      <h2 class="pixelFont">Dev Sandbox</h2>
+      <p>Maps has a developer sandbox called "Team Example", which showcases a wide range of its available functionality.</p>
+      <team-listing [team]="teamExample" />
+    </div>
+    <div>
+      <h2 class="pixelFont">Credits</h2>
+      <mat-list class="itemsList">
+        <mat-list-item>
+          <img matListItemAvatar src="img/photoshoot.png" alt="Avatar" />
+          <p matListItemTitle>IronPegasus</p>
+          <p matListItemLine>Developer</p>
+        </mat-list-item>
+      </mat-list>
+      <ul>
+        <li><a href="https://www.transparenttextures.com/">Website background texture "Az Subtle" by Anli</a></li>
+        <li><a href="https://www.dafont.com/mac-s-minecraft.font">"Mac's Minecraft" font by macimas bahnsisk</a></li>
+        <li><a href="https://www.dafont.com/blocked.font">"Blocked" font by Protractor Ninja</a></li>
+      </ul>
+    </div>
+  </div>
+</div> 
+<div id="decorativePanelBottom"></div>

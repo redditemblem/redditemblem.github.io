@@ -1,0 +1,59 @@
+<div id="linksContainer">
+    <h1>Links</h1>
+    <mat-action-list>
+        @if ((googleWorksheetID() ?? "").length > 0) {
+            <a mat-list-item [href]="getGoogleSheetUrl()" target="_blank">
+                <img matListItemIcon src="img/spreadsheet_icon.png" height="20" width="20" />
+                <span class="matListItemTitle pixelFont">Team Spreadsheet</span>
+                <div matListItemMeta>
+                    <mat-icon>open_in_new</mat-icon>
+                </div>
+            </a>
+        }
+        @if ((chapterPostUrl() ?? "").length > 0) {
+            <a mat-list-item [href]="chapterPostUrl()" target="_blank">
+                <img matListItemIcon src="img/books_icon.png" height="20" width="20" />
+                <span class="matListItemTitle pixelFont">Chapter Post</span>
+                <div matListItemMeta>
+                    <mat-icon>open_in_new</mat-icon>
+                </div>
+            </a>
+        }
+        @if (showMapLink()) {
+           <a mat-list-item [routerLink]="[`/${this.teamName()}`, 'map']">
+                <img matListItemIcon src="img/map_icon.png" height="20" width="20" />
+                <span class="matListItemTitle pixelFont">Map</span>
+            </a> 
+        }
+        @if (showConvoyLink()) {
+            <a mat-list-item [routerLink]="[`/${this.teamName()}`, 'convoy']">
+                <img matListItemIcon src="img/convoy_icon.png" height="20" width="20" />
+                <span class="matListItemTitle pixelFont">Convoy</span>
+            </a>
+        }
+        @if (showShopLink()) {
+            <a mat-list-item [routerLink]="[`/${this.teamName()}`, 'shop']">
+                <img matListItemIcon src="img/shop_icon.png" height="20" width="20" />
+                <span class="matListItemTitle pixelFont">Shop</span>
+            </a>
+        }
+        <mat-divider />
+        <a mat-list-item (click)="this.themeService.toggleTheme()" >
+            <img matListItemIcon [src]="themeService.inDarkMode() ? 'img/sun_icon.png' : 'img/moon_icon.png'" height="20" width="20" />
+            <span class="matListItemTitle pixelFont">
+                @if(themeService.inDarkMode()) { Switch to Light Mode } 
+                @else { Switch to Dark Mode }
+            </span>
+        </a>
+        <a mat-list-item [routerLink]="['../..']">
+            <img matListItemIcon src="img/home_icon.png" height="20" width="20" />
+            <span class="matListItemTitle pixelFont">Home</span>
+        </a>
+        @if (showMapAnalyzerLink()) {
+            <a mat-list-item [routerLink]="[`/${this.teamName()}`, 'map', 'analyze']">
+                <img matListItemIcon src="img/magnify_icon.png" height="20" width="20" />
+                <span class="matListItemTitle pixelFont">Map Analysis Tool</span>
+            </a>
+        }
+    </mat-action-list>
+</div>

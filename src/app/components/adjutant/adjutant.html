@@ -1,0 +1,16 @@
+<div class="primaryColorCard adjutantCard" (click)="isExpanded.set(!isExpanded())">
+    <div class="titleRow">
+        @if ((systemData()?.spriteURL ?? "").length > 0) {
+            <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${name()} sprite`" />
+        }
+        <p>{{name()}}</p>
+    </div>
+    @if (isExpanded() && (systemData()?.textFields ?? []).length > 0) {
+        <mat-divider />
+        <div class="textFieldContainer">
+            @for (text of systemData()?.textFields; track $index) {
+                <p>{{text}}</p>
+            }
+        </div>
+    }
+</div>

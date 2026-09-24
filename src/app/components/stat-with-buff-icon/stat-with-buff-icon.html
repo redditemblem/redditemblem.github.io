@@ -1,0 +1,16 @@
+<span class="container">
+    @if (base() !== final())
+    {
+        @if (invertColors())
+        {
+            @if(final() < base()) { <img src="img/arrow_down.png" class="pos" alt="Arrow pointing down" [height]="height()" /> }
+            @else { <img src="img/arrow_up.png" class="neg" alt="Arrow pointing up" [height]="height()" /> }
+        }
+        @else
+        {
+            @if(final() > base()) { <img src="img/arrow_up.png" class="pos" alt="Arrow pointing up" [height]="height()" /> }
+            @else { <img src="img/arrow_down.png" class="neg" alt="Arrow pointing down" [height]="height()" /> }
+        }
+    }
+    <span>{{final()}}</span>
+</span>

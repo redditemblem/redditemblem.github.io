@@ -1,0 +1,66 @@
+<div class="primaryColorCard combatArtContainer" (click)="isExpanded.set(!isExpanded())">
+  <div class="headerRow">
+    <div class="titlesColumn">
+      <div class="titleRow">
+        @if ((systemData()?.spriteURL ?? "").length > 0) {
+        <img [src]="systemData()?.spriteURL" [aria-label]="`${name()} sprite`" />
+        }
+        <p>{{name()}}</p>
+        @for (tag of systemData()?.tags; track tag) {
+        @let tagData = teamDataService.getTagByName(tag);
+        @if ((tagData?.spriteURL ?? "").length > 0) {
+        <img [src]="tagData?.spriteURL" [title]="tag" />
+        }
+        }
+      </div>
+      @let subtitleText = buildSubtitleText();
+      @if (subtitleText.length > 0) {
+      <p class="subtitleRow">
+        {{subtitleText}}
+      </p>
+      }
+    </div>
+    @if ((systemData()?.durabilityCost ?? 0) !== 0) {
+    @let tooltip = `Costs ${systemData()?.durabilityCost} weapon durability`;
+    <p [aria-label]="tooltip" [matTooltip]="tooltip" matTooltipPosition="left">
+      {{systemData()?.durabilityCost}}
+    </p>
+    }
+  </div>
+  @if (isExpanded()) {
+  <mat-divider />
+  <div class="statsContainer">
+    @for (stat of systemData()?.stats | keyvalue: doNotSortByKey; track stat.key) {
+    <div class="stat">
+      <p>{{stat.key}}</p>
+      <p>{{stat.value}}</p>
+    </div>
+    }
+    @if ((systemData()?.range?.minimum ?? 0) > 0) {
+    <div class="stat">
+      <p>Rng</p>
+      <p class="statValue">
+        {{systemData()?.range?.minimum ?? 0}}
+        @if ((systemData()?.range?.maximum ?? 0) !== (systemData()?.range?.minimum ?? 0)) {
+        - {{systemData()?.range?.maximum ?? 0}}
+        }
+      </p>
+    </div>
+    }
+    @if ((systemData()?.durabilityCost ?? 0) !== 0) {
+    <div class="stat">
+      <p>Cost</p>
+      <p>{{systemData()?.durabilityCost}}</p>
+    </div>
+    }
+  </div>
+  @if ((systemData()?.textFields ?? []).length > 0) {
+  <mat-divider />
+  <div class="textFieldContainer">
+    @for (text of systemData()?.textFields; track $index) {
+    <p>{{text}}</p>
+    }
+  </div>
+  }
+  }
+</div>

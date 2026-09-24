@@ -1,0 +1,126 @@
+@use '@angular/material' as mat;
+
+#diceRollerContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+
+  h1 {
+    margin: 0px;
+    font-family: macExtMinecraft;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 1.65rem;
+  }
+
+  h2 {
+    margin: 0px;
+    font-family: macExtMinecraft;
+    font-style: normal;
+    font-weight: normal;
+  }
+}
+
+#diceInputsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  padding: 16px 16px 0px 16px;
+
+  @include mat.checkbox-overrides((
+    state-layer-size: 21px,
+    selected-focus-icon-color: var(--tertiary-theme-color),
+    selected-focus-state-layer-color: var(--tertiary-theme-color),
+    selected-hover-icon-color: var(--tertiary-theme-color),
+    selected-hover-state-layer-color: var(--tertiary-theme-color),
+    selected-icon-color: var(--tertiary-theme-color),
+    selected-pressed-icon-color: var(--tertiary-theme-color),
+    selected-checkmark-color: var(--tertiary-theme-color-dim),
+    label-text-font: macExtMinecraft
+  ));
+
+  @include mat.button-overrides((
+    filled-container-shape: 8px,
+    outlined-container-shape: 8px,
+    filled-container-color: var(--primary-theme-color),
+    outlined-outline-color: var(--primary-theme-color),
+    outlined-ripple-color: color-mix(in srgb, var(--primary-theme-color) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    filled-label-text-color: var(--primary-theme-color-inverted),
+    outlined-label-text-color: var(--primary-theme-color-inverted),
+    filled-label-text-font: macExtMinecraft,
+    outlined-label-text-font: macExtMinecraft,
+    outlined-label-text-size: 0.7rem,
+    outlined-horizontal-padding: 8px
+  ));
+}
+
+#formInputsRow {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
+
+#quickRollButtonRow {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
+
+#historyHeaderRow {
+  @include mat.icon-button-overrides((
+    container-shape: 16px
+  ));
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#rollHistoryContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  overflow-y: auto;
+  padding: 8px 8px 16px 8px;
+
+  #emptyRollHistory {
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    justify-content: center;
+    margin-top: 16px;
+  }
+}
+
+div.diceRollCard {
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 24px;
+  padding: 8px;
+  border: 2px solid var(--primary-theme-color);
+  border-radius: 0px 8px 0px 8px;
+
+  div.leftColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 0 0 15%;
+  }
+
+  div.rightColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+
+    div.rollValues {
+      display: flex;
+      flex-flow: row wrap;
+      column-gap: 16px;
+    }
+  }
+
+  p { margin: 0; }
+}
+
+.opacity50 { opacity: 0.5; }

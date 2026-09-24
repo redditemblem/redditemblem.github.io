@@ -1,0 +1,306 @@
+@use '@angular/material' as mat;
+
+#unitDisplayContainer {
+  @include mat.icon-button-overrides((container-shape: 16px));
+
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 12px;
+  padding: 0px 16px 24px 16px;
+
+  p {
+    margin: 0px;
+  }
+}
+
+#unitHeaderContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+}
+
+#unitPortraitContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  img.unitPortraitSprite {
+    max-height: 200px;
+    max-width: 100%;
+    object-fit: scale-down;
+  }
+}
+
+#unitNameplate {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-items: center;
+  column-gap: 8px;
+  padding: 16px 24px 16px 24px;
+  border-radius: 0px 16px;
+  background: url('../../../../../public/img/unit_nameplate_border.png') no-repeat 4px 4px, url('../../../../../public/img/unit_nameplate_border_rotated.png') no-repeat calc(100% - 4px) calc(100% - 4px), linear-gradient(to right, var(--primary-theme-color), transparent, var(--primary-theme-color));
+  font-family: macExtMinecraft;
+
+  //Required for the background borders to render crisp
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+
+  img.unitNameplateSprite {
+    max-height: var(--card-header-unit-sprite-max-dimensions);
+    max-width: var(--card-header-unit-sprite-max-dimensions);
+    object-fit: scale-down;
+  }
+
+  hgroup.unitNameplateText {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+    row-gap: 4px;
+
+    h1 {
+      margin: 0px;
+      font-weight: normal;
+      font-size: var(--h1-pixel-font-size);
+      line-height: 1.5rem;
+    }
+
+    p.unitNameplateSubtext {
+      margin-left: 16px;
+    }
+  }
+
+  img.nameplateAffiliationSprite {
+    max-height: 48px;
+    max-width: 36px;
+    object-fit: scale-down;
+  }
+}
+
+#unitNameplateFooter {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 16px;
+
+  #playerNameRibbon {
+    display: flex;
+    flex-flow: column nowrap;
+
+    #ribbonBody {
+      max-width: 175px;
+      padding: 6px 16px 6px 16px;
+      background: linear-gradient(to bottom, var(--tertiary-theme-color-dim) 0px, transparent 8px), var(--tertiary-theme-color);
+      font-family: macExtMinecraft;
+
+      #playerName {
+        font-size: var(--card-subheader-pixel-font-size);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-wrap: nowrap;
+      }
+    }
+
+    #ribbonTails {
+      display: flex;
+      flex-flow: row nowrap;
+      height: 12px;
+
+      #leftTail {
+        flex: 1;
+        background: linear-gradient(to bottom right, var(--tertiary-theme-color) 50%, transparent 50%);
+      }
+
+      #rightTail {
+        flex: 1;
+        background: linear-gradient(to bottom left, var(--tertiary-theme-color) 50%, transparent 50%);
+      }
+    }
+  }
+}
+
+div.statRow {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1;
+  justify-content: space-between;
+  row-gap: 8px;
+
+  modified-unit-stat {
+    width: 48%;
+  }
+
+  div.looseStatsItem {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    width: 48%;
+    font-family: macExtMinecraft;
+  }
+}
+
+#unitHPContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 2px;
+  width: 48%;
+
+  #hpValueRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    font-family: macExtMinecraft;
+
+    #hpValues {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      column-gap: 4px;
+    }
+  }
+
+  #remainingBars {
+    display: flex;
+    flex-flow: row-reverse nowrap;
+  }
+}
+
+#pairUpContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  column-gap: 8px;
+
+  a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #5CB4EF;
+  }
+
+}
+
+#tagsContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 8px;
+
+  #tagItemsRow {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    align-items: center;
+    row-gap: 8px;
+    column-gap: 8px;
+  }
+}
+
+#unitBehaviorContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 8px;
+  align-items: center;
+}
+
+#statusConditionsContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 8px;
+
+  #statusItemsColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+    row-gap: 8px;
+  }
+}
+
+.sectionContainerWithHeader {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+
+  .sectionHeaderRow {
+    display: flex;
+    display: row nowrap;
+    align-items: center;
+    column-gap: 8px;
+
+    h2 {
+      margin: 0px;
+      font-family: macExtMinecraft;
+      font-style: normal;
+      font-weight: normal;
+    }
+  }
+}
+
+#statSectionsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 24px;
+}
+
+#weaponRanksContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 8px;
+
+  #weaponRanksRow {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    align-items: center;
+    row-gap: 8px;
+    column-gap: 8px;
+  }
+}
+
+#inventorySubsectionsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 16px;
+
+  div.inventorySubsection {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 8px;
+
+    h3 {
+      margin: 0px;
+      font-family: macExtMinecraft;
+      font-style: normal;
+      font-weight: normal;
+    }
+  }
+
+  div.emptySlots {
+    font-family: macExtMinecraft;
+    font-style: italic;
+  }
+}
+
+#skillsSubsectionsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 16px;
+
+  div.skillsSubsection {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 8px;
+
+    h3 {
+      margin: 0px;
+      font-family: macExtMinecraft;
+      font-style: normal;
+      font-weight: normal;
+    }
+  }
+}

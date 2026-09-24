@@ -1,0 +1,10 @@
+<div class="loadingColumn">
+  <!--<div style="width: 100px; height: 100px; background-color: black;"></div>-->
+  <div class="textRow" [aria-label]="text()">
+    @for (char of text().split(""); track $index) {
+      <span [style.animation-delay]="`${$index * 200}ms`" aria-hidden="true">
+        {{char}}
+      </span>
+    }
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="labeledHeaderContainer">
+    <div class="labeledHeaderRow">
+        <h2 class="label" [title]="label()">{{label()}}</h2>
+        <div class="labelPoint"></div>
+        <div class="title">
+            @if((spriteURL() ?? "").length > 0) {
+                <img [src]="spriteURL()" class="sprite" [aria-label]="`${title()} sprite`" />
+            }
+            <h2>
+                @if((titleHref() ?? "").length > 0) {
+                    <a [href]="titleHref()" target="_blank">{{title()}}</a>
+                } 
+                @else {
+                    {{title()}}
+                }
+            </h2>
+        </div>
+    </div>
+    @if ((textFields() ?? []).length > 0) {
+        <div class="textFieldsContainer">
+            @for (text of textFields(); track $index) {
+                <p>{{text}}</p>
+            }
+        </div>
+    }
+</div>

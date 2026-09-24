@@ -1,0 +1,42 @@
+<div class="primaryColorCard battalionContainer" (click)="isExpanded.set(!isExpanded())">
+    <div class="headerColumn">
+        <div class="titleRow">
+            @if ((systemData()?.spriteURL ?? "").length > 0) {
+                <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${battalion().name} sprite`" />
+            }
+            <p>{{battalion().name}} ({{battalion().endurance ?? 0}})</p>
+        </div>
+        <p class="subtitleRow">
+            @if ((systemData()?.rank ?? "").length > 0) {
+                {{systemData()?.rank}} - 
+            }
+            {{teamDataService.getBattalionInterfaceLabel()}}
+        </p>
+    </div>
+    @if (isExpanded()) {
+        <mat-divider />
+        <div class="statsContainer">
+            @for (stat of systemData()?.stats | keyvalue: doNotSortByKey; track stat.key) {
+                <div class="stat">
+                    <p>{{stat.key}}</p>
+                    <p>{{stat.value}}</p>
+                </div>
+            }
+            <div class="stat">
+                <p>Endr</p>
+                <p class="statValue">
+                    {{battalion().endurance ?? 0}} / {{systemData()?.maxEndurance ?? 0}}
+                </p>
+            </div>
+        </div>
+        @if ((systemData()?.textFields ?? []).length > 0) {
+            <mat-divider />
+            @for (text of systemData()?.textFields; track $index) {
+                <p>{{text}}</p>
+            }
+        }
+    }
+    @if ((battalion().gambitName ?? "").length > 0) {
+        <gambit [name]="battalion().gambitName!" [uses]="battalion().gambitUses" [expanded]="isExpanded()" />
+    }
+</div>

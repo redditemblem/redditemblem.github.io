@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+#segmentTabs {
+  @include mat.tabs-overrides((
+    active-focus-indicator-color: var(--primary-theme-color),
+    active-indicator-color: var(--primary-theme-color),
+    active-hover-indicator-color: var(--primary-theme-color),
+    container-height: 56px,
+    label-text-font: macExtMinecraft
+  ));
+
+  margin-left: 60px;
+
+  ::ng-deep div.mdc-tab {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+}
+
+#segmentButtonRow { 
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 8px;
+  margin-top: 16px;
+}

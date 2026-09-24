@@ -1,0 +1,86 @@
+@if (isLoading()) {
+    <div class="loadingErrorBackground">
+        <loading-icon />
+    </div>
+}
+@else if (teamDataService.isMapLocked()) {
+  <div class="loadingErrorBackground">
+      <div class="errorRow">
+          <div class="errorColumn">
+              <h1 class="warning">Whoops, you don't have access.</h1>
+              @for (error of teamDataService.errorMessages(); track $index) {
+                <p>{{error}}</p>
+              }
+          </div>
+      </div>
+  </div>
+}
+@else if (teamDataService.errorMessages().length > 0) {
+    <div class="loadingErrorBackground">
+        <div class="errorRow">
+            <div class="errorColumn">
+                <h1 class="error">Whoops, something went wrong.</h1>
+                @for (error of teamDataService.errorMessages(); track $index) {
+                    <p>{{error}}</p>
+                }
+            </div>
+        </div>
+    </div>
+}
+@else {
+    @let sidenavButtonTooltip = `${sidenav.opened ? "Collapse" : "Expand"} sidenav`;
+    <button matFab (click)="sidenav.toggle()" class="sidenavExpandButton" [aria-label]="sidenavButtonTooltip">
+      <mat-icon aria-hidden="true">menu</mat-icon>
+    </button>
+    <mat-sidenav-container>
+        <mat-sidenav #sidenav [opened]="!breakpointService.isSmallWidth()" [mode]="breakpointService.isSmallWidth() ? 'over' : 'side'">
+            <mat-tab-group class="sideNavTabs" mat-stretch-tabs disablePagination (selectedTabChange)="SidebarTabs_selectedTabChange($event)"> 
+                <mat-tab aria-label="Units">
+                    <ng-template mat-tab-label>
+                      <img src="img/units_icon.png" height="32" width="32" aria-hidden="true" />
+                    </ng-template>
+                    <map-units-sidenav />
+                </mat-tab>
+                <mat-tab aria-label="Tiles">
+                    <ng-template mat-tab-label>
+                      <img src="img/tile_icon.png" height="32" width="32" aria-hidden="true" />
+                    </ng-template>
+                    <map-tiles-sidenav />
+                </mat-tab>
+                <mat-tab aria-label="Paintbrush">
+                    <ng-template mat-tab-label>
+                      <img src="img/paint_icon.png" height="32" width="32" aria-hidden="true" />
+                    </ng-template>
+                    <map-paint-sidenav />
+                </mat-tab>
+                <mat-tab aria-label="Links">
+                    <ng-template mat-tab-label>
+                      <img src="img/links_icon.png" height="32" width="32" aria-hidden="true" />
+                    </ng-template>
+                    <links-sidenav [googleWorksheetID]="this.teamDataService.getWorksheetID()"
+                                   [chapterPostUrl]="this.teamDataService.getChapterPostUrl()"
+                                   [showConvoyLink]="this.teamDataService.isConvoyConfigured()"
+                                   [showShopLink]="this.teamDataService.isShopConfigured()"
+                                   [showMapAnalyzerLink]="true" />
+                </mat-tab>
+                <mat-tab aria-label="Dice roller">
+                    <ng-template mat-tab-label>
+                      <img src="img/die_icon.png" height="32" width="32" aria-hidden="true" />
+                    </ng-template>
+                    <map-dice-roller-sidenav />
+                </mat-tab>
+            </mat-tab-group>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <mat-tab-group id="segmentTabs" mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="SegmentTabs_selectedTabChange($event)">
+                @for (segment of teamDataService.mapData().map?.segments; track segment.title) {
+                    <mat-tab label="{{segment.title}}"></mat-tab>
+                }
+            </mat-tab-group>
+            @if (eventService.selectedSegment() !== undefined) {
+                <!-- Delay rendering the map until after segment data has been fully loaded -->
+                <map-canvas />
+            }
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+}

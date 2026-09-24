@@ -1,0 +1,40 @@
+.loadingColumn{
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  row-gap: 8px;
+}
+
+.textRow { 
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  column-gap: 4px;
+  height: 28px;
+  font-family: macExtMinecraft;
+  font-size: 1.2rem;
+  color: var(--primary-theme-color-inverted);
+  -webkit-text-stroke: 2px var(--mat-sys-surface-container-low);
+  paint-order: stroke fill;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+
+  span { 
+    animation: riseAndFall 2s infinite;
+  }
+}
+
+@keyframes riseAndFall {
+  0% {
+    margin-bottom: 0px;
+  }
+  50% {
+    margin-bottom: 8px;
+  }
+  100% {
+    margin-bottom: 0px;
+  }
+}

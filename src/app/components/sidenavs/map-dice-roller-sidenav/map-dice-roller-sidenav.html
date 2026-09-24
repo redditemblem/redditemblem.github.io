@@ -1,0 +1,75 @@
+<div id="diceRollerContainer">
+    <div id="diceInputsContainer">
+        <h1>Dice Roller</h1>
+        <div id="formInputsRow">
+            <mat-form-field [style.width]="'30%'">
+                <mat-label>Low Value</mat-label>
+                <input matInput [formField]="customDiceRollForm.minimum" type="number" step="number" />
+                @for (error of customDiceRollForm.minimum().errors(); track error) {
+                    <mat-error>{{error.message}}</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field [style.width]="'30%'">
+                <mat-label>High Value</mat-label>
+                <input matInput [formField]="customDiceRollForm.maximum" type="number" step="number" />
+                @for (error of customDiceRollForm.maximum().errors(); track error) {
+                    <mat-error>{{error.message}}</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field [style.width]="'30%'">
+                <mat-label># of Dice</mat-label>
+                <input matInput [formField]="customDiceRollForm.count" type="number" step="number" />
+                @for (error of customDiceRollForm.count().errors(); track error) {
+                    <mat-error>{{error.message}}</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        <mat-checkbox [formField]="customDiceRollForm.useAverages">Use averaged rolls (True Hit)</mat-checkbox>
+        <button matButton="filled" (click)="customRollDice()" [style.width]="'100%'">Roll Dice</button>
+        <div id="quickRollButtonRow">
+            <button matButton="outlined" (click)="quickRollDice(1,2,1,false)" [style.width]="'23%'">d2</button>
+            <button matButton="outlined" (click)="quickRollDice(1,10,1,false)" [style.width]="'23%'">d10</button>
+            <button matButton="outlined" (click)="quickRollDice(1,100,1,false)" [style.width]="'23%'">d100</button>
+            <button matButton="outlined" (click)="quickRollDice(1,100,1,true)" [style.width]="'23%'">d100 Avg.</button>
+        </div>
+        <mat-divider />
+        <div id="historyHeaderRow">
+            <h2>History</h2>
+            <button matIconButton (click)="clearRollHistory()" title="Click to clear the roll history">
+                <img src="img/eraser_icon.png" />
+            </button>
+        </div>
+    </div>
+    <div id="rollHistoryContainer">
+        @for (history of this.rollHistory; track $index) {
+            <div class="diceRollCard">
+                <div class="leftColumn">
+                    <b># of Rolls</b>
+                    <p>{{history.numberOfRolls}}</p>
+                    <b>Bounds</b>
+                    <p>{{history.lowerBound}} - {{history.upperBound}}</p>
+                </div>
+                <div class="rightColumn">
+                    <b>Results</b>
+                    <div class="rollValues">
+                        @for (roll of history.rolls; track $index) {
+                            @if (history.useAveragedRolls) {
+                                <div [style.width]="'100%'">
+                                    {{roll.calculateRollAverage()}} <span class="opacity50">= (@for(value of roll.diceValues; track $index) { {{value}} @if(!$last){ + } }) / {{roll.diceValues.length}}</span>
+                                </div>
+                            }
+                            @else {
+                                <div>{{roll.diceValues[0]}}</div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        @empty {
+            <div id="emptyRollHistory">
+                <span class="pixelFont">No rolls yet :(</span>
+            </div>
+        }
+    </div>
+</div>

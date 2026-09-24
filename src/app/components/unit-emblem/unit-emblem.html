@@ -1,0 +1,82 @@
+<div class="engagedBorderContainer" class="engagedEffectCard" [class]="isEngaged() ? 'engaged' : 'unengaged'" [style.--engaged-aura-color]="engagedAuraColor()">
+    <div class="emblemContainer" (click)="isExpanded.set(!isExpanded())">
+        <div class="emblemHeaderRow">
+            <div class="emblemNameSpriteRow">
+                @if ((systemData()?.spriteURL ?? '').length > 0) {
+                <img class="emblemSprite" [src]="systemData()?.spriteURL" [aria-label]="`${emblem().name} sprite`" />
+                }
+                <div class="emblemNameColumn">
+                    <h3>{{emblem().name}}</h3>
+                    @if((systemData()?.tagline ?? '').length > 0) {
+                        <p>{{systemData()?.tagline}}</p>
+                    }
+                </div>
+            </div>
+            @if(isEngaged()) {
+              <img src="img/star_icon.png" height="20" width="20" aria-label="Engaged" matTooltip="Engaged" matTooltipPosition="left" />
+            }
+        </div>
+        @let bondLevel = emblem().bondLevel ?? 0;
+        @let meterCount = emblem().engageMeterCount ?? 0;
+        @let textFields = systemData()?.textFields ?? [];
+        @if (bondLevel > 0 || meterCount > 0 || (isExpanded() && textFields.length > 0)) {
+          <mat-divider />
+          @if (bondLevel > 0 || meterCount > 0) {
+            <div class="bondLevelRow">
+              <p>
+                  @if(bondLevel > 0) {
+                    Bond Lvl. {{emblem().bondLevel}}
+                  }
+              </p>
+              <p>
+                @if (meterCount > 0) {
+                  Engage Meter {{meterCount}}
+                }    
+              </p>
+            </div>
+          }
+          @if(isExpanded() && textFields.length > 0) {
+            <div class="textFieldContainer">
+              @for(text of textFields; track $index) {
+                <p>{{text}}</p>
+              }
+            </div>
+          }
+        }
+        <mat-divider />
+        @if((emblem().syncSkills ?? []).length > 0) {
+            @if(isExpanded()) {
+                <h4>Sync Skills</h4>
+            }
+            @for(skill of emblem().syncSkills; track $index) {
+                <unit-skill [skill]="skill" [dataService]="teamDataService" />
+            }
+        }
+        @if((emblem().engageSkills ?? []).length > 0) {
+            @if(isExpanded()) {
+                <h4>Engage Skills</h4>
+            }
+            @for(skill of emblem().engageSkills; track $index) {
+                <unit-skill [skill]="skill" [expanded]="isExpanded() || isEngaged()" [disabled]="!isEngaged()" [dataService]="teamDataService" />
+            }
+        }
+        @if((emblem().engageWeapons ?? []).length > 0) {
+            <mat-divider />
+            @if(isExpanded()) {
+                <h4>Engage Weapons</h4>
+            }
+            @for(item of emblem().engageWeapons; track $index) {
+                <unit-inventory-item [item]="item" [forceExpand]="isExpanded()" [disableClick]="true" />
+            }
+        }
+        @if((emblem().engageAttacks ?? []).length > 0) {
+            <mat-divider />
+            @if(isExpanded()) {
+                <h4>Engage Attacks</h4>
+            }
+            @for(engageAttack of emblem().engageAttacks; track $index) {
+                <unit-engage-attack [attack]="engageAttack" [expanded]="isExpanded()" />
+            }
+        }
+    </div>
+</div>

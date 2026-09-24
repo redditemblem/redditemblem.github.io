@@ -1,0 +1,6 @@
+<div class="tagContainer" [title]="tag()">
+    @if((systemData()?.spriteURL ?? "").length > 0){
+        <img [src]="systemData()?.spriteURL" aria-hidden="true" />
+    }
+    <p>{{tag()}}</p>
+</div>

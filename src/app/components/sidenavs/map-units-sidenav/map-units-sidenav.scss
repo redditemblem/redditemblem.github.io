@@ -1,0 +1,76 @@
+@use '@angular/material' as mat;
+
+#autocompleteRow {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  column-gap: 8px;
+
+  @include mat.icon-button-overrides((
+    container-shape: 16px
+  ));
+}
+
+form {
+  width: 100%;
+}
+
+mat-form-field {
+  @include mat.form-field-overrides((
+      filled-active-indicator-color: var(--primary-theme-color),
+      filled-focus-active-indicator-color: var(--primary-theme-color),
+      filled-hover-active-indicator-color: var(--primary-theme-color)
+  ));
+
+  width: 100%;
+  
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      height: 0px;
+  }
+}
+
+img.flipHorz {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+img.grayscale {
+    filter: grayscale(1);
+}
+
+mat-option {
+    ::ng-deep .mdc-list-item__primary-text {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        column-gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+
+        .unitName {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            column-gap: 8px;
+            font-family: macExtMinecraft;
+            font-size: var(--card-header-pixel-font-size);
+        }
+
+        p { margin: 8px 0px 8px 0px; }
+    }
+}
+
+.autocompleteUnitSprite {
+    height: 32px;
+    width: 32px;
+    object-fit: scale-down;
+}
+
+#unitSidenavContainer {
+    height: calc(100% - 72px);
+    overflow-y: auto;
+}

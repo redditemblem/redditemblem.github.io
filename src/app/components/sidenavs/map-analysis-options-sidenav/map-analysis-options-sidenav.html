@@ -1,0 +1,88 @@
+<div class="optionsContainer">
+  <h1>Analysis Options</h1>
+  @let movementTypesList = analysisDataService.getMovementTypes();
+  @let terrainTypesList = analysisDataService.getTerrainTypes();
+  @let affiliationGroupsList = analysisDataService.getTerrainTypeAffiliationGroupings();
+  @let warpGroupsList = analysisDataService.getWarpGroupsList();
+  <mat-form-field>
+    <mat-label>Mode</mat-label>
+    <mat-select [(value)]="eventService.mode">
+      <mat-option value="moveCost">Movement Costs</mat-option>
+      <mat-option value="terrainType">Terrain Types</mat-option>
+      @if (warpGroupsList.length > 0) {
+        <mat-option value="warpGroup">Warps</mat-option>
+      }
+      <mat-option value="specialty">Specialty Settings</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-divider />
+  <div class="modeContainer">
+    @if (eventService.mode() === "moveCost") {
+      <p>Movement Costs mode will highlight all terrain traversable by the selected Movement Type and display its movement cost.</p>
+      <mat-form-field>
+        <mat-label>Movement Type</mat-label>
+        <mat-select [(value)]="eventService.movementType">
+          @for (moveType of movementTypesList; track moveType) {
+            <mat-option [value]="moveType">{{moveType}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      @if (affiliationGroupsList.length > 1) {
+        <mat-form-field>
+          <mat-label>Affiliation Filter</mat-label>
+          <mat-select [(value)]="eventService.affiliationGroup">
+            @for (group of affiliationGroupsList; track group) {
+              <mat-option [value]="group">{{group}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+    }
+    @else if (eventService.mode() === "terrainType") {
+      <p>Terrain Types mode will highlight all terrain of the selected Terrain Type.</p>
+      <mat-form-field>
+        <mat-label>Terrain Type</mat-label>
+        <mat-select [(value)]="eventService.terrainType">
+          @for (terrainType of terrainTypesList; track terrainType) {
+            <mat-option [value]="terrainType">{{terrainType}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      @if (eventService.terrainType() !== undefined) {
+        <tile-terrain-type [name]="eventService.terrainType()!" [isWarp]="true" [dataService]="analysisDataService" [includeHeader]="false" />
+      }
+    }
+    @else if (eventService.mode() === "warpGroup") {
+      <p>Warps mode will highlight all warp points assigned to the selected Warp Group on the map. For warp points that can be entered, the warp cost value will be displayed.</p>
+      <div>
+        <p>↓ - Unit can ENTER warp point</p>
+        <p>↑ - Unit can EXIT warp point</p>
+      </div>
+      <mat-form-field>
+        <mat-label>Warp Group</mat-label>
+        <mat-select [(value)]="eventService.warpGroup">
+          @for (warpGroup of warpGroupsList; track warpGroup.groupNumber) {
+            <mat-option [value]="warpGroup">{{warpGroup.groupNumber}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      @if (eventService.warpGroup() !== undefined) {
+        <div>
+          <b class="pixelFont" [style.font-size]="'0.7rem'">Warp Group Coordinates</b>
+          <p>{{eventService.warpGroup()?.coordinates}}</p>
+        </div>
+      }
+    }
+    @else if (eventService.mode() === "specialty") {
+      <p>Specialty Settings mode will highlight all terrain that has the selected Setting enabled.</p>
+      <mat-form-field>
+        <mat-label>Setting</mat-label>
+        <mat-select [(value)]="eventService.specialtyMode">
+          <mat-option value="cannotStopOn">Cannot Stop On?</mat-option>
+          <mat-option value="blocksItems">Blocks Items?</mat-option>
+          <mat-option value="restrictAff">Restricts Affiliations</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+</div>

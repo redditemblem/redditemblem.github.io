@@ -1,0 +1,18 @@
+<div class="primaryColorCard teamContainer">
+    <h1 class="teamNameHeader">{{team().teamName}}</h1>
+    <div class="actionButtonRow">
+        @let spacelessTeamName = getTeamNameWithoutSpaces();
+        <button matButton [routerLink]="[spacelessTeamName, 'map']">
+            <img src="img/map_icon.png" height="20" width="20" alt="Map icon" />
+            <p>Map</p>
+        </button>
+        <button matButton [disabled]="!team().showConvoyLink" [routerLink]="[spacelessTeamName, 'convoy']">
+            <img src="img/convoy_icon.png" height="20" width="20" alt="Convoy icon" />
+            <p>Convoy</p>
+        </button>
+        <button matButton [disabled]="!team().showShopLink" [routerLink]="[spacelessTeamName, 'shop']">
+            <img src="img/shop_icon.png" height="20" width="20" alt="Shop icon" />
+            <p>Shop</p>
+        </button>
+    </div>
+</div>

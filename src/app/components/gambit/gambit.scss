@@ -1,0 +1,60 @@
+div.gambitContainer {
+    display: flex;
+    flex-flow: column;
+    row-gap: 8px;
+
+    p { margin: 0px; }
+}
+
+div.headerColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    font-family: macExtMinecraft;
+}
+
+div.titleRow {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    column-gap: 8px;
+    font-size: var(--card-header-pixel-font-size);
+
+    img.sprite { 
+        max-height: var(--card-header-sprite-max-dimensions);
+        max-width: var(--card-header-sprite-max-dimensions);
+        object-fit: scale-down;
+    }
+}
+
+p.subtitleRow {
+    padding-left: 16px;
+    font-size: var(--card-subheader-pixel-font-size);
+}
+
+div.statsContainer {
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 5%;
+    padding: 0px 8px 0px 8px;
+
+    div.stat {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        flex: 0 0 30%;
+        column-gap: 6px;
+
+        //Forces values with complex displays (range, uses) to stay on the same line
+        .statValue {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+    }
+}
+
+div.textFieldsContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 4px;
+}

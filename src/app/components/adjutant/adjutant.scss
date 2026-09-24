@@ -1,0 +1,29 @@
+div.adjutantCard { 
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 8px;
+    cursor: pointer;
+
+    p { margin: 0px; }
+}
+
+div.titleRow {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    column-gap: 8px;
+    font-family: macExtMinecraft;
+    font-size: var(--card-header-pixel-font-size);
+
+    img.sprite { 
+        max-height: var(--card-header-unit-sprite-max-dimensions);
+        max-width: var(--card-header-unit-sprite-max-dimensions);
+        object-fit: scale-down;
+    }
+}
+
+div.textFieldContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 4px;
+}

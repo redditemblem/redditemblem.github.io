@@ -1,0 +1,28 @@
+<div class="modifiedStatContainer">
+  <div class="statHeaderRow">
+    <div class="labelContainer" [title]="name()">
+      <p>{{name()}}</p>
+    </div>
+    <div class="point"></div>
+    <div class="valueContainer">
+        <stat-with-buff-icon [base]="values().baseValue" [final]="values().finalValue" [invertColors]="values().invertModifiedDisplayColors ?? false" />
+    </div> 
+  </div>
+  @if (expanded()) {
+    <div class="modifiersContainer">
+      <div class="leftBorder"></div>
+      <div class="modifierRows">
+        <div class="modifierRow">
+          <p>Base</p>
+          <p>{{values().baseValue}}</p>
+        </div>
+        @for (mod of values().modifiers | keyvalue; track mod.key) {
+          <div class="modifierRow" [class]="{'shaded': $even}">
+            <p>{{mod.key}}</p>
+            <p>{{mod.value}}</p>
+          </div>
+        }
+      </div>
+    </div> 
+  }
+</div>

@@ -1,0 +1,132 @@
+<div class="convoyItemContainer primaryColorCard" (click)="isExpanded.set(!isExpanded())">
+    <div class="headerRow">
+        <div class="titleColumn">
+            <div class="titleRow">
+              @if ((systemData()?.spriteURL ?? "").length > 0) {
+                <div>
+                  <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${item().name} sprite`" />
+                </div>
+              }
+              <div class="title">
+                <p>
+                  {{buildTitle()}}
+                </p>
+                @if (item().engravings.length > 0) {
+                  @for (engraving of item().engravings; track engraving) {
+                    @let engravingData = getEngravingByName(engraving);
+                    @if ((engravingData?.spriteURL ?? "").length > 0) {
+                      <img [src]="engravingData?.spriteURL" class="sprite" [title]="engraving" />
+                    }
+                  }
+                }
+                @if (item().tags.length > 0) {
+                  @for(tag of item().tags; track tag) {
+                    @let tagData = getTagByName(tag);
+                    @if((tagData?.spriteURL ?? "").length > 0) {
+                      <img [src]="tagData?.spriteURL" class="sprite" [title]="tag" />
+                    }
+                  }
+                }
+              </div>
+            </div>
+            @let subtitle = buildSubtitle();
+            @if (subtitle.length > 0) {
+              <p class="subtitleRow">{{subtitle}}</p>
+            }
+        </div>
+        <div class="convoyTextColumn">
+          @if (item().owner.length > 0) {
+            <p>Owned by {{item().owner}}</p>
+          }
+          @if (item().quantity > 1) {
+            <p>{{item().quantity}} Available</p>
+          }
+          @if (item().value > -1) {
+            <div class="saleValue">
+              Sells for&nbsp;<currency [amount]="item().value" [dataService]="convoyDataService" />
+            </div>
+          }
+        </div>
+    </div>
+    @if (expand() || isExpanded()) {
+      @let hasRange = (systemData()?.range?.minimum ?? 0) > 0 || (systemData()?.range?.minimumRequiresCalculation ?? false);
+      @if (item().uses > 0 || (systemData()?.maxUses ?? 0) > 0 || hasRange || (systemData()?.utilizedStats ?? []).length > 0) {
+        <mat-divider />
+        <div class="statsContainer">
+          @if ((systemData()?.utilizedStats ?? []).length > 0 || hasNonZeroStatValue())
+          {
+            @for (stat of item().stats | keyvalue: doNotSortByKey; track stat.key) {
+              <div class="stat">
+                <div>{{stat.key}}</div>
+                <stat-with-buff-icon [base]="stat.value.baseValue" [final]="stat.value.finalValue" [invertColors]="stat.value.invertModifiedDisplayColors ?? false" [height]="12" />
+              </div>
+            }
+          }
+          @if (hasRange) {
+            @let minimumRange = systemData()?.range?.minimum ?? 0;
+            @let maximumRange = systemData()?.range?.maximum ?? 0;
+            <div class="stat">
+              <div>Rng</div>
+              <div class="statValue">
+                <p>{{minimumRange > 0 ? minimumRange : "?"}}</p>
+                @if (minimumRange !== maximumRange || (systemData()?.range?.maximumRequiresCalculation ?? false)) {
+                  &nbsp;-&nbsp;{{maximumRange > 0 ? maximumRange : "?"}}
+                }
+              </div>
+            </div>
+          }
+          @if ((systemData()?.range?.shape ?? ItemRangeShape.Standard) !== ItemRangeShape.Standard)
+          {
+            <div class="stat">
+              <div>Shp</div>
+              <div>
+                @switch (systemData()?.range?.shape)
+                {
+                  @case (ItemRangeShape.Square) { Square }
+                  @case (ItemRangeShape.Cross) { Cross }
+                  @case (ItemRangeShape.Saltire) { Saltire }
+                  @case (ItemRangeShape.Star) { Star }
+                }
+              </div>
+            </div>
+          }
+          @if (item().uses > 0 || (systemData()?.maxUses ?? 0) > 0)
+          {
+            <div class="stat">
+              <div>
+                @if(item().uses > 0 && (systemData()?.maxUses ?? 0) === 0) { Quantity }
+                @else { Uses }
+              </div>
+              <div class="statValue">
+                @if(item().uses > 0) { {{item().uses}} }
+                @if((systemData()?.maxUses ?? 0) > 0) {
+                  @if(item().uses > 0) { /&nbsp; } 
+                  {{systemData()?.maxUses ?? 0}}
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+      @let textFields = systemData()?.textFields ?? [];
+      @let graphicUrl = systemData()?.graphicURL ?? "";
+      @let engravings = item().engravings;
+      @if (textFields.length > 0 || graphicUrl.length > 0 || engravings.length > 0) {
+        <mat-divider />
+        @for (text of textFields; track $index) {
+          <p>{{text}}</p>
+        }
+        @if (graphicUrl.length > 0) {
+          <div class="graphicRow"> 
+            <img [src]="systemData()?.graphicURL" class="graphic" [aria-label]="`${item().name} graphic`" />
+          </div>
+        }
+        @for (engraving of engravings; track engraving) {
+          <engraving [name]="engraving" [dataService]="convoyDataService" />
+        }
+      }
+    }
+    @for(skill of systemData()?.equippedSkills; track skill) {
+      <unit-skill [skill]="skill" [dataService]="convoyDataService" [expanded]="isExpanded()" />
+    }
+</div>

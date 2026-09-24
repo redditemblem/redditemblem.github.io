@@ -1,0 +1,144 @@
+<div class="primaryColorCard itemContainer" (click)="!disableClick() && isExpanded.set(!isExpanded())" >
+    <div class="headerRow" [class]="{'opacity50' : !item().canEquip || item().isUsePrevented}">
+        <div class="titleColumn">
+            <div class="titleRow">
+              @if ((systemData()?.spriteURL ?? "").length > 0) {
+                  <div>
+                    <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${item().name} sprite`" />
+                  </div>
+              }
+              <div class="title">
+                <p [class]="{'droppableTextColor' : item().isDroppable}">
+                  {{buildTitle()}}
+                </p>
+                @if ((item().engravings ?? []).length > 0) {
+                  @for (engraving of item().engravings; track engraving) {
+                    @let engravingData = getEngravingByName(engraving);
+                    @if ((engravingData?.spriteURL ?? "").length > 0) {
+                      <img [src]="engravingData?.spriteURL" class="sprite" [title]="engraving" />
+                    }
+                  }
+                }
+                @if ((item().tags ?? []).length > 0) {
+                  @for(tag of item().tags; track tag) {
+                    @let tagData = getTagByName(tag);
+                    @if((tagData?.spriteURL ?? "").length > 0) {
+                      <img [src]="tagData?.spriteURL" class="sprite" [title]="tag" />
+                    }
+                  }
+                }
+              </div>
+            </div>
+            @let subtitle = buildSubtitle();
+            @if (subtitle.length > 0) {
+              <p class="subtitleRow">{{subtitle}}</p>
+            }
+        </div>
+        <div class="iconsRow">
+          @if(item().isUsePrevented) {
+            <img src="img/blocked_icon.png" height="20" width="20" aria-label="Use prevented" matTooltip="Use Prevented" matTooltipPosition="left" />
+          }
+          @if(item().isDroppable) {
+            <img src="img/package_icon.png" height="20" width="20" aria-label="Droppable" matTooltip="Droppable" matTooltipPosition="left" />
+          }
+          @if(item().isPrimaryEquipped || item().isSecondaryEquipped) {
+            <img src="img/star_icon.png" height="20" width="20" aria-label="Equipped" matTooltip="Equipped" matTooltipPosition="left" />
+          }
+        </div>
+    </div>
+    @if (isExpanded()) {
+      @if ((item().uses ?? 0) > 0 || (item().maxUses ?? 0) > 0 || (item().minRange?.finalValue ?? 0) > 0 || (systemData()?.utilizedStats ?? []).length > 0) {
+        <mat-divider />
+        <div class="statsContainer">
+          @if ((systemData()?.utilizedStats ?? []).length > 0 || hasNonZeroStatValue())
+          {
+            @for (stat of item().stats | keyvalue: doNotSortByKey; track stat.key) {
+              <div class="stat">
+                <div>{{stat.key}}</div>
+                <stat-with-buff-icon [base]="stat.value.baseValue" [final]="stat.value.finalValue" [invertColors]="stat.value.invertModifiedDisplayColors ?? false" [height]="12" />
+              </div>
+            }
+          }
+          @if ((item().minRange?.finalValue ?? 0) > 0)
+          {
+            <div class="stat">
+              <div>Rng</div>
+              <div class="statValue">
+                <stat-with-buff-icon [base]="item().minRange?.baseValue ?? 0" [final]="item().minRange?.finalValue ?? 0" [height]="12" [invertColors]="true" />
+                @if ((item().minRange?.finalValue ?? 0) < (item().maxRange?.finalValue ?? 0))
+                {
+                    &nbsp;-&nbsp;<stat-with-buff-icon [base]="item().maxRange?.baseValue ?? 0" [final]="item().maxRange?.finalValue ?? 0" [height]="12" />
+                }
+              </div>
+            </div>
+          }
+          @if ((systemData()?.range?.shape ?? ItemRangeShape.Standard) !== ItemRangeShape.Standard)
+          {
+            <div class="stat">
+              <div>Shp</div>
+              <div>
+                @switch (systemData()?.range?.shape)
+                {
+                  @case (ItemRangeShape.Square) { Square }
+                  @case (ItemRangeShape.Cross) { Cross }
+                  @case (ItemRangeShape.Saltire) { Saltire }
+                  @case (ItemRangeShape.Star) { Star }
+                }
+              </div>
+            </div>
+          }
+          @if ((item().uses ?? 0) > 0 || (item().maxUses ?? 0) > 0)
+          {
+            <div class="stat">
+              <div>
+                @if((item().uses ?? 0) > 0 && (item().maxUses ?? 0) === 0) { Quantity }
+                @else { Uses }
+              </div>
+              <div class="statValue">
+                @if((item().uses ?? 0) > 0) { {{item().uses}} }
+                @if((item().maxUses ?? 0) > 0) {
+                  @if((item().uses ?? 0) > 0) { /&nbsp; } 
+                  <stat-with-buff-icon [base]="systemData()?.maxUses ?? 0" [final]="item().maxUses ?? 0" [invertColors]="false" [height]="12" />
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+      @let textFields = systemData()?.textFields ?? [];
+      @let graphicUrl = systemData()?.graphicURL ?? "";
+      @let engravings = item().engravings ?? [];
+      @if (textFields.length > 0 || graphicUrl.length > 0 || engravings.length > 0) {
+        <mat-divider />
+        @for (text of textFields; track $index) {
+          <p>{{text}}</p>
+        }
+        @if (graphicUrl.length > 0) {
+          <div class="graphicRow"> 
+            <img [src]="systemData()?.graphicURL" class="graphic" [aria-label]="`${item().name} graphic`" />
+          </div>
+        }
+        @for (engraving of engravings; track engraving) {
+          <engraving [name]="engraving" [dataService]="teamDataService" />
+        }
+      }
+    }
+    @for(skill of systemData()?.equippedSkills; track skill) {
+      <unit-skill [skill]="skill" [dataService]="teamDataService" [expanded]="(isExpanded() || item().isPrimaryEquipped || item().isSecondaryEquipped) ?? false" [disabled]="(!item().isPrimaryEquipped && !item().isSecondaryEquipped) ?? true" />
+    }
+    @if (item().maxRangeExceedsCalculationLimit || item().isNotInInventory) {
+      <mat-divider />
+      @if (item().maxRangeExceedsCalculationLimit) {
+        <div class="messageRow">
+          <img src="img/warn_icon.png" height="20" width="20" aria-label="Warning icon" />
+          <p>Item Range Not Visible</p>
+        </div>
+      }
+      @if (item().isNotInInventory) {
+        <div class="messageRow">
+          <img src="img/warn_icon.png" height="20" width="20" aria-label="Warning icon" />
+          <p>Item Not Found In Inventory</p>
+        </div>
+      }
+    }
+</div>

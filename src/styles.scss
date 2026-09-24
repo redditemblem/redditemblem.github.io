@@ -1,0 +1,256 @@
+@use '@angular/material' as mat;
+
+//Theme color constants
+$primary-theme-color-light: #90AEFF;
+$secondary-theme-color-light: #CEFC86;
+$secondary-theme-color-dim-light: #85a74e;
+$tertiary-theme-color-light: #60EFB8;
+$tertiary-theme-color-dim-light: #1eb77d;
+
+$primary-theme-color-dark: #3e59a3;
+$secondary-theme-color-dark: #678a30;
+$secondary-theme-color-dim-dark: #506b24;
+$tertiary-theme-color-dark: #1c9164;
+$tertiary-theme-color-dim-dark: #0a5538;
+
+$warning-color: #f58300;
+$warning-color-dark: #ffa500;
+$error-color: crimson;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: mat.$blue-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  //Create global theme color variables
+  --primary-theme-color: #{light-dark($primary-theme-color-light, $primary-theme-color-dark)};
+  --primary-theme-color-inverted: #{light-dark($primary-theme-color-dark, $primary-theme-color-light)};
+  --secondary-theme-color: #{light-dark($secondary-theme-color-light, $secondary-theme-color-dark)};
+  --secondary-theme-color-dim: #{light-dark($secondary-theme-color-dim-light, $secondary-theme-color-dim-dark)};
+  --tertiary-theme-color: #{light-dark($tertiary-theme-color-light, $tertiary-theme-color-dark)};
+  --tertiary-theme-color-dim: #{light-dark($tertiary-theme-color-dim-light, $tertiary-theme-color-dim-dark)};
+  --warning-color: #{light-dark($warning-color, $warning-color-dark)};
+  --error-color: #{light-dark($error-color, $error-color)};
+
+  //Create global font size variables
+  --h1-pixel-font-size: 1.5rem;
+  --card-header-pixel-font-size: 0.9rem;
+  --card-subheader-pixel-font-size: 0.7rem;
+
+  --card-header-sprite-max-dimensions: 24px;
+  --card-header-unit-sprite-max-dimensions: 48px;
+}
+
+@mixin apply-dark-mode {
+  color-scheme: dark;
+}
+body {
+  &.dark-mode {
+    @include apply-dark-mode;
+  }
+
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  min-height: 100vh;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+}
+
+// Minecraft pixel font
+@font-face {
+  font-family: macExtMinecraft;
+  src: url('../public/fonts/macExtendedMinecraft.woff2');
+  font-weight: normal;
+}
+@font-face {
+  font-family: macExtMinecraft;
+  src: url('../public/fonts/macExtendedMinecraftBold.woff2');
+  font-weight: bold;
+}
+@font-face {
+  font-family: macExtMinecraft;
+  src: url('../public/fonts/macExtendedMinecraftItalic.woff2');
+  font-style: italic;
+}
+@font-face {
+  font-family: macExtMinecraft;
+  src: url('../public/fonts/macExtendedMinecraftBoldItalic.woff2');
+  font-weight: bold;
+  font-style: italic;
+}
+.pixelFont{
+  font-family: macExtMinecraft;
+}
+
+// Globally render all images as pixelized by default
+img,
+canvas{
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+img.smooth{
+  image-rendering: optimizeQuality;
+  image-rendering: auto;
+  -ms-interpolation-mode: inherit;
+}
+
+img.rotate90 {
+  transform: rotate(90deg);
+}
+
+img.flipHorz {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.primaryColorCard {
+  padding: 8px;
+  border: 2px solid var(--primary-theme-color);
+  border-radius: 0px 8px 0px 8px;
+}
+
+.secondaryColorCard {
+  padding: 8px;
+  border: 2px solid var(--secondary-theme-color);
+  border-radius: 0px 8px 0px 8px;
+}
+
+.tertiaryColorCard {
+  padding: 8px;
+  border: 2px solid var(--tertiary-theme-color);
+  border-radius: 0px 8px 0px 8px;
+}
+
+//Common values for showing loading icons and errors
+.loadingErrorBackground {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../public/img/background.png');
+  background-repeat: repeat;
+}
+
+.errorRow {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 70%;
+}
+
+.errorColumn {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+
+  h1 {
+    margin: 0px 0px 8px 0px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 2.5rem;
+    font-family: macExtMinecraft;
+
+    &.error {
+      color: var(--error-color);
+    }
+    &.warning {
+      color: var(--warning-color);
+    }
+  }
+
+  p { 
+    font-size: 1rem;
+    margin: 0px 0px 0px 24px;
+  }
+}
+
+// Common values for sidebar layouts
+mat-sidenav-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+mat-sidenav {
+  @include mat.sidenav-overrides((
+    container-shape: var(--mat-sys-corner-none),
+    container-width: min(calc(100vw - 58px), 450px)
+  ));
+
+  anchor-name: --sidenav-anchor;
+}
+
+//Force sidenav width to 0px when its closed
+.mat-drawer:not(.mat-drawer-opened):not(.mat-drawer-animating) {
+  width: 0px;
+}
+
+mat-sidenav-content {
+  height: 100vh;
+  background-image: url('../public/img/background.png');
+  background-repeat: repeat;
+
+  &.mat-drawer-content {
+    overflow: hidden;
+  }
+}
+
+mat-tab-group.sideNavTabs {
+  @include mat.tabs-overrides((
+    container-height: 56px,
+    active-focus-indicator-color: var(--primary-theme-color),
+    active-indicator-color: var(--primary-theme-color),
+    active-hover-indicator-color: var(--primary-theme-color),
+  ));
+
+  height: 100vh;
+
+  div.mdc-tab {
+    min-width: 48px;
+    padding: 0px;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+}
+
+button.sidenavExpandButton {
+  @include mat.fab-overrides((
+    container-color: var(--primary-theme-color),
+    foreground-color: var(--primary-theme-color-inverted),
+    ripple-color: color-mix(in srgb, var(--primary-theme-color) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    container-elevation-shadow: none,
+    focus-container-elevation-shadow: none,
+    hover-container-elevation-shadow: none,
+    extended-focus-container-elevation-shadow: none,
+    extended-hover-container-elevation-shadow: none,
+    container-shape: 0px 8px 8px 0px
+  ));
+  
+  position: absolute;
+  position-anchor: --sidenav-anchor;
+  position-visibility: always;
+  position-area: top right;
+  z-index: 3;
+}

@@ -1,0 +1,50 @@
+<div id="autocompleteRow">
+  <form>
+    <mat-form-field>
+      <input #unitAutocompleteInput
+            type="text" 
+            matInput
+            placeholder="Unit"
+            [formControl]="selectedUnit"
+            [matAutocomplete]="auto"
+            (focus)="filterUnits()"
+            (input)="filterUnits()"
+            >
+      <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="formatAutocompleteDisplayValue">
+        @if (eventService.someUnitPinned()) {
+          <mat-option [value]="selectedUnit.value" (click)="eventService.unpinAllUnits()">
+            <span class="unitName">
+              <img src="img/pin_icon.png" class="autocompleteUnitSprite" aria-hidden="true" />
+              <p>Clear pinned units</p>
+            </span>
+          </mat-option>
+          <mat-divider />
+        }
+        @for (unit of filteredUnits; track unit.name) {
+          <mat-option [value]="unit">
+            <span class="unitName">
+              <img [src]="unit.sprite.spriteURL" class="autocompleteUnitSprite" [class]="{'flipHorz': shouldFlipUnitSprite(unit)}" aria-hidden="true" />
+              <p>{{unit.name}}</p>
+            </span>
+            @if(eventService.getPinnedStateForUnit(unit.name)) {
+              <img src="img/pin_icon.png" aria-hidden="true" />
+            }
+          </mat-option>
+        }
+      </mat-autocomplete>
+      @if(selectedUnit.value !== null) {
+        <button matIconButton matSuffix (click)="this.selectedUnit.setValue(null)" title="Clear selected unit">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  </form>
+  <button matIconButton [disabled]="selectedUnit.value === null" (click)="pinButton_OnClick()" [title]="(isSelectedUnitPinned() ? 'Unpin' : 'Pin') + ' this unit'">
+      <img src="img/pin_icon.png" [class]="{'grayscale': selectedUnit.value === null || !isSelectedUnitPinned()}" alt="Pin Icon" />
+  </button>
+</div>
+<div id="unitSidenavContainer">
+  @if (selectedUnit.value !== null) {
+    <unit-sidenav-display [unit]="selectedUnit.value" />
+  }
+</div>

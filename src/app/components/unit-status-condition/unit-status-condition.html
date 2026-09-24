@@ -1,0 +1,47 @@
+<div class="primaryColorCard statusContainer">
+    <div class="headerRow">
+        <div class="titleColumn">
+            <div class="title">
+                @if ((systemData()?.spriteURL ?? "").length > 0) {
+                    <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${status().name} sprite`" />
+                }
+                <p>
+                    {{buildTitle()}}
+                </p>
+            </div>
+            @let subtitle = buildSubtitle();
+            @if (subtitle.length > 0) {
+                <p class="subtitle">
+                    {{subtitle}}
+                </p>
+            }
+        </div>
+        @if (systemData()?.isEffectConfigured || (systemData()?.type ?? 0) > 0) {
+            <div class="iconsRow">
+                @if (systemData()?.isEffectConfigured) {
+                    <img src="img/gear_icon.png" width="20" height="20" aria-label="Effect configured" matTooltip="Effect Configured" matTooltipPosition="left" />
+                }
+                @switch (systemData()?.type ?? 0) 
+                {
+                  @case (1) {
+                    <img src="img/positive_icon.png" width="20" height="20" aria-label="Positive status" matTooltip="Positive Status" matTooltipPosition="left" />
+                  }
+                  @case (2) {
+                    <img src="img/negative_icon.png" width="20" height="20" aria-label="Negative status" matTooltip="Negative Status" matTooltipPosition="left" />
+                  }
+                  @case (3) {
+                    <img src="img/neutral_icon.png" width="20" height="20" aria-label="Neutral status" matTooltip="Neutral Status" matTooltipPosition="left" />
+                  }
+                }
+            </div>
+        }
+    </div>
+    @if((systemData()?.textFields ?? []).length > 0) {
+        <mat-divider />
+        <div class="textFieldsContainer">
+            @for(text of systemData()?.textFields; track $index) {
+                <p>{{text}}</p>
+            }
+        </div>
+    }
+</div>

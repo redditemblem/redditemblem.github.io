@@ -1,0 +1,26 @@
+span.container {
+    display: flex;
+    flex-flow: row nowrap;
+    column-gap: 2px;
+    align-items: center;
+
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+
+    img {
+        object-fit: scale-down;
+    }
+
+    //Filters created using https://codepen.io/sosuke/pen/Pjoqqp
+    img.pos {
+        filter: invert(65%) sepia(85%) saturate(1072%) hue-rotate(176deg) brightness(94%) contrast(99%);
+    }
+    
+    img.neg {
+        filter: invert(18%) sepia(94%) saturate(2795%) hue-rotate(322deg) brightness(91%) contrast(96%);
+    }
+}
+span.container:has(.pos) { color: #5CB4EF; }
+span.container:has(.neg) { color: #d81b62; }

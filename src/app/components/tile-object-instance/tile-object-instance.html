@@ -1,0 +1,77 @@
+<div class="tileObjectContainer">
+  <text-fields-with-labeled-header label="Tile Object" [title]="instanceData()?.name ?? ''" />
+  <div class="indentedContent">
+    @if ((systemData()?.textFields ?? []).length > 0) {
+      <div class="textFieldsContainer">
+        @for (text of systemData()?.textFields; track $index) {
+          <p>{{text}}</p>
+        }
+      </div>
+    }
+    @let moveCostOverride = systemData()?.movementCostOverride ?? 0;
+    @if (moveCostOverride >= 99) {
+      <p>Prevents units from traversing this tile.</p>
+    } @else if (moveCostOverride > 0) {
+      <p>Allows this tile to be traversed for {{moveCostOverride}} movement cost.</p>
+    }
+    @let hp = instanceData()?.hp;
+    @let minRange = systemData()?.range?.minimum ?? 0;
+    @let maxRange = systemData()?.range?.maximum ?? 0;
+    @if (hp !== undefined || minRange > 0 || maxRange > 0 ) {
+      <div class="statsContainer">
+        @if (hp !== undefined) {
+          <div class="hpStatContainer">
+              <div class="hpStat">
+                <p>Durability</p>
+                <div class="hpValue">
+                  <p style="font-size: 1.5rem; line-height: 1.5rem;">{{hp.current}}</p>
+                  <p>/ {{hp.maximum}}</p>
+                </div>
+              </div>
+              <tile-object-hp-bar [percentage]="hp.percentage" />
+              @if((hp.remainingBars ?? 0) > 0) {
+                <div class="remainingBars">
+                  <p>+{{hp.remainingBars}} Bars Remaining</p>
+                </div>
+              }
+          </div>
+        }
+        @if (minRange > 0 || maxRange > 0) {
+          <div class="stat">
+            <p>Rng</p>
+            <p>
+              {{minRange}} @if (minRange !== maxRange) { - {{maxRange}} }
+            </p>
+          </div>
+        }
+      </div>
+    }
+    @let hpModifier = systemData()?.hpModifier ?? 0;
+    @let hasCombatStatMods = dictHasKeys(systemData()?.combatStatModifiers);
+    @let hasStatMods = dictHasKeys(systemData()?.statModifiers);
+    @if (hpModifier !== 0 || hasCombatStatMods || hasStatMods ) {
+      <div class="primaryColorCard statsCard">
+        <div class="statsContainer">
+          @if (systemData()?.hpModifier !== 0) {
+            <div class="stat">
+              <p>HP</p>
+              <p>{{hpModifier > 0 ? "+" : ""}}{{hpModifier}}%</p>
+            </div>
+          }
+          @for (stat of systemData()?.combatStatModifiers | keyvalue: doNotSortByKey; track stat.key) {
+            <div class="stat">
+              <p>{{stat.key}}</p>
+              <p>{{stat.value > 0 ? "+" : ""}}{{stat.value}}</p>
+            </div>
+          }
+          @for (stat of systemData()?.statModifiers | keyvalue: doNotSortByKey; track stat.key) {
+            <div class="stat">
+              <p>{{stat.key}}</p>
+              <p>{{stat.value > 0 ? "+" : ""}}{{stat.value}}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

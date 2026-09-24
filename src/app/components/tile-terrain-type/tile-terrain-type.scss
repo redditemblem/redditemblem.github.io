@@ -1,0 +1,47 @@
+.terrainTypeContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+
+  p { margin: 0px; }
+}
+
+.indentedContent {
+  display: flex;
+  flex-flow: column nowrap;
+  padding-left: 16px;
+  row-gap: 8px;
+}
+
+.statGroupContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+
+  p {
+    font-size: 0.8rem;
+  }
+}
+
+div.statsContainer {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 5%;
+  row-gap: 2px;
+  padding: 0px 8px 0px 8px;
+
+  div.stat {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      flex: 0 0 47%;
+      column-gap: 6px;
+
+      //Forces values with complex displays (range, uses) to stay on the same line
+      .statValue {
+          display: flex;
+          flex-flow: row nowrap;
+      }
+  }
+}

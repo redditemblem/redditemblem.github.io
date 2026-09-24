@@ -1,0 +1,18 @@
+#linksContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 16px 16px 0px 16px;
+
+  h1 {
+    margin: 0px;
+    font-family: macExtMinecraft;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 1.65rem;
+  }
+
+  mat-divider {
+    margin: 16px 0px 16px 0px;
+  }
+}
