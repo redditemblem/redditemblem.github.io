@@ -1,0 +1,26 @@
+name: Build and Deploy to Github Pages
+
+on:
+  push:
+    branches: [ "main", "maps-2.0-ui-upgrade" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out repository as $GITHUB_WORKSPACE
+      - uses: actions/checkout@v4
+
+      # Angular deploy command provided by https://github.com/marketplace/actions/angular-deploy-gh-pages-actions
+      - name: Deploy
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          build_configuration: production
+          deploy_branch: live
+          angular_dist_build_folder: dist/RedditEmblemMapsUI/browser
+
+permissions:
+  contents: write # Allow write permission to GITHUB_TOKEN to commit to deploy branch.
