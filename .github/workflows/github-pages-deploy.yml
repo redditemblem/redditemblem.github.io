@@ -2,7 +2,7 @@ name: Build and Deploy to Github Pages
 
 on:
   push:
-    branches: [ "main", "maps-2.0-ui-upgrade" ]
+    branches: [ "master" ]
 
 jobs:
   build:
