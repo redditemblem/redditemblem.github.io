@@ -6,7 +6,6 @@
     <a href="https://pages.github.com/"><img src="https://img.shields.io/badge/GitHub%20Pages-121013?logo=github&logoColor=white" alt="Github Pages"></a>
     <a href="https://www.npmjs.com/"><img src="https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff" alt="NPM"></a>
     <a href="https://insomnia.rest/"><img src="https://img.shields.io/badge/Insomnia-4000BF?logo=insomnia&logoColor=white" alt="Insomnia"></a>
-    
 </p>
 <p align="center">
     <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff" alt="Typescript"></a>
