@@ -1,0 +1,14 @@
+<div class="primaryColorCard engageAttackContainer">
+    <div class="engageAttackHeader">
+        @if ((systemData()?.spriteURL ?? '').length > 0) {
+            <img class="engageAttackSprite" [src]="systemData()?.spriteURL" [aria-label]="`${attack()} sprite`" />
+        }
+        <p>{{attack()}}</p>
+    </div>
+    @if(expanded()) {
+        <mat-divider />
+        @for (text of systemData()?.textFields; track $index) {
+            <p>{{text}}</p>
+        }
+    }
+</div>

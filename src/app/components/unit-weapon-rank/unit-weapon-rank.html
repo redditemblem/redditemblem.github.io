@@ -1,0 +1,13 @@
+@if(rank().length > 0) {
+  @let title = `${category()} Rank ${rank()}`;
+  <div class="rankedContainer" [title]="title" [aria-label]="title">
+    <p class="rankedCategory" aria-hidden="true">{{category()}}</p>
+    <p class="rankedRank" aria-hidden="true">{{rank()}}</p>
+  </div>
+}
+@else {
+  @let title = `${category()}`;
+  <div class="ranklessContainer" [title]="title" [aria-label]="title">
+    <p aria-hidden="true">{{category()}}</p>
+  </div>
+}

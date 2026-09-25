@@ -1,0 +1,55 @@
+<div class="terrainTypeContainer">
+  @if (includeHeader()) {
+    <text-fields-with-labeled-header label="Terrain" [title]="name()" [textFields]="systemData()?.textFields" />
+  }
+  <div class="indentedContent">
+    @for (statGroup of systemData()?.statGroups; track $index) {
+      <div class="primaryColorCard statGroupContainer">
+        @let title = buildStatGroupTitle(statGroup);
+        @if (title.length > 0) {
+          <b class="pixelFont">{{title}}</b>
+        }
+        @if (statGroup.hpModifier !== 0 || dictHasKeys(statGroup.combatStatModifiers) || dictHasKeys(statGroup.statModifiers)) {
+          <div class="statsContainer">
+            @if (statGroup.hpModifier !== 0) {
+              <div class="stat">
+                <p>HP</p>
+                <p>{{statGroup.hpModifier > 0 ? "+" : ""}}{{statGroup.hpModifier}}%</p>
+              </div>
+            }
+            @for (stat of statGroup.combatStatModifiers | keyvalue: doNotSortByKey; track stat.key) {
+              <div class="stat">
+                <p>{{stat.key}}</p>
+                <p>{{stat.value > 0 ? "+" : ""}}{{stat.value}}</p>
+              </div>
+            }
+            @for (stat of statGroup.statModifiers | keyvalue: doNotSortByKey; track stat.key) {
+              <div class="stat">
+                <p>{{stat.key}}</p>
+                <p>{{stat.value > 0 ? "+" : ""}}{{stat.value}}</p>
+              </div>
+            }
+          </div>
+        }
+        <p class="pixelFont">Movement Costs</p>
+        <div class="statsContainer">
+          @for (cost of statGroup.movementCosts | keyvalue: doNotSortByKey; track cost.key) {
+            <div class="stat">
+              <p>{{cost.key}}</p>
+              <p>
+                @if (cost.value >= 99) { ⃠ }
+                @else { {{cost.value}} }
+              </p>
+            </div>
+          }
+          @if (isWarp() && (systemData()?.warpType === 1 || systemData()?.warpType === 3)) {
+            <div class="stat">
+              <p>Use Warp</p>
+              <p>{{systemData()?.warpCost}}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

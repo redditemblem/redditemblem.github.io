@@ -1,0 +1,28 @@
+div.engravingContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 8px;
+
+    p { margin: 0px; }
+}
+
+div.headerRow {
+    display: flex;
+    flex-flow: row nowrap;
+    column-gap: 8px;
+    align-items: center;
+    font-family: macExtMinecraft;
+    font-size: var(--card-header-pixel-font-size);
+
+    img.sprite {
+        max-height: var(--card-header-sprite-max-dimensions);
+        max-width: var(--card-header-sprite-max-dimensions);
+        object-fit: scale-down;
+    }
+}
+
+div.textFieldsContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 4px;
+}

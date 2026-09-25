@@ -1,0 +1,304 @@
+<div id="unitDisplayContainer">
+  <div id="unitHeaderContainer">
+    @if((unit().sprite.portraitURL ?? "").length > 0) {
+    <div id="unitPortraitContainer">
+      <img [src]="unit().sprite.portraitURL" class="unitPortraitSprite smooth"
+        [aria-label]="`${unit().name} portrait`" />
+    </div>
+    }
+    <div id="unitNameplateContainer">
+      <div id="unitNameplate">
+        <img [src]="unit().sprite.spriteURL" class="unitNameplateSprite" [class]="{'flipHorz': shouldFlipUnitSprite()}"
+          [aria-label]="`${unit().name} sprite`" />
+        <hgroup class="unitNameplateText">
+          <h1>{{unit().name}}</h1>
+          @let subtext = buildUnitNameplateSubtext();
+          @if (subtext.length > 0) {
+          <p class="unitNameplateSubtext">{{subtext}}</p>
+          }
+        </hgroup>
+        @let affiliation = getUnitAffiliation();
+        @if ((affiliation?.spriteURL ?? "").length > 0) {
+        <img [src]="affiliation?.spriteURL" class="nameplateAffiliationSprite"
+          [aria-label]="`${affiliation?.name} sprite`" />
+        }
+      </div>
+      <div id="unitNameplateFooter">
+        @let unitButtonTooltip = `${isUnitInfoExpanded() ? 'Collapse' : 'Expand'} additional unit info`;
+        <button matIconButton (click)="toggleUnitInfoExpansion()" [aria-label]="unitButtonTooltip" [matTooltip]="unitButtonTooltip" matTooltipPosition="right">
+          <img src="img/caret.png" [class]="{'rotate90': isUnitInfoExpanded()}" aria-hidden="true" />
+        </button>
+        @if ((unit().player ?? "").length > 0) {
+        <div id="playerNameRibbon" [title]="unit().player">
+          <div id="ribbonBody">
+            <p id="playerName">{{unit().player}}</p>
+          </div>
+          <div id="ribbonTails">
+            <div id="leftTail"></div>
+            <div id="rightTail"></div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  @if(isUnitInfoExpanded()){
+  @for (text of (unit().textFields ?? []); track $index) {
+  <p>{{text}}</p>
+  }
+  @let affiliation = getUnitAffiliation();
+  <text-fields-with-labeled-header label="Affiliation" [title]="unit().affiliation" [spriteURL]="affiliation?.spriteURL"
+    [textFields]="affiliation?.textFields" />
+  <text-fields-with-labeled-header label="Movement Type" [title]="unit().movementType" />
+  @for(className of (unit().classes ?? []); track className) {
+  @let class = getUnitClass(className);
+  <text-fields-with-labeled-header [label]="teamDataService.getClassInterfaceLabel()" [title]="className"
+    [textFields]="class?.textFields" />
+  }
+  @if ((unit().battleStyle ?? "").length > 0) {
+  @let battleStyle = getUnitBattleStyle(unit().battleStyle!);
+  <text-fields-with-labeled-header [label]="teamDataService.getBattleStyleInterfaceLabel()" [title]="unit().battleStyle"
+    [spriteURL]="battleStyle?.spriteURL" [textFields]="battleStyle?.textFields" />
+  }
+  @if ((unit().characterApplicationURL ?? "").length > 0) {
+  <text-fields-with-labeled-header label="Character App" title="Link" [titleHref]="unit().characterApplicationURL" />
+  }
+  <mat-divider />
+  }
+  <div class="statRow">
+    <div id="unitHPContainer">
+      <div id="hpValueRow">
+        <p>HP</p>
+        <div id="hpValues">
+          <p style="font-size: 1.5rem; line-height: 1.5rem;">{{unit().stats.hp.current}}</p>
+          <p>/ {{unit().stats.hp.maximum}}</p>
+        </div>
+      </div>
+      <unit-hp-bar [percentage]="unit().stats.hp.percentage" />
+      @if((unit().stats.hp.remainingBars ?? 0) > 0) {
+      <div id="remainingBars">
+        <p>+{{unit().stats.hp.remainingBars}} Bars Remaining</p>
+      </div>
+      }
+    </div>
+    @if (dictionaryHasKeys(unit().stats.system_Prioritized)) {
+    @for(stat of unit().stats.system_Prioritized | keyvalue: doNotSortByKey; track stat.key) {
+    <div class="looseStatsItem">
+      <p>{{stat.key}}</p>
+      <stat-with-buff-icon [base]="stat.value.baseValue" [final]="stat.value.finalValue"
+        [invertColors]="stat.value.invertModifiedDisplayColors ?? false" />
+    </div>
+    }
+    }
+    @if ((unit().stats.experience ?? -1) > -1) {
+    <div class="looseStatsItem">
+      <p>Exp</p>
+      <p>{{unit().stats.experience}}</p>
+    </div>
+    }
+    @if ((unit().stats.heldCurrency ?? 0) > 0) {
+    <div class="looseStatsItem">
+      <p>Money</p>
+      <currency [amount]="unit().stats.heldCurrency" [dataService]="teamDataService" />
+    </div>
+    }
+  </div>
+  @if((unit().tags ?? []).length > 0){
+  <div id="tagsContainer">
+    <img src="img/tags_icon.png" height="32" width="32" aria-label="Tags" matTooltip="Tags" matTooltipPosition="right" />
+    <div id="tagItemsRow">
+      @for(tag of unit().tags; track $index){
+      <unit-tag [tag]="tag" />
+      }
+    </div>
+  </div>
+  }
+  @if ((unit().location.pairedUnit ?? "").length > 0) {
+  <div id="pairUpContainer">
+    <img src="img/backpack_icon.png" height="32" width="32" aria-label="Pair up" matTooltip="Pair Up" matTooltipPosition="right" />
+    <p>
+      Paired with <a (click)="pairedUnitLink_OnClick(unit().location.pairedUnit!)">{{unit().location.pairedUnit}}</a>
+      (in {{unit().location.isBackOfPair ? 'back' : 'front'}})
+    </p>
+  </div>
+  }
+  @if((unit().behavior ?? "").length > 0){
+  <div id="unitBehaviorContainer">
+    <img src="img/behavior_icon.png" height="32" width="32" aria-label="Unit behavior" matTooltip="Unit Behavior" matTooltipPosition="right" />
+    <p>{{unit().behavior}}</p>
+  </div>
+  }
+  @if((unit().statusConditions ?? []).length > 0) {
+  <div id="statusConditionsContainer">
+    @let conditionsLabel = teamDataService.getStatusConditionsInterfaceLabel();
+    <img src="img/status_icon.png" height="32" width="32" [aria-label]="conditionsLabel" [matTooltip]="conditionsLabel" matTooltipPosition="right" />
+    <div id="statusItemsColumn">
+      @for(status of unit().statusConditions; track $index){
+      <unit-status-condition [status]="status" />
+      }
+    </div>
+  </div>
+  }
+  <div id="statsSection" class="sectionContainerWithHeader">
+    <div class="sectionHeaderRow">
+      @let statsButtonTooltip = `${isStatsInfoExpanded() ? 'Collapse' : 'Expand'} stat info`;
+      <button matIconButton (click)="toggleStatExpansion()" [aria-label]="statsButtonTooltip" [matTooltip]="statsButtonTooltip" matTooltipPosition="right">
+        <img src="img/caret.png" [class]="{'rotate90': isStatsInfoExpanded()}" aria-hidden="true" />
+      </button>
+      <h2>Stats</h2>
+    </div>
+    <div id="statSectionsContainer">
+      @if(dictionaryHasKeys(unit().stats.combat)) {
+      <div class="statRow">
+        @for (stat of unit().stats.combat | keyvalue: doNotSortByKey; track stat.key){
+        <modified-unit-stat [name]="stat.key" [values]="stat.value" [expanded]="isStatsInfoExpanded()" />
+        }
+      </div>
+      }
+      @if(dictionaryHasKeys(unit().stats.system_NonPrioritized)) {
+      <div class="statRow">
+        @for (stat of unit().stats.system_NonPrioritized | keyvalue: doNotSortByKey; track stat.key){
+        <modified-unit-stat [name]="stat.key" [values]="stat.value" [expanded]="isStatsInfoExpanded()" />
+        }
+      </div>
+      }
+      @if(dictionaryHasKeys(unit().stats.general)) {
+      <div class="statRow">
+        @for (stat of unit().stats.general | keyvalue: doNotSortByKey; track stat.key){
+        <modified-unit-stat [name]="stat.key" [values]="stat.value" [expanded]="isStatsInfoExpanded()" />
+        }
+      </div>
+      }
+    </div>
+  </div>
+  @if(dictionaryHasKeys(unit().weaponRanks)) {
+  <div id="weaponRanksContainer">
+    @let weaponRanksLabel = teamDataService.getWeaponRanksInterfaceLabel();
+    <img src="img/ranks_icon.png" height="32" width="32" [aria-label]="weaponRanksLabel" [matTooltip]="weaponRanksLabel" matTooltipPosition="right" />
+    <div id="weaponRanksRow">
+      @for(rank of unit().weaponRanks | keyvalue : doNotSortByKey; track rank.key){
+      <unit-weapon-rank [category]="rank.key" [rank]="rank.value" />
+      }
+    </div>
+  </div>
+  }
+  <mat-divider />
+  <div id="inventorySection" class="sectionContainerWithHeader">
+    <div class="sectionHeaderRow">
+      @let inventoryLabel = teamDataService.getInventoryInterfaceLabel();
+      @let inventoryButtonTooltip = `${this.isInventoryExpanded() ? 'Collapse' : 'Expand'} ${inventoryLabel.toLocaleLowerCase()}`;
+      <button matIconButton (click)="toggleInventoryExpansion()" [aria-label]="inventoryButtonTooltip" [matTooltip]="inventoryButtonTooltip" matTooltipPosition="right">
+        <img src="img/caret.png" [class]="{'rotate90': this.isInventoryExpanded()}" aria-hidden="true" />
+      </button>
+      <h2>{{inventoryLabel}}</h2>
+    </div>
+    @if (this.isInventoryExpanded()) {
+    <div id="inventorySubsectionsContainer">
+      @for (subsection of unit().inventory?.subsections; track $index) {
+      <div class="inventorySubsection">
+        @let subsectionLabel = teamDataService.getInventorySubsectionInterfaceLabel($index);
+        @if (subsectionLabel.length > 0) {
+        <h3>{{subsectionLabel}}</h3>
+        }
+        @for (item of subsection.items; track $index) {
+        <unit-inventory-item [item]="item" />
+        }
+        @if (subsection.emptySlotCount > 0){
+        <div class="primaryColorCard emptySlots">
+          <span [style.opacity]="0.5">Empty x{{subsection.emptySlotCount}}</span>
+        </div>
+        }
+      </div>
+      }
+      @if ((unit().combatArts ?? []).length > 0) {
+      <div class="inventorySubsection">
+        <h3>{{teamDataService.getCombatArtsInterfaceLabel()}}</h3>
+        @for (combatArt of unit().combatArts; track $index) {
+        <combat-art [name]="combatArt" />
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+  @if (unit().emblem !== undefined) {
+  <mat-divider />
+  <div id="emblemSection" class="sectionContainerWithHeader">
+    <div class="sectionHeaderRow">
+      @let emblemLabel = teamDataService.getEmblemInterfaceLabel();
+      @let emblemButtonTooltip = `${isEmblemExpanded() ? 'Collapse' : 'Expand'} ${emblemLabel.toLocaleLowerCase()}`;
+      <button matIconButton (click)="toggleEmblemExpansion()" [aria-label]="emblemButtonTooltip" [matTooltip]="emblemButtonTooltip" matTooltipPosition="right">
+        <img src="img/caret.png" [class]="{'rotate90': isEmblemExpanded()}" aria-hidden="true" />
+      </button>
+      <h2>{{emblemLabel}}</h2>
+    </div>
+    @if (isEmblemExpanded()) {
+    <unit-emblem [emblem]="unit().emblem!" />
+    }
+  </div>
+  }
+  @if (unit().battalion !== undefined) {
+  <mat-divider />
+  <div id="battalionSection" class="sectionContainerWithHeader">
+    <div class="sectionHeaderRow">
+      @let battalionLabel = teamDataService.getBattalionInterfaceLabel();
+      @let battalionButtonTooltip = `${this.isBattalionExpanded() ? 'Collapse' : 'Expand'} ${battalionLabel.toLocaleLowerCase()}`;
+      <button matIconButton (click)="toggleBattalionExpansion()" [aria-label]="battalionButtonTooltip" [matTooltip]="battalionButtonTooltip" matTooltipPosition="right">
+        <img src="img/caret.png" [class]="{'rotate90': this.isBattalionExpanded()}" aria-hidden="true" />
+      </button>
+      <h2>{{battalionLabel}}</h2>
+    </div>
+    @if (this.isBattalionExpanded()) {
+    <unit-battalion [battalion]="unit().battalion!" />
+    }
+  </div>
+  }
+  @if (unit().hasSkills) {
+  <mat-divider />
+  <div id="skillsSection" class="sectionContainerWithHeader">
+    <div class="sectionHeaderRow">
+      @let skillsLabel = teamDataService.getSkillsInterfaceLabel();
+      @let skillsButtonTooltip = `${this.isSkillsInfoExpanded() ? 'Collapse' : 'Expand'} ${skillsLabel.toLocaleLowerCase()}`;
+      <button matIconButton (click)="toggleSkillsExpansion()" [aria-label]="skillsButtonTooltip" [matTooltip]="skillsButtonTooltip" matTooltipPosition="right">
+        <img src="img/caret.png" [class]="{'rotate90': this.isSkillsInfoExpanded()}" aria-hidden="true" />
+      </button>
+      <h2>{{skillsLabel}}</h2>
+    </div>
+    @if (this.isSkillsInfoExpanded()) {
+    <div id="skillsSubsectionsContainer">
+      @for (subsection of unit().skillSubsections; track $index) {
+      @if(subsection.skills.length > 0) {
+      <div class="skillsSubsection">
+        @let subsectionLabel = teamDataService.getSkillSubsectionInterfaceLabel($index);
+        @if (subsectionLabel.length > 0) {
+        <h3>{{subsectionLabel}}</h3>
+        }
+        @for (skill of subsection.skills; track $index) {
+        <unit-skill [skill]="skill" [dataService]="teamDataService" />
+        }
+      </div>
+      }
+      }
+    </div>
+    }
+  </div>
+  }
+  @if ((unit().adjutants ?? []).length > 0) {
+  <mat-divider />
+  <div id="adjutantSection" class="sectionContainerWithHeader">
+    <div class="sectionHeaderRow">
+      @let adjutantLabel = teamDataService.getAdjutantsInterfaceLabel();
+      @let adjutantButtonTooltip = `${isAdjutantsExpanded() ? 'Collapse' : 'Expand'} ${adjutantLabel.toLocaleLowerCase()}`;
+      <button matIconButton (click)="toggleAdjutantExpansion()" [aria-label]="adjutantButtonTooltip" [matTooltip]="adjutantButtonTooltip" matTooltipPosition="right">
+        <img src="img/caret.png" [class]="{'rotate90': isAdjutantsExpanded()}" aria-hidden="true" />
+      </button>
+      <h2>{{adjutantLabel}}</h2>
+    </div>
+    @if (isAdjutantsExpanded()) {
+    @for (adjutant of unit().adjutants; track adjutant) {
+    <adjutant [name]="adjutant" />
+    }
+    }
+  </div>
+  }
+</div>

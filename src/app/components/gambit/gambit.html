@@ -1,0 +1,52 @@
+<div class="primaryColorCard gambitContainer">
+    <div class="headerColumn">
+        <div class="titleRow">
+            @if ((systemData()?.spriteURL ?? "").length > 0) {
+                <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${name()} sprite`" />
+            }
+            <p>
+                {{name()}} ({{uses() ?? 0}})
+            </p>
+        </div>
+        <p class="subtitleRow">
+            {{teamDataService.getGambitInterfaceLabel()}}
+            @if ((systemData()?.utilizedStats ?? []).length > 0) {
+                ({{formatUtilizedStats()}})
+            }
+        </p>
+    </div>
+    @if (expanded()){
+        <mat-divider />
+        <div class="statsContainer">
+            @for (stat of systemData()?.stats | keyvalue: doNotSortByKey; track stat.key) {
+                <div class="stat">
+                    <p>{{stat.key}}</p>
+                    <p>{{stat.value}}</p>
+                </div>
+            }
+            <div class="stat">
+                <p>Rng</p>
+                <p class="statValue">
+                    {{systemData()?.range?.minimum}}
+                    @if (systemData()?.range?.minimum !== systemData()?.range?.maximum) {
+                        - {{systemData()?.range?.maximum}}
+                    }
+                </p>
+            </div>
+            <div class="stat">
+                <p>Uses</p>
+                <p class="statValue">
+                    {{uses() ?? 0}} / {{systemData()?.maxUses ?? 0}}
+                </p>
+            </div>
+        </div>
+        @if ((systemData()?.textFields ?? []).length > 0) {
+            <mat-divider />
+            <div class="textFieldsContainer">
+                @for (text of systemData()?.textFields; track $index) {
+                    <p>{{text}}</p>
+                }
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+
+div.optionsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 24px;
+  padding: 16px 16px 0px 16px;
+
+  h1 {
+    margin: 0px;
+    font-family: macExtMinecraft;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 1.65rem;
+  }
+
+  p { margin: 0px; }
+}
+
+div.modeContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 12px;
+}
+
+mat-form-field {
+  @include mat.form-field-overrides((
+    filled-active-indicator-color: var(--primary-theme-color),
+    filled-focus-active-indicator-color: var(--primary-theme-color),
+    filled-hover-active-indicator-color: var(--primary-theme-color)
+  ));
+
+  width: 100%;
+  
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    height: 0px;
+  }
+}

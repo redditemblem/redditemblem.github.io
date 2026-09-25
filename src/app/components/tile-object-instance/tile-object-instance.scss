@@ -1,0 +1,75 @@
+.tileObjectContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+
+  p { margin: 0px; }
+}
+
+.indentedContent {
+  display: flex;
+  flex-flow: column nowrap;
+  padding-left: 16px;
+  row-gap: 8px;
+}
+
+div.statsCard {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  padding: 8px;
+  font-size: 0.8rem;
+}
+
+div.statsContainer {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 5%;
+  row-gap: 2px;
+
+  div.stat {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0 0 47%;
+    column-gap: 6px;
+
+    //Forces values with complex displays (range, uses) to stay on the same line
+    .statValue {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+  }
+}
+
+div.hpStatContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 2px;
+  width: 47%;
+
+  .hpStat {
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hpValue {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .remainingBars { 
+    display: flex;
+    flex-flow: row-reverse nowrap;
+  }
+}
+
+div.textFieldsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 4px;
+}

@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+
+div.teamContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 8px;
+    background-color: var(--mat-sys-surface-container-low);
+}
+
+h1.teamNameHeader {
+    margin: 8px 0px 0px 8px;
+    font-family: macExtMinecraft;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.3rem;
+}
+
+div.actionButtonRow {
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    justify-content: flex-end;
+    column-gap: 8px;
+
+    button {
+        @include mat.button-overrides((
+            text-container-shape: 8px,
+            text-ripple-color: color-mix(in srgb, var(--primary-theme-color) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+            text-label-text-font: macExtMinecraft,
+            text-label-text-size: 0.8rem,
+            text-label-text-color: var(--primary-theme-color-inverted)
+        ));
+
+        &.mat-mdc-button-disabled img {
+            filter: grayscale(1);
+            opacity: 0.5;
+        }
+
+        ::ng-deep .mdc-button__label {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            column-gap: 8px;
+
+            p { margin: 0px; }
+        }
+    }    
+}

@@ -1,0 +1,101 @@
+@use '@angular/material' as mat;
+
+#decorativePanelTop {
+    position: absolute;
+    height: 150px;
+    width: 100%;
+    background-color: var(--primary-theme-color);
+}
+
+#decorativePanelBottom {
+    width: 100%;
+    height: 75px;
+    background: linear-gradient(to top, var(--primary-theme-color) 70%, var(--secondary-theme-color) 70% 85%, var(--tertiary-theme-color) 85%);
+}
+
+#homeViewContainer{
+    display: flex;
+    flex-flow: row nowrap;
+    flex: 1;
+    justify-content: center;
+    padding: 50px 16px 50px 16px;
+    background-image: url('../../../../../public/img/background.png');
+    background-repeat: repeat;
+
+    #homeViewColumn {
+        display: flex;
+        flex-flow: column nowrap;
+        row-gap: 24px;
+    }
+}
+
+#logoColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 16px;
+
+    #logo {
+        width: 445px;
+        max-width: 100%;
+        z-index: 1;
+    }
+
+    #themeButton {
+        @include mat.button-overrides((
+            outlined-container-shape: 8px,
+            outlined-outline-color: var(--primary-theme-color),
+            outlined-ripple-color: color-mix(in srgb, var(--primary-theme-color) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+            outlined-label-text-color: var(--primary-theme-color-inverted),
+            outlined-label-text-font: macExtMinecraft
+        ));
+
+        ::ng-deep .mdc-button__label {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+            column-gap: 8px;
+        }
+    }
+}
+
+#teamListingColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    row-gap: 8px;
+    min-height: 300px;
+
+    div.teamListingRow {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+div.noResultsRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+
+    div.noResultsColumn{
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+    }
+}
+
+.itemsList {
+    @include mat.list-overrides((
+        list-item-label-text-font: macExtMinecraft,
+        list-item-supporting-text-font: macExtMinecraft,
+        list-item-supporting-text-size: var(--card-subheader-pixel-font-size)
+    ));
+
+    p.mdc-list-item__secondary-text {
+        padding-left: 16px;
+    }
+}

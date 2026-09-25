@@ -1,0 +1,68 @@
+@if (isLoading()) {
+    <div class="loadingErrorBackground">
+        <loading-icon />
+    </div>
+}
+@else if (analysisDataService.isMapLocked()) {
+  <div class="loadingErrorBackground">
+      <div class="errorRow">
+          <div class="errorColumn">
+              <h1 class="warning">Whoops, you don't have access.</h1>
+              @for (error of analysisDataService.errorMessages(); track $index) {
+                <p>{{error}}</p>
+              }
+          </div>
+      </div>
+  </div>
+}
+@else if (analysisDataService.errorMessages().length > 0) {
+    <div class="loadingErrorBackground">
+        <div class="errorRow">
+            <div class="errorColumn">
+                <h1 class="error">Whoops, something went wrong.</h1>
+                @for (error of analysisDataService.errorMessages(); track $index) {
+                    <p>{{error}}</p>
+                }
+            </div>
+        </div>
+    </div>
+}
+@else {
+  @let sidenavButtonTooltip = `${sidenav.opened ? "Collapse" : "Expand"} sidenav`;
+  <button matFab (click)="sidenav.toggle()" class="sidenavExpandButton" [aria-label]="sidenavButtonTooltip">
+    <mat-icon aria-label="aria-hidden">menu</mat-icon>
+  </button>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav [opened]="!breakpointService.isSmallWidth()" [mode]="breakpointService.isSmallWidth() ? 'over' : 'side'">
+        <mat-tab-group class="sideNavTabs" mat-stretch-tabs disablePagination> 
+            <mat-tab aria-label="Options">
+                <ng-template mat-tab-label>
+                  <img src="img/magnify_icon.png" height="32" width="32" aria-hidden="true" />
+                </ng-template>
+                <map-analysis-options-sidenav />
+            </mat-tab>
+            <mat-tab aria-label="Links">
+                <ng-template mat-tab-label>
+                  <img src="img/links_icon.png" height="32" width="32" aria-hidden="true" />
+                </ng-template>
+                <links-sidenav [googleWorksheetID]="this.analysisDataService.getWorksheetID()"
+                                [chapterPostUrl]="this.analysisDataService.getChapterPostUrl()"
+                                [showConvoyLink]="this.analysisDataService.isConvoyConfigured()"
+                                [showShopLink]="this.analysisDataService.isShopConfigured()"
+                                [showMapLink]="true" />
+            </mat-tab>
+        </mat-tab-group>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-tab-group id="segmentTabs" mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="SegmentTabs_selectedTabChange($event)">
+            @for (segment of analysisDataService.mapData().map?.segments; track segment.title) {
+              <mat-tab label="{{segment.title}}"></mat-tab>
+            }
+        </mat-tab-group>
+        @if (eventService.selectedSegment() !== undefined) {
+            <!-- Delay rendering the map until after segment data has been fully loaded -->
+            <map-analysis-canvas />
+        }
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+}

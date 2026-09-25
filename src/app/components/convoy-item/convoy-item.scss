@@ -1,0 +1,97 @@
+div.convoyItemContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  background-color: var(--mat-sys-surface);
+  cursor: pointer;
+
+  p { margin: 0; }
+}
+
+div.headerRow {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  justify-content: space-between;
+  column-gap: 16px;
+  font-family: macExtMinecraft;
+}
+
+div.titleColumn {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+div.titleRow {
+  display: flex;
+  flex-flow: row nowrap;
+  column-gap: 8px;
+
+  div.title {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    align-items: center;
+    column-gap: 8px;
+    font-size: var(--card-header-pixel-font-size);
+  }
+
+  img.sprite {
+    max-height: var(--card-header-sprite-max-dimensions);
+    max-width: var(--card-header-sprite-max-dimensions);
+    object-fit: scale-down;
+  }
+}
+
+p.subtitleRow {
+  padding-left: 16px;
+  font-size: var(--card-subheader-pixel-font-size);
+}
+
+div.convoyTextColumn {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: end;
+  font-size: var(--card-subheader-pixel-font-size);
+
+  div.saleValue {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+}
+
+div.statsContainer {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 5%;
+  padding: 0px 8px 0px 8px;
+
+  div.stat {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0 0 30%;
+    column-gap: 6px;
+
+    //Forces values with complex displays (range, uses) to stay on the same line
+    .statValue {
+      display: flex;
+      flex-flow: row nowrap;
+    }
+  }
+}
+
+div.graphicRow {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  img.graphic {
+    max-height: 100px;
+    max-width: 100%;
+    object-fit: scale-down;
+  }
+}

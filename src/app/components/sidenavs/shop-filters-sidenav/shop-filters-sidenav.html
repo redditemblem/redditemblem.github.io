@@ -1,0 +1,108 @@
+<div class="shopFiltersContainer">
+  <h1>Filters</h1>
+  <mat-form-field>
+    <mat-label>Sort Items By</mat-label>
+    <mat-select [(value)]="shopEventService.sortItemsBy">
+      @for (sort of shopDataService.getShopItemSorts(); track $index) {
+        <mat-option [value]="sort">{{sort.displayName}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-slide-toggle (change)="shopEventService.showExpandedItemData.set(!shopEventService.showExpandedItemData())">
+    Expand all shop item information
+  </mat-slide-toggle>
+  <mat-divider />
+  <ul>
+    <li>
+      <mat-checkbox (change)="newItemsCheckbox_OnChange($event)">
+        New
+      </mat-checkbox>
+    </li>
+    <li>
+      <mat-checkbox (change)="onSaleItemsCheckbox_OnChange($event)">
+        On Sale
+      </mat-checkbox>
+    </li>
+    <li>
+      <mat-checkbox (change)="outOfStockItemsCheckbox_OnChange($event)">
+        Out of Stock
+      </mat-checkbox>
+    </li>
+  </ul>
+  @let categories = shopDataService.getShopItemCategories();
+  @if (categories.length > 0) {
+    <mat-divider />
+    <h2>Categories</h2>
+    <div>
+      <mat-checkbox value="All"
+                    [checked]="shopEventService.allItemCategoriesSelected()" 
+                    [indeterminate]="shopEventService.someItemCategoriesSelected()" 
+                    (change)="itemCategoryCheckbox_OnChange($event)">
+          All
+      </mat-checkbox>
+      <ul class="padChildren">
+        @for (category of shopDataService.getShopItemCategories(); track category) {
+          <li>
+            <mat-checkbox checked 
+                          [value]="category" 
+                          [checked]="shopEventService.getItemCategoryFilter(category)" 
+                          (change)="itemCategoryCheckbox_OnChange($event)">
+                {{category}}
+            </mat-checkbox>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @let utilizedStats = shopDataService.getShopItemUtilizedStats();
+  @let targetedStats = shopDataService.getShopItemTargetedStats();
+  @if (utilizedStats.length > 0 || targetedStats.length > 0) {
+    <mat-divider />
+    @if (utilizedStats.length > 0) {
+      <h2>Utilized Stat</h2>
+      <div>
+        <mat-checkbox value="All"
+                      [checked]="shopEventService.allUtilizedStatsSelected()"
+                      [indeterminate]="shopEventService.someUtilizedStatsSelected()"
+                      (change)="utilizedStatCheckbox_OnChange($event)">
+            All
+        </mat-checkbox>
+        <ul class="padChildren">
+          @for (stat of shopDataService.getShopItemUtilizedStats(); track stat) {
+            <li>
+              <mat-checkbox checked
+                            [value]="stat"
+                            [checked]="shopEventService.getUtilizedStatFilter(stat)"
+                            (change)="utilizedStatCheckbox_OnChange($event)">
+                  {{stat}}
+              </mat-checkbox>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    @if (targetedStats.length > 0) {
+      <h2>Targeted Stat</h2>
+      <div>
+        <mat-checkbox value="All"
+                      [checked]="shopEventService.allTargetedStatsSelected()"
+                      [indeterminate]="shopEventService.someTargetedStatsSelected()"
+                      (change)="targetedStatCheckbox_OnChange($event)">
+            All
+        </mat-checkbox>
+        <ul class="padChildren">
+          @for (stat of shopDataService.getShopItemTargetedStats(); track stat) {
+            <li>
+              <mat-checkbox checked
+                            [value]="stat"
+                            [checked]="shopEventService.getTargetedStatFilter(stat)"
+                            (change)="targetedStatCheckbox_OnChange($event)">
+                  {{stat}}
+              </mat-checkbox>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  }
+</div>

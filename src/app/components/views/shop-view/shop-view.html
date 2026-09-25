@@ -1,0 +1,94 @@
+@if (isLoading()) {
+  <div class="loadingErrorBackground">
+    <loading-icon />
+  </div>
+}
+@else if (!shopDataService.isShopConfigured()) {
+  <div class="loadingErrorBackground">
+      <div class="errorRow">
+          <div class="errorColumn">
+              <h1 class="warning">Whoops, you don't have access.</h1>
+              @for (error of shopDataService.errorMessages(); track $index) {
+                <p>{{error}}</p>
+              }
+          </div>
+      </div>
+  </div>
+}
+@else if (shopDataService.errorMessages().length > 0) {
+  <div class="loadingErrorBackground">
+    <div class="errorRow">
+      <div class="errorColumn">
+        <h1 class="error">Whoops, something went wrong.</h1>
+        @for (error of shopDataService.errorMessages(); track $index) {
+          <p>{{error}}</p>
+        }
+      </div>
+    </div>
+  </div>
+}
+@else {
+  @let sidenavButtonTooltip = `${sidenav.opened ? "Collapse" : "Expand"} sidenav`;
+  <button matFab (click)="sidenav.toggle()" class="sidenavExpandButton" [aria-label]="sidenavButtonTooltip">
+    <mat-icon aria-hidden="true">menu</mat-icon>
+  </button>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav [opened]="!breakpointService.isSmallWidth()" [mode]="breakpointService.isSmallWidth() ? 'over' : 'side'">
+        <mat-tab-group class="sideNavTabs" mat-stretch-tabs disablePagination> 
+            <mat-tab aria-label="Filters">
+                <ng-template mat-tab-label>
+                    <img src="img/filter_icon.png" height="30" width="30" />
+                </ng-template>
+                <shop-filters-sidenav />
+            </mat-tab>
+            <mat-tab aria-label="Links">
+                <ng-template mat-tab-label>
+                    <img src="img/links_icon.png" height="30" width="30" />
+                </ng-template>
+                <links-sidenav [googleWorksheetID]="this.shopDataService.getWorksheetID()"
+                              [showMapLink]="true"
+                              [showConvoyLink]="this.shopDataService.isConvoyConfigured()"
+                              [showMapAnalyzerLink]="true" />
+            </mat-tab>
+        </mat-tab-group>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div id="shopBanner">
+        @for(item of [].constructor(calculateNumberOfStripes()); track $index) {
+          <div class="bannerStripe" [style]="`flex: 1 0 ${100 / calculateNumberOfStripes()}%`">
+            @let colorClass = $even ? 'secondaryColor' : 'tertiaryColor';
+            <div class="flat" [class]="colorClass"></div>
+            <div class="round" [class]="colorClass"></div>
+          </div>
+        }
+      </div>
+      <div id="shopLabelContainer">
+        <img id="shopLabel" src="img/shop_logo.png" alt="Shop logo" />
+      </div>
+      @let shopItemCount = shopDataService.getShopItemsList().length;
+      @let filteredItemsList = getFilteredShopItemsList();
+      <div id="shopItemsContainer">
+        @if (shopItemCount > 0) {
+          @for(item of filteredItemsList; track $index) {
+            <shop-item [item]="item" [expand]="shopEventService.showExpandedItemData()" />
+          }
+          @empty {
+            <div id="emptyShopItemsContainer">
+              <p>No items match the current filters.</p>
+            </div>
+          }
+        }
+        @else {
+          <div id="emptyShopItemsContainer">
+            <p>There are no items in the shop.</p>
+          </div>
+        }
+      </div>
+      <div id="shopFooter">
+        @if (shopItemCount > 0) {
+          <p>{{filteredItemsList.length}} of {{shopItemCount}} items shown</p>
+        }
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+}

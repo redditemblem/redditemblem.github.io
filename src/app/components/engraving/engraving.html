@@ -1,0 +1,16 @@
+<div class="primaryColorCard engravingContainer">
+    <div class="headerRow">
+        @if ((systemData()?.spriteURL ?? "").length > 0) {
+            <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${name()} sprite`" />
+        }
+        <p>{{name()}}</p>
+    </div>
+    @if ((systemData()?.textFields ?? []).length > 0) {
+        <mat-divider />
+        <div class="textFieldsContainer">
+            @for (text of systemData()?.textFields; track $index) {
+                <p>{{text}}</p>
+            }
+        </div>
+    }
+</div>

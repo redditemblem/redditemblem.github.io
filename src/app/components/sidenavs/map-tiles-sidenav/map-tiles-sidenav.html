@@ -1,0 +1,36 @@
+@let constants = teamDataService.getMapConstants();
+@let tileSize = constants?.tileSize ?? 16;
+@let hasHeaderTopLeft = constants?.hasHeaderTopLeft ?? false;
+
+@let tile = eventService.highlightedTile();
+@if (tile !== undefined) {
+  @let segment = teamDataService.getSegmentByCoordinate(tile.coordinate);
+  @if (segment !== undefined) {
+    <div id="tileContainer">
+      <div id="headerRow">
+          <div id="tilePreview"
+              [style.height]="`${tileSize}px`"
+              [style.width]="`${tileSize}px`"
+              [style.overflow]="'hidden'"
+              [style.background-image]="`url(${segment.imageURL})`"
+              [style.background-position]="`-${tileSize * (tile.coordinate.x - segment.horizontalTileRangeWithinMap.start.value + (hasHeaderTopLeft ? 1 : 0))}px -${tileSize * (tile.coordinate.y - (hasHeaderTopLeft ? 0 : 1))}px`"
+          ></div>
+          <h1>Tile {{tile.coordinate.asText}}</h1>   
+      </div>
+      <mat-divider />
+      @let unitNames = buildUnitNames();
+      @if (unitNames.length > 0) {
+        <text-fields-with-labeled-header label="Unit" [title]="unitNames" />
+      }
+      @let terrainTypeData = this.teamDataService.getTerrainTypeByName(tile.terrainType);
+      <tile-terrain-type [name]="tile.terrainType" [isWarp]="tile.warpData?.inWarpGroup ?? false" [dataService]="teamDataService" />
+      @if (tile.warpData?.inWarpGroup ?? false) {
+        @let warpTypeDesc = getWarpTypeDescription(terrainTypeData?.warpType ?? 0);
+        <text-fields-with-labeled-header label="Warp" [title]="warpTypeDesc" [textFields]="[`Connected Tiles: ${tile.warpData?.warpGroupCoordinates ?? ''}`]" />
+      }
+      @for (id of tile.tileObjectInstanceIDs; track id) {
+        <tile-object-instance [id]="id" [coordinate]="tile.coordinate" />
+      }
+    </div>
+  }
+}

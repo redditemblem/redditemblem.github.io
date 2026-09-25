@@ -1,0 +1,102 @@
+$convoy-banner-color-1: #60EFB8;
+$convoy-banner-color-1-shaded: #1eb77d;
+$convoy-banner-color-2: #20ccc6;
+$convoy-banner-color-2-shaded: #0e9792;
+
+#convoyBanner {
+  position: absolute;
+  height: 112px;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+}
+
+#convoyLabelContainer {
+  position: relative;
+  float: right;
+  height: 100px;
+  display: flex;
+  flex-flow: row-reverse nowrap;
+  align-items: center;
+  padding-right: 8px;
+
+  #convoyLabel {
+    max-width: calc(100% - 66px);
+  }
+}
+
+div.bannerStripe {
+  display: flex;
+  flex-flow: column nowrap;
+
+  div.flat {
+    flex: 1;
+    
+    &.secondaryColor { 
+      background: linear-gradient(to bottom, $convoy-banner-color-1 80%, $convoy-banner-color-1-shaded);
+    }
+
+    &.tertiaryColor {
+      background: linear-gradient(to bottom, $convoy-banner-color-2 80%, $convoy-banner-color-2-shaded);
+    }
+  }
+
+  div.round {
+    height: 48px;
+    border-radius: 0% 0% 50% 50%;
+    
+    &.secondaryColor { 
+      background: linear-gradient(to bottom, $convoy-banner-color-1-shaded, $convoy-banner-color-1 75%);
+    }
+
+    &.tertiaryColor {
+      background: linear-gradient(to bottom, $convoy-banner-color-2-shaded, $convoy-banner-color-2 75%);
+    }
+  }
+}
+
+#convoyItemsContainer { 
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  margin-top: 100px;
+  padding: 24px 16px 16px 16px;
+  height: calc(100% - 108px - 32px - 40px);
+  overflow: auto;
+
+  convoy-item {
+    width: 100%;
+  }
+}
+
+#emptyConvoyItemsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  font-family: macExtMinecraft;
+  font-size: 1.5rem;
+  line-height: 1.6rem;
+  text-align: center;
+}
+
+#convoyFooter { 
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-items: center;
+  justify-content: end;
+  height: 40px;
+  padding-right: 28px;
+  background: linear-gradient(to top, #3e280d, #5e3f18 30%);
+  
+  p {
+    margin: 0px;
+    font-family: macExtMinecraft;
+    font-size: 0.8rem;
+    color: linen;
+  }
+}

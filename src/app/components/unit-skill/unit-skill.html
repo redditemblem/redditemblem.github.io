@@ -1,0 +1,31 @@
+<div class="primaryColorCard skillContainer">
+    <div class="headerRow" [class]="{'opacity50' : disabled()}">
+        <div class="titleColumn">
+            <div class="titleRow">
+                @if ((systemData()?.spriteURL ?? "").length > 0) {
+                    <img [src]="systemData()?.spriteURL" class="sprite" [aria-label]="`${skill().name} sprite`" />
+                }
+                <p>{{skill().name}}</p>
+            </div>
+            @let subtitle = getAdditionalStatsText();
+            @if (subtitle.length > 0) {
+                <p class="subtitleRow">
+                    {{subtitle}}
+                </p>
+            }
+        </div>
+        @if (systemData()?.isEffectConfigured) {
+            <div class="iconsRow">
+                <img src="img/gear_icon.png" height="20" width="20" aria-label="Effect configured" matTooltip="Effect Configured" matTooltipPosition="left" />
+            </div>
+        }
+    </div>
+    @if (expanded() && (systemData()?.textFields ?? []).length > 0) {
+        <mat-divider />
+        <div class="textFieldsContainer">
+            @for (text of systemData()?.textFields; track $index) {
+                <p>{{text}}</p>
+            }
+        </div>
+    }
+</div>

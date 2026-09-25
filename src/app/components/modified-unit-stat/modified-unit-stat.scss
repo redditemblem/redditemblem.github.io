@@ -1,0 +1,79 @@
+div.modifiedStatContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+  row-gap: 4px;
+
+  p { margin: 0px; }
+}
+
+div.statHeaderRow {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-items: stretch;
+  font-family: macExtMinecraft;
+  font-size: 0.75rem;
+}
+
+div.labelContainer {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: 4px 8px 4px 8px;
+  border-radius: 0px 0px 0px 8px;
+  background: var(--secondary-theme-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+  }
+}
+
+div.point {
+  width: 16px;
+  background: linear-gradient(to right top, var(--secondary-theme-color) 50%, transparent 50%);
+}
+
+div.valueContainer {
+  display: flex;
+  flex-flow: row-reverse nowrap;
+  align-items: center;
+  width: 35%;
+}
+    
+div.modifiersContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  column-gap: 2px;
+}
+
+div.leftBorder {
+  width: 16px;
+  border-right: 3px solid var(--secondary-theme-color-dim);
+}
+        
+div.modifierRows {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+  row-gap: 2px;
+
+  div.modifierRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    column-gap: 16px;
+    padding: 0px 4px 0px 4px;
+    font-size: 0.7rem;
+  }
+
+  div.shaded { 
+    background-color: rgba(132, 132, 132, 0.1);
+  }
+}

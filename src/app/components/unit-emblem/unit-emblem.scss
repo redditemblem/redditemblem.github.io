@@ -1,0 +1,112 @@
+div.emblemContainer {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  padding: 8px;
+  border-radius: 0px 8px 0px 8px;
+  cursor: pointer;
+
+  //Assert this over the engaged card styling
+  z-index: 1;
+  background-color: var(--mat-sys-surface);
+
+  h4 {
+    margin: 8px 0px 0px 0px;
+    font-family: macExtMinecraft;
+  }
+
+  p { margin: 0px; }
+}
+
+div.emblemHeaderRow {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  column-gap: 8px;
+}
+
+div.emblemNameSpriteRow {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  column-gap: 8px;
+
+  img.emblemSprite {
+    max-height: var(--card-header-unit-sprite-max-dimensions);
+    max-width: var(--card-header-unit-sprite-max-dimensions);
+    object-fit: scale-down;
+  }
+
+  div.emblemNameColumn {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+    font-family: macExtMinecraft;
+
+    h3 {
+      margin: 0px;
+      font-weight: normal;
+    }
+
+    p { 
+      margin-left: 16px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+div.bondLevelRow {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  justify-content: space-between;
+}
+
+div.textFieldContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 4px;
+}
+
+div.engagedEffectCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 8px 0px 8px;
+  overflow: hidden;
+
+  &.unengaged {
+    border: 2px solid var(--primary-theme-color);
+  }
+
+  &.engaged {
+    padding: 4px;
+    box-shadow: 0px 0px 4px var(--engaged-aura-color);
+  }
+}
+.engaged::before {
+  content: "";
+  display: block;
+  background: linear-gradient(
+    90deg,
+    hsl(from var(--engaged-aura-color) calc(h - 90) s l) 0%,
+    var(--engaged-aura-color) 50%,
+    hsl(from var(--engaged-aura-color) calc(h + 90) s l) 100%,
+  );
+  position: absolute;
+  animation: spin 2s linear infinite;
+  z-index: 0;
+  height: 2000px;
+  width: 2000px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,102 @@
+$shop-banner-color-1: #e92700;
+$shop-banner-color-1-shaded: #9b220a;
+$shop-banner-color-2: #df7000;
+$shop-banner-color-2-shaded: #9f5d00;
+
+#shopBanner {
+  position: absolute;
+  height: 112px;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+}
+
+#shopLabelContainer {
+  position: relative;
+  float: right;
+  height: 100px;
+  display: flex;
+  flex-flow: row-reverse nowrap;
+  align-items: center;
+  padding-right: 8px;
+
+  #shopLabel {
+    max-width: calc(100% - 66px);
+  }
+}
+
+div.bannerStripe {
+  display: flex;
+  flex-flow: column nowrap;
+
+  div.flat {
+    flex: 1;
+    
+    &.secondaryColor { 
+      background: linear-gradient(to bottom, $shop-banner-color-1 80%, $shop-banner-color-1-shaded);
+    }
+
+    &.tertiaryColor {
+      background: linear-gradient(to bottom, $shop-banner-color-2 80%, $shop-banner-color-2-shaded);
+    }
+  }
+
+  div.round {
+    height: 48px;
+    border-radius: 0% 0% 50% 50%;
+    
+    &.secondaryColor { 
+      background: linear-gradient(to bottom, $shop-banner-color-1-shaded, $shop-banner-color-1 75%);
+    }
+
+    &.tertiaryColor {
+      background: linear-gradient(to bottom, $shop-banner-color-2-shaded, $shop-banner-color-2 75%);
+    }
+  }
+}
+
+#shopItemsContainer { 
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 8px;
+  margin-top: 100px;
+  padding: 24px 16px 16px 16px;
+  height: calc(100% - 108px - 32px - 40px);
+  overflow: auto;
+
+  shop-item {
+    width: 100%;
+  }
+}
+
+#emptyShopItemsContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  font-family: macExtMinecraft;
+  font-size: 1.5rem;
+  line-height: 1.6rem;
+  text-align: center;
+}
+
+#shopFooter { 
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-items: center;
+  justify-content: end;
+  height: 40px;
+  padding-right: 28px;
+  background: linear-gradient(to top, #3e280d, #5e3f18 30%);
+  
+  p {
+    margin: 0px;
+    font-family: macExtMinecraft;
+    font-size: 0.8rem;
+    color: linen;
+  }
+}

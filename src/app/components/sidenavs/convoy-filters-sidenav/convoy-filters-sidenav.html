@@ -1,0 +1,98 @@
+<div class="convoyFiltersContainer">
+  <h1>Filters</h1>
+  <mat-form-field>
+    <mat-label>Sort Items By</mat-label>
+    <mat-select [(value)]="convoyEventService.sortItemsBy">
+      @for (sort of convoyDataService.getConvoyItemSorts(); track $index) {
+        <mat-option [value]="sort">{{sort.displayName}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Show Items Owned By</mat-label>
+    <mat-select [(value)]="convoyEventService.itemsOwnedBy">
+      @for (owner of convoyDataService.getConvoyItemOwners(); track $index) {
+        <mat-option [value]="owner">{{owner}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-slide-toggle (change)="convoyEventService.showExpandedItemData.set(!convoyEventService.showExpandedItemData())">
+    Expand all convoy item information
+  </mat-slide-toggle>
+  @let categories = convoyDataService.getConvoyItemCategories();
+  @if (categories.length > 0) {
+    <mat-divider />
+    <h2>Categories</h2>
+    <div>
+      <mat-checkbox value="All"
+                    [checked]="convoyEventService.allItemCategoriesSelected()" 
+                    [indeterminate]="convoyEventService.someItemCategoriesSelected()" 
+                    (change)="itemCategoryCheckbox_OnChange($event)">
+          All
+      </mat-checkbox>
+      <ul>
+        @for (category of categories; track category) {
+          <li>
+            <mat-checkbox checked 
+                          [value]="category" 
+                          [checked]="convoyEventService.getItemCategoryFilter(category)" 
+                          (change)="itemCategoryCheckbox_OnChange($event)">
+                {{category}}
+            </mat-checkbox>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @let utilizedStats = convoyDataService.getConvoyItemUtilizedStats();
+  @let targetedStats = convoyDataService.getConvoyItemTargetedStats();
+  @if (utilizedStats.length > 0 || targetedStats.length > 0) {
+    <mat-divider />
+    @if (utilizedStats.length > 0) {
+      <h2>Utilized Stat</h2>
+      <div>
+        <mat-checkbox value="All"
+                      [checked]="convoyEventService.allUtilizedStatsSelected()"
+                      [indeterminate]="convoyEventService.someUtilizedStatsSelected()"
+                      (change)="utilizedStatCheckbox_OnChange($event)">
+            All
+        </mat-checkbox>
+        <ul>
+          @for (stat of utilizedStats; track stat) {
+            <li>
+              <mat-checkbox checked
+                            [value]="stat"
+                            [checked]="convoyEventService.getUtilizedStatFilter(stat)"
+                            (change)="utilizedStatCheckbox_OnChange($event)">
+                  {{stat}}
+              </mat-checkbox>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    @if (targetedStats.length > 0) {
+      <h2>Targeted Stat</h2>
+      <div>
+        <mat-checkbox value="All"
+                      [checked]="convoyEventService.allTargetedStatsSelected()"
+                      [indeterminate]="convoyEventService.someTargetedStatsSelected()"
+                      (change)="targetedStatCheckbox_OnChange($event)">
+            All
+        </mat-checkbox>
+        <ul>
+          @for (stat of targetedStats; track stat) {
+            <li>
+              <mat-checkbox checked
+                            [value]="stat"
+                            [checked]="convoyEventService.getTargetedStatFilter(stat)"
+                            (change)="targetedStatCheckbox_OnChange($event)">
+                  {{stat}}
+              </mat-checkbox>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,40 @@
+<div id="paintSidenavContainer">
+    <h1>Paintbrush</h1>
+    <mat-button-toggle-group name="penWidth" value="2" (change)="penWidth_OnChange($event)" class="penWidthToggles" aria-label="Pen width" hideSingleSelectionIndicator>
+      <mat-button-toggle value="2">
+        <img src="img/thin_line_icon.png" height="20px" width="20px" [style.filter]="themeService.inDarkMode() ? 'invert(1)' : ''" aria-hidden="true" /> Thin
+      </mat-button-toggle>
+      <mat-button-toggle value="4">
+        <img src="img/medium_line_icon.png" height="20px" width="20px" [style.filter]="themeService.inDarkMode() ? 'invert(1)' : ''" aria-hidden="true" /> Medium
+      </mat-button-toggle>
+      <mat-button-toggle value="6">
+        <img src="img/thick_line_icon.png" height="20px" width="20px" [style.filter]="themeService.inDarkMode() ? 'invert(1)' : ''" aria-hidden="true" /> Thick
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <div class="colorButtonsRow">
+      @for (color of availablePenColors | keyvalue: doNotSort; track color.key) {
+        <button matButton="elevated" (click)="setPenColor(color.key)" class="penColorButton" [style.background-color]="color.value" [aria-label]="color.key">
+          @if(selectedPenColor() === color.key){ 
+            <img src="img/checkmark_icon.png" height="20" width="20" aria-hidden="true"/>
+          }
+        </button>
+      }
+    </div>
+    <mat-action-list>
+        <button mat-list-item (click)="undoLastLine()">
+            <img matListItemIcon src="img/undo_icon.png" />
+            <span class="matListItemTitle pixelFont">Undo</span>
+        </button>
+        <button mat-list-item (click)="eraseAllPaint()">
+            <img matListItemIcon src="img/eraser_icon.png" />
+            <span class="matListItemTitle pixelFont">Clear screen</span>
+        </button>
+        <button mat-list-item (click)="exportMapAsImage()">
+            <img matListItemIcon src="img/map_icon.png" />
+            <span class="matListItemTitle pixelFont">Download map as image</span>
+            <div matListItemMeta>
+                <mat-icon>download</mat-icon>
+            </div>
+        </button>
+    </mat-action-list>
+</div>
