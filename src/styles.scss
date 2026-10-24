@@ -251,6 +251,6 @@ button.sidenavExpandButton {
   position: absolute;
   position-anchor: --sidenav-anchor;
   position-visibility: always;
-  position-area: top right;
+  left: anchor(right);
   z-index: 3;
 }
