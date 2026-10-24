@@ -69,7 +69,18 @@ export class PaintContainer extends Container {
 
   // #region Event Handlers
 
+  /** Returns true if `event` was triggered by either a touch interaction OR
+   *  a mouse interaction using the mouse's main (0) button.
+   */
+  private isValidInteractionForPainting(event: FederatedPointerEvent) : boolean {
+    return event.pointerType ===  "touch"
+       || (event.pointerType === "mouse" && event.button === 0);
+  }
+
   private PaintContainer_PointerDown(event: FederatedPointerEvent) {
+    if(!this.isValidInteractionForPainting(event))
+      return;
+
     this.userIsDrawing = true;
 
     const newLine = new Graphics({
