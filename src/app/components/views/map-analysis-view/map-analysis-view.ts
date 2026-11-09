@@ -10,13 +10,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { LinksSidenav } from '../../sidenavs/links-sidenav/links-sidenav';
 import { IMapSegment } from '../../../data/interfaces/map/map-segment';
-import { MatFabButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MapAnalysisOptionsSidenav } from '../../sidenavs/map-analysis-options-sidenav/map-analysis-options-sidenav';
 import { MapAnalysisCanvas } from '../../map-analysis-canvas/map-analysis-canvas';
 
 @Component({
   selector: 'map-analysis-view',
-  imports: [LoadingIcon, MatIconModule, MatSidenavModule, MatTabsModule, LinksSidenav, MatFabButton, MapAnalysisOptionsSidenav, MapAnalysisCanvas],
+  imports: [LoadingIcon, MatIconModule, MatSidenavModule, MatTabsModule, LinksSidenav, MatButtonModule, MapAnalysisOptionsSidenav, MapAnalysisCanvas],
   templateUrl: './map-analysis-view.html',
   styleUrl: './map-analysis-view.scss',
 })

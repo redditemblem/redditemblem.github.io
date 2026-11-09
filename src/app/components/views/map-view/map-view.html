@@ -79,6 +79,12 @@
             </mat-tab-group>
             @if (eventService.selectedSegment() !== undefined) {
                 <!-- Delay rendering the map until after segment data has been fully loaded -->
+                <button matMiniFab id="mapZoomInButton" (click)="eventService.increaseZoomLevel()" aria-label="Zoom in">
+                  <mat-icon aria-hidden="true">zoom_in</mat-icon>
+                </button>
+                <button matMiniFab id="mapZoomOutButton" (click)="eventService.decreaseZoomLevel()" aria-label="Zoom out">
+                  <mat-icon aria-hidden="true">zoom_out</mat-icon>
+                </button>
                 <map-canvas />
             }
         </mat-sidenav-content>

@@ -88,7 +88,12 @@ export class PaintContainer extends Container {
       interactiveChildren: false,
       eventMode: 'none'
     });
-    newLine.moveTo(event.screen.x, event.screen.y);
+
+    const zoomLevel: number = this.eventService?.zoomLevel() ?? 1.0;
+    const x: number = Math.floor(event.screen.x / zoomLevel);
+    const y: number = Math.floor(event.screen.y / zoomLevel);
+
+    newLine.moveTo(x, y);
 
     this.currentLine = newLine;
     this.graphicsBuffer.push(newLine);
@@ -97,7 +102,12 @@ export class PaintContainer extends Container {
 
   private PaintContainer_PointerMove(event: FederatedPointerEvent) {
     if(!this.userIsDrawing) return;
-    this.currentLine?.lineTo(event.screen.x, event.screen.y)
+
+    const zoomLevel: number = this.eventService?.zoomLevel() ?? 1.0;
+    const x: number = Math.floor(event.screen.x / zoomLevel);
+    const y: number = Math.floor(event.screen.y / zoomLevel);
+
+    this.currentLine?.lineTo(x, y)
       .stroke({
         color: this.eventService?.drawingPenColor(),
         width: this.eventService?.drawingPenWidth(),

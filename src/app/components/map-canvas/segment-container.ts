@@ -130,8 +130,9 @@ export class SegmentContainer extends Container {
   // #region Event Handling
 
   private SegmentContainer_PointerMove_PointerTap(event: FederatedPointerEvent) {
-    const xNumTiles = Math.floor(event.screen.x / this.tileDimensions);
-    const yNumTiles = Math.floor(event.screen.y / this.tileDimensions);
+    const zoomLevel: number = this.eventService?.zoomLevel() ?? 1.0;
+    const xNumTiles: number = Math.floor(event.screen.x / (this.tileDimensions * zoomLevel));
+    const yNumTiles: number = Math.floor(event.screen.y / (this.tileDimensions * zoomLevel));
 
     //Hide cursor on headers/footers
     if( (this.hasTopLeftHeaders && (xNumTiles < 1 || yNumTiles < 1))

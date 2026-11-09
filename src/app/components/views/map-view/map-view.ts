@@ -8,7 +8,7 @@ import { BreakpointService } from '../../../services/breakpoint-service';
 import { ThemeService } from '../../../services/theme-service';
 import { TeamDataService } from '../../../services/team-data-service';
 import { ActivatedRoute } from '@angular/router';
-import { MatFabButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { LinksSidenav } from "../../sidenavs/links-sidenav/links-sidenav";
 import { MapCanvas } from '../../map-canvas/map-canvas';
 import { IMapSegment } from '../../../data/interfaces/map/map-segment';
@@ -19,7 +19,7 @@ import { LoadingIcon } from "../../loading-icon/loading-icon";
 
 @Component({
   selector: 'map-view',
-  imports: [MatSidenavModule, MatTabsModule, MatFabButton, MapUnitsSidenav, MapTilesSidenav, MapDiceRollerSidenav, LinksSidenav, MapCanvas, MapPaintSidenav, MatIcon, LoadingIcon],
+  imports: [MatSidenavModule, MatTabsModule, MatButtonModule, MapUnitsSidenav, MapTilesSidenav, MapDiceRollerSidenav, LinksSidenav, MapCanvas, MapPaintSidenav, MatIcon, LoadingIcon],
   templateUrl: './map-view.html',
   styleUrl: './map-view.scss',
 })

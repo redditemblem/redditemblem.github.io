@@ -24,3 +24,35 @@
   column-gap: 8px;
   margin-top: 16px;
 }
+
+#mapZoomInButton {
+  @include mat.fab-overrides((
+    small-container-color: var(--primary-theme-color),
+    small-foreground-color: var(--primary-theme-color-inverted),
+    small-ripple-color: color-mix(in srgb, var(--primary-theme-color) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    small-container-elevation-shadow: none,
+    small-focus-container-elevation-shadow: none,
+    small-hover-container-elevation-shadow: none,
+    small-container-shape: 8px 8px 0px 0px
+  ));
+
+  position: absolute;
+  bottom: 64px;
+  right: 24px;
+}
+
+#mapZoomOutButton {
+  @include mat.fab-overrides((
+    small-container-color: var(--primary-theme-color),
+    small-foreground-color: var(--primary-theme-color-inverted),
+    small-ripple-color: color-mix(in srgb, var(--primary-theme-color) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    small-container-elevation-shadow: none,
+    small-focus-container-elevation-shadow: none,
+    small-hover-container-elevation-shadow: none,
+    small-container-shape: 0px 0px 8px 8px
+  ));
+
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+}
