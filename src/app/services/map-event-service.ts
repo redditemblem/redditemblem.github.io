@@ -23,6 +23,8 @@ export class MapEventService {
     this.paintMode.set(false);
     this.penColor.set("#000000");
     this.penWidth.set(2);
+
+    this.zoom.set(1.0);
   }
 
   // #region Pin Actions
@@ -242,6 +244,35 @@ export class MapEventService {
   }
 
   // #endregion Paint Mode
+
+  // #region Zoom Level
+
+  private zoom = signal<number>(1.0);
+  public zoomLevel = this.zoom.asReadonly();
+
+  public increaseZoomLevel() {
+    if (this.zoom() >= 3.0)
+      return;
+
+    let increment: number = 0.5;
+    if (this.zoom() < 1.0)
+      increment = 0.25;
+
+    this.zoom.set(this.zoom() + increment);
+  }
+
+  public decreaseZoomLevel() {
+    if(this.zoom() <= 0.25)
+      return; 
+
+    let increment: number = 0.5;
+    if (this.zoom() <= 1.0)
+      increment = 0.25;
+
+    this.zoom.set(this.zoom() - increment);
+  }
+
+  // #endregion Zoom Level
 }
 
 export interface ITileState {

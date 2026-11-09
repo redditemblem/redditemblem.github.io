@@ -15,6 +15,8 @@ export class MapAnalysisEventService {
     this.mode.set("moveCost");
     this.segment.set(undefined);
 
+    this.zoom.set(1.0);
+
     this.movementType.set(undefined);
     this.affiliationGroup.set(undefined);
     this.terrainType.set(undefined);
@@ -34,6 +36,35 @@ export class MapAnalysisEventService {
   }
 
   // #endregion Selected Segment and Tile
+
+  // #region Zoom Level
+
+  private zoom = signal<number>(1.0);
+  public zoomLevel = this.zoom.asReadonly();
+
+  public increaseZoomLevel() {
+    if (this.zoom() >= 3.0)
+      return;
+
+    let increment: number = 0.5;
+    if (this.zoom() < 1.0)
+      increment = 0.25;
+
+    this.zoom.set(this.zoom() + increment);
+  }
+
+  public decreaseZoomLevel() {
+    if(this.zoom() <= 0.25)
+      return; 
+
+    let increment: number = 0.5;
+    if (this.zoom() <= 1.0)
+      increment = 0.25;
+
+    this.zoom.set(this.zoom() - increment);
+  }
+
+  // #endregion Zoom Level
 
   // #region Movement Type
 

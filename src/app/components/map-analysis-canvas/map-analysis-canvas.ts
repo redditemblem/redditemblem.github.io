@@ -9,12 +9,15 @@ import { StringDictionary } from '../../data/interfaces/common/dictionaries';
 @Component({
   selector: 'map-analysis-canvas',
   imports: [],
-  template: `<div id="pixiContainer"></div>`,
+  template: `<div id="scrollbox"><div id="pixiContainer"></div></div>`,
   styles: `
-    #pixiContainer {
+    #scrollbox {
       height: calc(100vh - 56px);
       width: 100%;
       overflow: auto;
+    }
+    #pixiContainer {
+      padding-right: 56px;
     }
   `,
 })
@@ -38,6 +41,11 @@ export class MapAnalysisCanvas implements OnInit, OnDestroy {
     effect(() => {
       this.updateActiveSegment(this.eventService.selectedSegment());
     });
+
+    //Watch for changes in the zoom level
+    effect(() => {
+      this.updateZoomLevel(this.eventService.zoomLevel());
+    })
   }
 
   async ngOnInit() {
@@ -117,10 +125,34 @@ export class MapAnalysisCanvas implements OnInit, OnDestroy {
     this.activeSegment = container;
     this.activeSegment.show();
 
-    //Resize canvas to this new segment
-    this.pixiApp.renderer.resize(
-      container.segment.widthInPixels,
-      container.segment.heightInPixels
-    );
+    //Resize containing div + canvas to this new segment
+    const zoomLevel: number = this.eventService.zoomLevel() ?? 1.0;
+    const width: number = Math.ceil(container.segment.widthInPixels * zoomLevel);
+    const height: number = Math.ceil(container.segment.heightInPixels * zoomLevel);
+
+    this.pixiApp.renderer.resize(width, height);
+
+    const pixiContainer: HTMLElement | null = document.getElementById("pixiContainer");
+    if (pixiContainer !== null) {
+      pixiContainer.style.height = `${height}px`;
+      pixiContainer.style.width = `${width}px`;
+    }
+  }
+
+  private updateZoomLevel(zoomLevel: number) {
+    this.pixiApp.stage.scale.set(zoomLevel);
+    
+    //Resize div + canvas to new scale
+    const width: number = Math.ceil((this.activeSegment?.segment.widthInPixels ?? 0) * zoomLevel);
+    const height: number = Math.ceil((this.activeSegment?.segment.heightInPixels ?? 0) * zoomLevel);
+    if (width > 0 && height > 0) {
+      this.pixiApp.renderer.resize(width, height);
+
+      const pixiContainer: HTMLElement | null = document.getElementById("pixiContainer");
+      if (pixiContainer !== null) {
+        pixiContainer.style.height = `${height}px`;
+        pixiContainer.style.width = `${width}px`;
+      }
+    }
   }
 }
